@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/main.css"/>
+  <script>(function(){var t=localStorage.getItem('dst-theme');if(!t){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)})()</script>
   <style>
     .page-hero { padding:8rem 0 4rem; border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
     .page-hero-bg { position:absolute; inset:0; }
     .page-hero-bg img { width:100%; height:100%; object-fit:cover; opacity:0.15; }
-    .page-hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,var(--bg) 0%,rgba(5,12,24,0) 50%,var(--bg) 100%); }
+    .page-hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,var(--bg) 0%,transparent 50%,var(--bg) 100%); }
     .page-hero-content { position:relative; z-index:1; }
 
     /* Big image + text split */
@@ -27,7 +28,7 @@
     .act-item { position:relative; aspect-ratio:4/3; overflow:hidden; cursor:pointer; }
     .act-item img { width:100%; height:100%; object-fit:cover; opacity:0.6; transition:opacity 0.4s,transform 0.5s var(--ease); }
     .act-item:hover img { opacity:0.85; transform:scale(1.04); }
-    .act-info { position:absolute; bottom:0; left:0; right:0; padding:1.25rem; background:linear-gradient(transparent,rgba(5,12,24,0.95)); }
+    .act-info { position:absolute; bottom:0; left:0; right:0; padding:1.25rem; background:linear-gradient(transparent,rgba(9,9,15,0.95)); }
     .act-title { font-family:var(--font-display); font-size:1.1rem; line-height:1; margin-bottom:0.2rem; }
     .act-sub { font-size:0.72rem; color:var(--muted); }
 
@@ -36,12 +37,12 @@
     .included-row { display:grid; grid-template-columns:auto 1fr auto; gap:1rem; align-items:center; padding:1rem 1.25rem; border-bottom:1px solid var(--border); font-size:0.875rem; }
     .included-row:last-child { border:none; }
     .included-row:hover { background:rgba(255,255,255,0.02); }
-    .included-check { color:var(--gold); font-size:0.9rem; }
+    .included-check { color:var(--accent); font-size:0.9rem; }
     .included-tier { font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
 
     /* Music schedule */
     .sched-row { display:grid; grid-template-columns:90px 1fr 1fr; gap:1rem; align-items:center; padding:1rem 0; border-bottom:1px solid var(--border); font-size:0.875rem; }
-    .sched-time { font-family:var(--font-display); font-size:1.1rem; color:var(--gold); }
+    .sched-time { font-family:var(--font-display); font-size:1.1rem; color:var(--accent); }
     .sched-artist { font-weight:600; }
     .sched-genre { font-size:0.75rem; color:var(--muted); }
     .sched-stage { font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); text-align:right; }
@@ -73,6 +74,7 @@
       <li><a href="faq.html"        class="nav-link">FAQ</a></li>
     </ul>
     <div class="nav-cta">
+      <button class="theme-toggle" aria-label="Toggle theme"><span class="icon-moon">&#9790;</span><span class="icon-sun">&#9728;</span></button>
       <a href="dashboard.html"      class="btn btn-ghost btn-sm">Account</a>
       <a href="events.html#tickets" class="btn btn-gold btn-sm">Get Tickets</a>
     </div>
@@ -94,7 +96,7 @@
   <div class="page-hero-bg"><img src="https://picsum.photos/seed/exp-hero/1920/600" alt=""/></div>
   <div class="wrap page-hero-content">
     <span class="eyebrow">What Awaits You</span>
-    <h1 class="d2">Life at <span style="color:var(--gold);">Sea Level</span></h1>
+    <h1 class="d2">Life at <span style="color:var(--accent);">Sea Level</span></h1>
     <p style="color:var(--off-white); font-size:1.05rem; max-width:520px; margin-top:0.75rem; line-height:1.75;">Every moment designed to elevate your senses. Music, adventure, community, and luxury — all at once.</p>
   </div>
 </div>

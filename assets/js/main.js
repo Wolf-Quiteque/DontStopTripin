@@ -1,15 +1,48 @@
 /* ============================================================
-   DON'T STOP TRIPPING — Main JS
+   DON'T STOP TRIPPING — Main JS v2
    ============================================================ */
 
 'use strict';
+
+/* ---- Theme Toggle ---- */
+(function initTheme() {
+  const saved = localStorage.getItem('dst-theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  } else {
+    // Respect OS preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  }
+})();
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+
+  // Enable smooth transition
+  document.body.classList.add('theme-transitioning');
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('dst-theme', next);
+
+  // Remove transition class after animation completes
+  setTimeout(() => document.body.classList.remove('theme-transitioning'), 600);
+}
+
+// Bind all theme toggle buttons
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.theme-toggle').forEach(btn =>
+    btn.addEventListener('click', toggleTheme)
+  );
+});
 
 /* ---- Loader ---- */
 window.addEventListener('load', () => {
   setTimeout(() => {
     const l = document.getElementById('loader');
-    if (l) { l.classList.add('out'); setTimeout(() => l.remove(), 500); }
-  }, 1400);
+    if (l) { l.classList.add('out'); setTimeout(() => l.remove(), 600); }
+  }, 1200);
 });
 
 /* ---- Nav scroll ---- */
@@ -144,10 +177,11 @@ document.querySelectorAll('.gallery-item').forEach(item => {
     const src = item.querySelector('img')?.src;
     if (!src) return;
     const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(5,12,24,.96);z-index:5000;display:flex;align-items:center;justify-content:center;cursor:zoom-out;backdrop-filter:blur(8px)';
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    overlay.style.cssText = `position:fixed;inset:0;background:${isDark ? 'rgba(9,9,15,.94)' : 'rgba(248,248,250,.94)'};z-index:5000;display:flex;align-items:center;justify-content:center;cursor:zoom-out;backdrop-filter:blur(12px)`;
     const img = document.createElement('img');
     img.src = src;
-    img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:6px;object-fit:contain';
+    img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain;box-shadow:0 16px 48px rgba(0,0,0,0.3)';
     overlay.appendChild(img);
     overlay.addEventListener('click', () => overlay.remove());
     document.body.appendChild(overlay);
