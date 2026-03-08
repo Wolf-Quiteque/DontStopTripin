@@ -1,814 +1,704 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FAQ — Don't Stop Tripping</title>
-  <meta name="description" content="Answers to your questions about DST events — travel requirements, what to pack, refunds, and more." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/feather-icons"></script>
-  <link rel="stylesheet" href="assets/css/main.css" />
+  <meta name="description" content="Frequently asked questions about Don't Stop Tripping luxury yacht events — bookings, cabins, payments, travel, and more."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/main.css"/>
   <style>
+    /* ---- FAQ page ---- */
     .faq-hero {
-      height: 50vh;
-      min-height: 400px;
+      padding: clamp(5rem,12vw,9rem) 0 clamp(3rem,6vw,5rem);
+      text-align: center;
       position: relative;
-      display: flex;
-      align-items: flex-end;
-      padding-bottom: 4rem;
       overflow: hidden;
     }
-
-    .faq-hero-bg { position: absolute; inset: 0; }
-    .faq-hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
-    .faq-hero-overlay {
+    .faq-hero::before {
+      content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.92) 100%);
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      border: 1px solid var(--border-gold);
+      pointer-events: none;
+      opacity: 0.35;
+    }
+    .faq-hero .eyebrow { margin-bottom: .75rem; }
+    .faq-hero h1 { margin-bottom: 1.25rem; }
+    .faq-hero p {
+      font-size: clamp(1rem,1.6vw,1.15rem);
+      color: var(--off-white);
+      max-width: 540px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
     }
 
-    /* FAQ Layout */
-    .faq-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 3rem;
-      align-items: start;
+    /* Search bar */
+    .faq-search-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .faq-search-wrap input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: .85rem 3rem .85rem 1.25rem;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .2s;
+      box-sizing: border-box;
+    }
+    .faq-search-wrap input::placeholder { color: var(--muted); }
+    .faq-search-wrap input:focus { border-color: var(--gold); }
+    .faq-search-icon {
+      position: absolute;
+      right: 1rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1.1rem;
+      pointer-events: none;
     }
 
-    .faq-sidebar {
-      position: sticky;
-      top: 100px;
-    }
-
-    .faq-category-nav { display: flex; flex-direction: column; gap: 0.25rem; }
-
-    .faq-cat-btn {
+    /* Category tabs */
+    .faq-tabs {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.875rem 1rem;
-      border-radius: var(--radius);
-      font-size: 0.9rem;
+      gap: .5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+    .faq-tab {
+      padding: .45rem 1.1rem;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: .8rem;
       font-weight: 500;
-      color: var(--text-secondary);
+      letter-spacing: .04em;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: var(--transition);
-      text-align: left;
+      transition: all .2s;
+    }
+    .faq-tab:hover { border-color: var(--gold); color: var(--gold); }
+    .faq-tab.active { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+
+    /* FAQ sections */
+    .faq-section { margin-bottom: 3rem; display: none; }
+    .faq-section.active { display: block; }
+
+    .faq-section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem,2vw,1.6rem);
+      letter-spacing: .05em;
+      color: var(--white);
+      margin-bottom: 1rem;
+      padding-bottom: .75rem;
+      border-bottom: 1px solid var(--border);
     }
 
-    .faq-cat-btn:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
-    .faq-cat-btn.active { background: rgba(123,44,191,0.2); color: var(--electric-purple); font-weight: 600; }
-    .faq-cat-count { margin-left: auto; font-size: 0.75rem; background: rgba(255,255,255,0.08); padding: 0.2rem 0.5rem; border-radius: 50px; }
-
-    /* FAQ Section */
-    .faq-section { margin-bottom: 3rem; scroll-margin-top: 100px; }
-    .faq-section-title { font-family: var(--font-display); font-size: 2rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
-
-    /* Search */
-    .faq-search-wrap { position: relative; max-width: 600px; margin: 0 auto 3rem; }
-    .faq-search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-    .faq-search { width: 100%; padding: 1rem 1rem 1rem 3rem; background: var(--dark-card); border: 1px solid var(--border-color); border-radius: 50px; color: var(--text-primary); font-size: 1rem; outline: none; transition: var(--transition); }
-    .faq-search:focus { border-color: var(--electric-purple); box-shadow: 0 0 0 3px rgba(123,44,191,0.15); }
-    .faq-search::placeholder { color: var(--text-muted); }
-
-    /* Popular questions */
-    .popular-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 3rem; }
-    .popular-card {
-      background: var(--dark-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      cursor: pointer;
-      transition: var(--transition);
+    /* Accordion */
+    .faq-item {
+      border-bottom: 1px solid var(--border);
     }
-    .popular-card:hover { border-color: rgba(123,44,191,0.4); transform: translateY(-3px); }
-    .popular-card-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
-    .popular-card-q { font-size: 0.9rem; font-weight: 600; line-height: 1.4; }
+    .faq-item.hidden { display: none; }
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 0;
+      cursor: pointer;
+      color: var(--white);
+      font-size: .95rem;
+      font-weight: 500;
+      line-height: 1.5;
+      transition: color .2s;
+    }
+    .faq-q:hover { color: var(--gold); }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem;
+      transition: all .25s;
+      color: var(--muted);
+    }
+    .faq-item.open .faq-icon {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: rotate(45deg);
+    }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .35s ease;
+    }
+    .faq-a-inner {
+      padding: 0 0 1.25rem;
+      color: var(--off-white);
+      font-size: .9rem;
+      line-height: 1.75;
+    }
+    .faq-a-inner a { color: var(--gold); text-decoration: none; }
+    .faq-a-inner a:hover { text-decoration: underline; }
+    .faq-item.open .faq-a { max-height: 600px; }
 
-    /* Contact section */
-    .contact-channels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .contact-channel {
-      background: var(--dark-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
+    /* No results */
+    .faq-no-results {
       text-align: center;
-      transition: var(--transition);
+      padding: 3rem 1rem;
+      color: var(--muted);
+      display: none;
     }
-    .contact-channel:hover { border-color: rgba(123,44,191,0.3); transform: translateY(-4px); }
-    .contact-channel-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .contact-channel-title { font-weight: 700; margin-bottom: 0.4rem; }
-    .contact-channel-desc { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+    .faq-no-results .icon { font-size: 2rem; margin-bottom: .75rem; }
 
-    /* Packing list */
-    .packing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-    .packing-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.875rem; color: var(--text-secondary); }
-    .packing-check { color: var(--light-aqua); }
-
-    @media (max-width: 1024px) {
-      .faq-layout { grid-template-columns: 1fr; }
-      .faq-sidebar { position: static; }
-      .faq-category-nav { flex-direction: row; flex-wrap: wrap; }
-      .popular-grid { grid-template-columns: repeat(2, 1fr); }
-      .contact-channels { grid-template-columns: 1fr; }
+    /* Still need help CTA */
+    .help-cta {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: var(--r-lg);
+      padding: clamp(2rem,5vw,3.5rem);
+      text-align: center;
+      margin-bottom: 5rem;
     }
+    .help-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem,3vw,2.2rem);
+      letter-spacing: .05em;
+      margin-bottom: .75rem;
+    }
+    .help-cta p {
+      color: var(--off-white);
+      max-width: 420px;
+      margin: 0 auto 2rem;
+      font-size: .95rem;
+      line-height: 1.7;
+    }
+    .help-options {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .help-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.5rem 2rem;
+      min-width: 160px;
+      text-align: center;
+      transition: border-color .2s, transform .2s;
+      text-decoration: none;
+    }
+    .help-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .help-card .hi { font-size: 1.5rem; margin-bottom: .5rem; }
+    .help-card strong {
+      display: block;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: .25rem;
+    }
+    .help-card span { font-size: .78rem; color: var(--muted); }
 
-    @media (max-width: 768px) {
-      .popular-grid { grid-template-columns: 1fr; }
-      .packing-grid { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+      .help-options { flex-direction: column; align-items: stretch; }
+      .help-card { min-width: unset; }
     }
   </style>
 </head>
 <body>
 
-<div id="loading-screen">
-  <div class="loading-logo">DST — FAQ</div>
-  <div class="loading-bar-container"><div class="loading-bar"></div></div>
-</div>
-
-<div class="cursor-glow"></div>
-
-<nav class="nav scrolled">
-  <div class="container">
-    <div class="nav-inner">
-      <a href="index.html" class="nav-logo">DON'T STOP TRIPPING</a>
-      <ul class="nav-links">
-        <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="events.html" class="nav-link">Events</a></li>
-        <li><a href="experience.html" class="nav-link">Experience</a></li>
-        <li><a href="community.html" class="nav-link">Community</a></li>
-        <li><a href="faq.html" class="nav-link active">FAQ</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">My Account</a>
-        <a href="events.html#tickets" class="btn btn-primary btn-sm">Get Tickets</a>
-      </div>
-      <div class="hamburger"><span></span><span></span><span></span></div>
-    </div>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="logo">DST</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="experience.html">Experience</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="dashboard.html">My Account</a></li>
+      <li><a href="faq.html" class="active">FAQ</a></li>
+    </ul>
+    <a href="events.html#tickets" class="btn btn-gold btn-sm nav-cta">Book Now</a>
+    <button class="nav-burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="experience.html">Experience</a>
+    <a href="community.html">Community</a>
+    <a href="dashboard.html">My Account</a>
+    <a href="faq.html">FAQ</a>
+    <a href="events.html#tickets" class="btn btn-gold" style="margin-top:.5rem;text-align:center;">Book Now</a>
   </div>
 </nav>
 
-<div class="mobile-nav">
-  <button class="mobile-nav-close">✕</button>
-  <a href="index.html" class="nav-link">Home</a>
-  <a href="events.html" class="nav-link">Events</a>
-  <a href="experience.html" class="nav-link">Experience</a>
-  <a href="community.html" class="nav-link">Community</a>
-  <a href="faq.html" class="nav-link">FAQ</a>
-  <a href="events.html#tickets" class="btn btn-primary btn-lg">Get Tickets</a>
-</div>
-
-<!-- Hero -->
-<div class="faq-hero" style="padding-top:80px;">
-  <div class="faq-hero-bg">
-    <img src="https://picsum.photos/seed/faq-hero/1920/800" alt="FAQ" />
-  </div>
-  <div class="faq-hero-overlay"></div>
-  <div class="container" style="position:relative;z-index:1;">
-    <span class="section-eyebrow">Got Questions?</span>
-    <h1 class="display-2">We've Got <span class="gradient-text">Answers</span></h1>
-    <p style="color:rgba(255,255,255,0.7);margin-top:0.75rem;max-width:500px;">Everything you need to know about sailing with Don't Stop Tripping.</p>
-  </div>
-</div>
-
-<!-- ===== SEARCH ===== -->
-<section style="padding:3rem 0 0;">
-  <div class="container">
-    <div class="faq-search-wrap reveal">
-      <span class="faq-search-icon">🔍</span>
-      <input type="text" class="faq-search" placeholder="Search FAQs... e.g. 'passport', 'refund', 'cabin'" oninput="filterFAQ(this.value)" />
+<!-- HERO -->
+<section class="faq-hero">
+  <div class="wrap">
+    <span class="eyebrow">Help Centre</span>
+    <h1 class="d2">Frequently Asked<br><em>Questions</em></h1>
+    <p>Everything you need to know about booking, onboard experience, payments, and travel requirements.</p>
+    <div class="faq-search-wrap">
+      <input type="text" id="faq-search" placeholder="Search questions…" autocomplete="off"/>
+      <span class="faq-search-icon">⌕</span>
     </div>
   </div>
 </section>
 
-<!-- ===== POPULAR QUESTIONS ===== -->
-<section class="section-pad-sm">
-  <div class="container">
-    <p style="text-align:center;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-muted);margin-bottom:1.5rem;" class="reveal">Most Asked Questions</p>
-    <div class="popular-grid reveal">
-      <div class="popular-card" onclick="scrollToFAQ('travel')">
-        <div class="popular-card-icon">✈️</div>
-        <div class="popular-card-q">Do I need a visa or passport?</div>
+<!-- FAQ BODY -->
+<section style="padding-bottom:2rem;">
+  <div class="wrap" style="max-width:760px;">
+
+    <!-- Category tabs -->
+    <div class="faq-tabs" id="faq-tabs">
+      <button class="faq-tab active" data-cat="all">All</button>
+      <button class="faq-tab" data-cat="booking">Booking</button>
+      <button class="faq-tab" data-cat="tickets">Tickets &amp; Payments</button>
+      <button class="faq-tab" data-cat="onboard">Onboard</button>
+      <button class="faq-tab" data-cat="travel">Travel &amp; Docs</button>
+      <button class="faq-tab" data-cat="cabins">Cabins</button>
+      <button class="faq-tab" data-cat="policies">Policies</button>
+    </div>
+
+    <!-- No results -->
+    <div class="faq-no-results" id="no-results">
+      <div class="icon">&#128269;</div>
+      <p>No questions match your search. Try different keywords.</p>
+    </div>
+
+    <!-- BOOKING -->
+    <div class="faq-section active" data-section="booking">
+      <div class="faq-section-title">Booking</div>
+
+      <div class="faq-item" data-cat="booking">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How do I book a ticket? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Head to the <a href="events.html#tickets">Events page</a> and select your preferred tier — Explorer, Voyager, or Sovereign. Click "Reserve Your Spot", fill in your details, and complete checkout. You'll receive a confirmation email with your booking reference within minutes.
+        </div></div>
       </div>
-      <div class="popular-card" onclick="scrollToFAQ('refunds')">
-        <div class="popular-card-icon">💳</div>
-        <div class="popular-card-q">What is your refund policy?</div>
+
+      <div class="faq-item" data-cat="booking">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How early do I need to book? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          We strongly recommend booking at least 8–12 weeks in advance. Cabin capacity is strictly limited and popular tiers sell out fast. Early-bird pricing is available for bookings made 3+ months before departure.
+        </div></div>
       </div>
-      <div class="popular-card" onclick="scrollToFAQ('cabins')">
-        <div class="popular-card-icon">🛏️</div>
-        <div class="popular-card-q">Can I choose my cabin type?</div>
+
+      <div class="faq-item" data-cat="booking">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I book as a group? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Absolutely. Groups of 6 or more qualify for our group rate — typically 10% off per person. Email <a href="mailto:groups@dontstoptripping.com">groups@dontstoptripping.com</a> with your group size and preferred dates for a custom quote. Groups of 12+ may receive a dedicated concierge.
+        </div></div>
       </div>
-      <div class="popular-card" onclick="scrollToFAQ('events')">
-        <div class="popular-card-icon">🎵</div>
-        <div class="popular-card-q">Is everything included in the ticket?</div>
+
+      <div class="faq-item" data-cat="booking">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Is there a waitlist if my preferred tier is sold out? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Yes. Join the waitlist on the Events page and you'll be automatically notified if a spot becomes available — typically due to cancellations. Waitlist spots are offered first-come, first-served.
+        </div></div>
       </div>
-      <div class="popular-card" onclick="scrollToFAQ('packing')">
-        <div class="popular-card-icon">🎒</div>
-        <div class="popular-card-q">What should I pack?</div>
-      </div>
-      <div class="popular-card" onclick="scrollToFAQ('rules')">
-        <div class="popular-card-icon">📋</div>
-        <div class="popular-card-q">What are the event rules?</div>
+
+      <div class="faq-item" data-cat="booking">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Do I need an account to book? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          An account is required to manage your booking, access digital tickets, complete cabin documents, and connect with roommates. Creating one takes under 2 minutes — head to the <a href="dashboard.html">dashboard</a>.
+        </div></div>
       </div>
     </div>
+
+    <!-- TICKETS & PAYMENTS -->
+    <div class="faq-section active" data-section="tickets">
+      <div class="faq-section-title">Tickets &amp; Payments</div>
+
+      <div class="faq-item" data-cat="tickets">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What's included in each ticket tier? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          <strong style="color:var(--white);">Explorer</strong> — Shared 4-berth cabin, all meals, festival access, open-bar pool deck.<br>
+          <strong style="color:var(--white);">Voyager</strong> (most popular) — Shared 2-berth ocean-view cabin, priority boarding, exclusive lounge, 1 shore excursion.<br>
+          <strong style="color:var(--white);">Sovereign</strong> — Private balcony suite, premium spirits, personal concierge, all excursions, artist meet &amp; greet.<br><br>
+          Full inclusions are on the <a href="experience.html">Experience page</a>.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="tickets">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What payment methods are accepted? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          All major cards (Visa, Mastercard, Amex), PayPal, Apple Pay, Google Pay, and bank transfer for bookings over £1,000. Payments are processed via Stripe and are 256-bit SSL encrypted.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="tickets">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I pay in instalments? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Yes. Our payment plan splits the total into 3 payments: 30% at booking, 35% at 90 days out, 35% at 30 days before departure. Select "Pay in Instalments" at checkout. No interest or fees apply.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="tickets">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I upgrade my ticket tier after booking? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Upgrades are subject to availability. Log into your <a href="dashboard.html">dashboard</a>, go to My Tickets, and select "Request Upgrade". You only pay the price difference. Downgrades are processed as partial refunds per our cancellation policy.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="tickets">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          When will I receive my ticket? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Your digital ticket and QR boarding pass will be available in your <a href="dashboard.html">account dashboard</a> 30 days before departure, and emailed to you automatically. No physical ticket required — just bring your passport and QR code.
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ONBOARD -->
+    <div class="faq-section active" data-section="onboard">
+      <div class="faq-section-title">Onboard Experience</div>
+
+      <div class="faq-item" data-cat="onboard">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What food and drinks are included? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          All meals are included across every tier — buffet breakfast, sit-down lunch, and 3-course dinner nightly. Soft drinks, beer, house wine, and spirits are included at main bars. Premium spirits and champagne are Sovereign-only. Dietary requirements (vegan, halal, gluten-free) are fully catered — note these during booking.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="onboard">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Who are the artists performing? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          The full lineup is revealed in phases. Phase 1 (headline acts) drops 6 months out; Phase 2 (support) at 3 months; Phase 3 (full schedule) at 6 weeks. Follow <a href="#">@dontstoptripping</a> on Instagram for announcements. Check the <a href="events.html">Events page</a> for confirmed artists.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="onboard">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What is the dress code? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Daytime: smart-casual resort wear. Pool deck: swimwear welcome. Evenings: smart-casual to cocktail — no sportswear. Themed nights (White Night, Gold Night, etc.) are announced in advance; participation is encouraged but optional.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="onboard">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Is there WiFi on the yacht? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Complimentary WiFi is available throughout the ship, though speeds at sea can vary. A premium satellite package is available to purchase onboard for those requiring reliable connectivity.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="onboard">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Are shore excursions included? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Voyager includes one curated excursion per port. Sovereign includes all excursions. Explorer guests can purchase excursions onboard or in advance via the dashboard at a discounted rate. Options typically include snorkelling, boat tours, cultural city walks, and beach clubs.
+        </div></div>
+      </div>
+    </div>
+
+    <!-- TRAVEL & DOCS -->
+    <div class="faq-section active" data-section="travel">
+      <div class="faq-section-title">Travel &amp; Documents</div>
+
+      <div class="faq-item" data-cat="travel">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What documents do I need? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          A valid passport (minimum 6 months validity beyond the return date) is required. Some destinations may require a visa — check your country's requirements in advance. We send a full documents checklist 12 weeks before departure, trackable in your <a href="dashboard.html">dashboard</a>.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="travel">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Do I need travel insurance? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Travel insurance is strongly recommended and may be mandatory depending on the route. Your policy must cover cruise/sea travel, medical evacuation, and trip cancellation. You can add insurance at checkout or through your dashboard.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="travel">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What port do we depart from? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Departure port details are confirmed in your booking and visible in your dashboard. The 2025 voyage departs from Barcelona, Spain. We recommend arriving the day before — our concierge team can suggest partner hotels at embarkation.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="travel">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What time is embarkation and disembarkation? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Embarkation begins at 12:00 noon on departure day (Sovereign priority boarding from 11:00). Ship departs at 18:00. Disembarkation on the final morning starts at 08:00 and must be completed by 11:00. Exact times are in your digital boarding pass.
+        </div></div>
+      </div>
+    </div>
+
+    <!-- CABINS -->
+    <div class="faq-section active" data-section="cabins">
+      <div class="faq-section-title">Cabins &amp; Accommodation</div>
+
+      <div class="faq-item" data-cat="cabins">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I choose my cabin roommates? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Yes. During booking enter the names/emails of people you'd like to share with — they'll receive a cabin invite. If travelling solo, opt-in to our roommate matching feature and we'll pair you with compatible travellers based on your preferences.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="cabins">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What are the cabin options? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          <strong style="color:var(--white);">Explorer</strong> — Interior cabin, 4 berths, shared bathroom.<br>
+          <strong style="color:var(--white);">Voyager</strong> — Ocean-view cabin, 2 berths, en-suite.<br>
+          <strong style="color:var(--white);">Sovereign</strong> — Private balcony suite, king bed, en-suite, luxury amenities.<br><br>
+          All cabins include daily housekeeping, fresh towels, and 24/7 room service.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="cabins">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can couples book together at the Voyager tier? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Yes. Voyager cabins are 2-berth, so couples book together and share their own private space. Add your partner during booking — both need a Voyager ticket. For a balcony and king bed, Sovereign is the ideal option.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="cabins">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What should I pack? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Lightweight resort clothing, 2–3 evening outfits (smart casual), swimwear, reef-safe sunscreen, a light layer for cooler evenings, comfortable shoes for excursions, and your passport and documents. A full packing list is emailed 4 weeks before departure and available in your dashboard.
+        </div></div>
+      </div>
+    </div>
+
+    <!-- POLICIES -->
+    <div class="faq-section active" data-section="policies">
+      <div class="faq-section-title">Policies &amp; Cancellations</div>
+
+      <div class="faq-item" data-cat="policies">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What is the cancellation policy? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          90+ days before departure: full refund minus £75 admin fee.<br>
+          60–90 days: 50% refund.<br>
+          30–60 days: 25% refund.<br>
+          Under 30 days: no refund.<br><br>
+          Refunds are processed within 10 business days. Travel insurance is strongly recommended.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="policies">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Can I transfer my ticket to someone else? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Ticket transfers are permitted up to 30 days before departure for a £40 transfer fee. The new holder must provide full details and complete required documents. Contact <a href="mailto:support@dontstoptripping.com">support@dontstoptripping.com</a> to initiate a transfer.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="policies">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What is the minimum age? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Don't Stop Tripping is strictly 18+. Valid government-issued photo ID proving age must be presented at embarkation. Anyone unable to prove they are 18 or over will be denied boarding with no refund.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="policies">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What happens if the event is cancelled or postponed? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          Cancellation: full refund or free transfer to the next available event. Postponement: your booking transfers automatically to the new date. You may request a refund within 14 days of the postponement announcement if the new date doesn't work.
+        </div></div>
+      </div>
+
+      <div class="faq-item" data-cat="policies">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What is the code of conduct? <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">
+          DST is built on respect and good vibes. Threatening, harassing, or discriminatory behaviour will result in immediate removal at the next port at the passenger's own expense, with no refund. Zero tolerance for violence or illegal substance distribution.
+        </div></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- ===== FAQ CONTENT ===== -->
-<section class="section-pad">
-  <div class="container">
-    <div class="faq-layout">
-
-      <!-- Sidebar Navigation -->
-      <div class="faq-sidebar">
-        <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-muted);margin-bottom:0.75rem;">Categories</p>
-        <div class="faq-category-nav">
-          <button class="faq-cat-btn active" onclick="scrollToFAQ('events', this)">
-            🎵 Events & Tickets <span class="faq-cat-count">6</span>
-          </button>
-          <button class="faq-cat-btn" onclick="scrollToFAQ('travel', this)">
-            ✈️ Travel Requirements <span class="faq-cat-count">5</span>
-          </button>
-          <button class="faq-cat-btn" onclick="scrollToFAQ('cabins', this)">
-            🛏️ Cabins <span class="faq-cat-count">5</span>
-          </button>
-          <button class="faq-cat-btn" onclick="scrollToFAQ('packing', this)">
-            🎒 What to Pack <span class="faq-cat-count">1</span>
-          </button>
-          <button class="faq-cat-btn" onclick="scrollToFAQ('refunds', this)">
-            💳 Refunds & Payments <span class="faq-cat-count">4</span>
-          </button>
-          <button class="faq-cat-btn" onclick="scrollToFAQ('rules', this)">
-            📋 Event Rules <span class="faq-cat-count">5</span>
-          </button>
+<!-- STILL NEED HELP -->
+<section style="padding-bottom:5rem;">
+  <div class="wrap" style="max-width:760px;">
+    <div class="help-cta reveal">
+      <span class="eyebrow" style="margin-bottom:.75rem;display:block;">Still Have Questions?</span>
+      <h2>We're Here to Help</h2>
+      <p>Our crew is on hand 7 days a week. Average response time under 2 hours.</p>
+      <div class="help-options">
+        <div class="help-card">
+          <div class="hi">&#128172;</div>
+          <strong>Live Chat</strong>
+          <span>Mon–Sun, 9am–9pm</span>
         </div>
-
-        <div style="margin-top:2rem;background:linear-gradient(135deg,rgba(123,44,191,0.2),rgba(255,122,24,0.1));border:1px solid rgba(123,44,191,0.3);border-radius:var(--radius-lg);padding:1.5rem;">
-          <div style="font-size:1.5rem;margin-bottom:0.75rem;">💬</div>
-          <div style="font-weight:700;margin-bottom:0.5rem;">Still have questions?</div>
-          <div style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1rem;line-height:1.6;">Our team is here 24/7 to help you.</div>
-          <a href="#contact" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">Contact Support</a>
+        <a href="mailto:support@dontstoptripping.com" class="help-card">
+          <div class="hi">&#9993;&#65039;</div>
+          <strong>Email Us</strong>
+          <span>support@dontstoptripping.com</span>
+        </a>
+        <div class="help-card">
+          <div class="hi">&#128222;</div>
+          <strong>Phone</strong>
+          <span>+44 20 7946 0881</span>
         </div>
-      </div>
-
-      <!-- FAQ Sections -->
-      <div id="faq-content">
-
-        <!-- Events & Tickets -->
-        <div class="faq-section" id="faq-events">
-          <div class="faq-section-title">🎵 Events & Tickets</div>
-
-          <div class="accordion-item open">
-            <div class="accordion-header">
-              <span class="accordion-title">What's included in my ticket price?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Your ticket includes 7 nights accommodation in your selected cabin type, all event access (main stage, sunset stage, sky lounge), all meals (breakfast, lunch, dinner), all workshops and activities on board, port entry fees, and welcome/farewell events. Alcoholic beverages are included in Voyager and Sovereign passes. Explorer pass holders can purchase drink packages separately.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">How do I purchase tickets?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Tickets can be purchased directly through our website on the <a href="events.html#tickets" style="color:var(--electric-purple);">Events page</a>. Select your ticket tier, complete your booking form, and pay securely via credit card, PayPal, or cryptocurrency. You'll receive a confirmation email within 24 hours with your digital ticket.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Can I buy tickets as a gift for someone?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Yes! You can purchase gift tickets. During checkout, select "This is a gift" and enter the recipient's email. They'll receive a gift code to claim their spot. Note that they'll need to complete their own profile and document uploads.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">What if I want to upgrade my ticket type?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Upgrades are possible subject to availability. Log into your dashboard and request an upgrade from the Tickets section. You'll only pay the difference in price. Upgrades must be requested at least 30 days before departure.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Is there an age requirement?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                DST events are for guests aged 21 and over. Valid government-issued photo ID will be required at check-in. No exceptions. This ensures the best experience for our adult community.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Can I transfer my ticket to someone else?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Ticket transfers are allowed up to 60 days before the event date. There is a $75 transfer fee. Contact our support team to initiate a transfer. Within 60 days of the event, tickets are non-transferable.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Travel Requirements -->
-        <div class="faq-section" id="faq-travel">
-          <div class="faq-section-title">✈️ Travel Requirements</div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Do I need a passport?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Yes, a valid passport is required for all international voyages. Your passport must be valid for at least 6 months beyond the event end date. Passport scans must be uploaded to your dashboard at least 6 weeks before departure.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Do I need a visa?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Visa requirements vary by nationality and destination. For Caribbean voyages departing from Miami, US citizens and most EU/UK/Canadian citizens do not need a visa for the Bahamas. We recommend checking your country's official travel advisory. Our team can provide guidance for specific nationalities upon request.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Is travel insurance required?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Travel insurance is <strong>strongly recommended</strong> and required for all DST events. Your policy must cover medical emergencies, trip cancellation, and evacuation. Proof of insurance must be uploaded to your dashboard before boarding. Our preferred partner offers group rates — contact us for details.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">How do I get to the departure port?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                For Caribbean Odyssey 2025, the departure is from PortMiami, Terminal C. We recommend arriving in Miami the day before departure to avoid any travel delays. We partner with nearby hotels for discounted rates — see your confirmation email for details. Shuttle service from Miami International Airport is available.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Are there any health or vaccination requirements?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                We follow all current health advisories. No specific vaccinations are currently required for Caribbean voyages, but we recommend standard travel vaccinations (Hepatitis A, Typhoid) and ensure you have any medications you need. Health forms may be required closer to the event date.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Cabins -->
-        <div class="faq-section" id="faq-cabins">
-          <div class="faq-section-title">🛏️ Cabins</div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">What cabin types are available?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                We offer three cabin tiers: <strong>Explorer Bunk</strong> (shared, 4 guests, bunk beds), <strong>Ocean View Cabin</strong> (shared with 1 guest, queen bed, ocean window), and <strong>VIP Suite</strong> (private, king bed, balcony, butler service). Each tier is paired with a ticket tier — Explorer, Voyager, and Sovereign respectively.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Can I choose my specific cabin number?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Specific cabin assignments are made approximately 60 days before departure. While we cannot guarantee specific cabin numbers, you can note preferences (lower deck, starboard/port side) in your dashboard special requests. Sovereign pass holders get priority cabin selection.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Can I share a cabin with my friend?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Absolutely! Both guests must purchase the same cabin tier. Once booked, you can connect via the Roommates section in your dashboard. Send a roommate request and confirm the pairing. For Explorer bunks (4 guests), you can pair with up to 3 others.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">What amenities are in the cabins?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                All cabins include: air conditioning / climate control, in-room safe, daily housekeeping, Wi-Fi access, bathroom (shared for Explorer, private for Ocean View and Suite), and a welcome gift. Ocean View adds an ocean-facing window and priority Wi-Fi. VIP Suite adds a private balcony, butler service, Nespresso machine, premium minibar, and Bose sound system.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Is there luggage storage on board?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Yes, all cabins have closet and under-bed storage. Larger luggage pieces can be stored in the ship's luggage hold during port excursions. A recommended luggage size is one suitcase (max 50 lbs) and one carry-on per person.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Packing -->
-        <div class="faq-section" id="faq-packing">
-          <div class="faq-section-title">🎒 What to Pack</div>
-
-          <div class="accordion-item open">
-            <div class="accordion-header">
-              <span class="accordion-title">What should I bring on the DST trip?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                <p style="margin-bottom:1rem;">Here's our recommended packing list for the ultimate DST experience:</p>
-                <div class="packing-grid">
-                  <div class="packing-item"><span class="packing-check">✓</span> Valid passport</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Travel insurance docs</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Sunscreen (reef-safe!)</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Swimwear (at least 3 sets)</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Party outfits (themed nights!)</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Light layers for A/C</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Comfortable walking shoes</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Waterproof sandals / flip flops</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Portable phone charger</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Waterproof phone case</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Camera / GoPro</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Headphones / earbuds</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Earplugs (for deep sleepers)</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Personal medications</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Motion sickness remedies</div>
-                  <div class="packing-item"><span class="packing-check">✓</span> Reusable water bottle</div>
-                </div>
-                <p style="margin-top:1.25rem;font-size:0.875rem;color:var(--text-secondary);">💡 Pro tip: DST themed items (wristbands, lanyards, etc.) will be in your welcome package on boarding day!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Refunds -->
-        <div class="faq-section" id="faq-refunds">
-          <div class="faq-section-title">💳 Refunds & Payments</div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">What is your cancellation policy?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                <strong>120+ days before event:</strong> Full refund minus $150 processing fee.<br />
-                <strong>90–119 days:</strong> 75% refund.<br />
-                <strong>60–89 days:</strong> 50% refund.<br />
-                <strong>30–59 days:</strong> 25% refund (credit toward future event).<br />
-                <strong>Under 30 days:</strong> No refund (ticket can be transferred to another person for a $75 fee).<br /><br />
-                We strongly recommend purchasing travel insurance to protect against unexpected cancellations.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">What payment methods do you accept?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                We accept Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay, and major cryptocurrencies (BTC, ETH, USDC). Payment plans are available — pay 50% upfront and the remainder 90 days before departure. Contact us for payment plan arrangements.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">What if DST cancels the event?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                In the rare event that DST cancels a voyage (e.g., due to severe weather, port closures, or force majeure), all guests will receive a full refund within 14 business days OR the option to transfer their ticket to the next available event of the same type with a bonus $200 credit.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Is there a payment plan available?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Yes! We offer flexible payment plans. For events more than 90 days away, you can pay 40% upfront to secure your spot, 30% at 90 days before departure, and the remaining 30% at 60 days. Contact our support team to set up a payment plan after your initial booking.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Rules -->
-        <div class="faq-section" id="faq-rules">
-          <div class="faq-section-title">📋 Event Rules</div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">What is the code of conduct?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                DST is built on respect, inclusivity, and good vibes. Our community code: <br /><br />
-                ✅ Respect all guests and staff<br />
-                ✅ Obtain consent before any physical contact<br />
-                ✅ Report any concerns to our crew immediately<br />
-                ❌ No harassment, discrimination, or hate speech<br />
-                ❌ No fighting or aggressive behavior<br />
-                ❌ No photography/recording of others without consent<br /><br />
-                Violations may result in immediate removal from the event without refund.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">What items are prohibited on board?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Prohibited items include: illegal substances, firearms and weapons, outside alcohol (beyond duty-free allowance), drones (unless pre-approved), flammable materials, and items that could damage ship equipment. All bags are subject to inspection at boarding. Confiscated items may not be returned.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Is smoking allowed?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Smoking (including vaping) is only permitted in designated smoking areas on the outer decks. Smoking is strictly prohibited in all cabins, indoor venues, and event spaces. Violation of this policy may result in cabin charges and event removal.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Can I leave the ship at port stops?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                Yes! Port days are your time to explore. The ship will publish departure and return times for each port. You must return before the ship departs — we cannot wait for late guests. We recommend using DST-organized excursions to ensure you're back in time. If you miss the ship, all transportation costs back to the next port are your responsibility.
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion-header">
-              <span class="accordion-title">Is there a dress code?</span>
-              <div class="accordion-icon">+</div>
-            </div>
-            <div class="accordion-body">
-              <div class="accordion-content">
-                There's no strict dress code — express yourself! However, some events have themes (details shared in advance). For fine dining restaurants, smart casual is requested (no swimwear or gym wear). The farewell gala has a "Sunset Glamour" theme — get creative! We celebrate self-expression and individuality.
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== CONTACT ===== -->
-<section class="section-pad" id="contact" style="background:var(--dark-surface);">
-  <div class="container">
-    <div class="section-header centered reveal">
-      <span class="section-eyebrow">Still Need Help?</span>
-      <h2 class="section-title">Get in <span class="gradient-text">Touch</span></h2>
-      <div class="divider centered"></div>
-    </div>
-
-    <div class="contact-channels reveal">
-      <div class="contact-channel">
-        <div class="contact-channel-icon">💬</div>
-        <div class="contact-channel-title">Live Chat</div>
-        <div class="contact-channel-desc">Chat with our team in real-time. Available 7 days a week, 9AM–11PM EST.</div>
-        <button class="btn btn-primary btn-sm" onclick="showToast('Chat support opening...', '💬', 2000)">Start Chat</button>
-      </div>
-
-      <div class="contact-channel">
-        <div class="contact-channel-icon">📧</div>
-        <div class="contact-channel-title">Email Support</div>
-        <div class="contact-channel-desc">Send us a detailed message. We respond within 24 hours on weekdays.</div>
-        <a href="#" class="btn btn-ghost btn-sm" onclick="showToast('Opening email client...', '📧', 1500)">support@dst.com</a>
-      </div>
-
-      <div class="contact-channel">
-        <div class="contact-channel-icon">📞</div>
-        <div class="contact-channel-title">Phone & WhatsApp</div>
-        <div class="contact-channel-desc">Call or WhatsApp us for urgent matters. Available Mon–Fri, 10AM–6PM EST.</div>
-        <a href="#" class="btn btn-ghost btn-sm">+1 (305) 555-TRIP</a>
-      </div>
-    </div>
-
-    <!-- Contact Form -->
-    <div style="max-width:700px;margin:3rem auto 0;" class="reveal">
-      <h3 style="font-size:1.5rem;text-align:center;margin-bottom:2rem;">Send Us a Message</h3>
-      <form onsubmit="handleContactSubmit(event)">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-          <div class="form-group">
-            <label class="form-label">First Name</label>
-            <input type="text" class="form-input" placeholder="Alex" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Last Name</label>
-            <input type="text" class="form-input" placeholder="Rivera" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" placeholder="your@email.com" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Topic</label>
-          <select class="form-select">
-            <option>Booking & Tickets</option>
-            <option>Cancellations & Refunds</option>
-            <option>Travel Documents</option>
-            <option>Cabin Preferences</option>
-            <option>Accessibility Needs</option>
-            <option>General Enquiry</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Message</label>
-          <textarea class="form-textarea" placeholder="Tell us how we can help..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
-          Send Message
-        </button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="section-pad" style="background:linear-gradient(135deg,rgba(11,60,93,0.9),rgba(123,44,191,0.7));">
-  <div class="container" style="text-align:center;">
-    <div class="reveal">
-      <h2 class="section-title">Ready to Set Sail?</h2>
-      <p style="color:rgba(255,255,255,0.7);max-width:500px;margin:1rem auto 2rem;">
-        Your questions are answered. Now it's time to book the adventure of a lifetime.
-      </p>
-      <a href="events.html#tickets" class="btn btn-primary btn-lg">
-        <i data-feather="anchor" style="width:18px;height:18px;"></i>
-        Book Caribbean Odyssey 2025
-      </a>
-    </div>
-  </div>
-</section>
-
+<!-- FOOTER -->
 <footer class="footer">
-  <div class="container">
+  <div class="wrap">
     <div class="footer-grid">
-      <div>
-        <div class="footer-logo">DON'T STOP TRIPPING</div>
-        <p class="footer-desc">Luxury yacht events for adventurers worldwide.</p>
-        <div class="social-links">
-          <a href="#" class="social-link">📷</a>
-          <a href="#" class="social-link">🎵</a>
-          <a href="#" class="social-link">🐦</a>
-          <a href="#" class="social-link">▶️</a>
+      <div class="footer-brand">
+        <div class="logo" style="font-size:1.5rem;margin-bottom:.75rem;">DST</div>
+        <p>Luxury yacht events where music meets the open sea. Exclusive, immersive, unforgettable.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram">Ig</a>
+          <a href="#" aria-label="TikTok">Tk</a>
+          <a href="#" aria-label="Twitter">Tw</a>
+          <a href="#" aria-label="YouTube">Yt</a>
         </div>
-      </div>
-      <div>
-        <div class="footer-heading">FAQ Topics</div>
-        <ul class="footer-links">
-          <li><a href="#faq-events" class="footer-link">Events & Tickets</a></li>
-          <li><a href="#faq-travel" class="footer-link">Travel Requirements</a></li>
-          <li><a href="#faq-cabins" class="footer-link">Cabins</a></li>
-          <li><a href="#faq-refunds" class="footer-link">Refunds & Payments</a></li>
-          <li><a href="#faq-rules" class="footer-link">Event Rules</a></li>
-        </ul>
       </div>
       <div>
         <div class="footer-heading">Navigate</div>
         <ul class="footer-links">
-          <li><a href="index.html" class="footer-link">Home</a></li>
-          <li><a href="events.html" class="footer-link">Events</a></li>
-          <li><a href="experience.html" class="footer-link">Experience</a></li>
-          <li><a href="community.html" class="footer-link">Community</a></li>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="experience.html">Experience</a></li>
+          <li><a href="community.html">Community</a></li>
         </ul>
       </div>
       <div>
-        <div class="footer-heading">Support</div>
-        <p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">
-          support@dst.com<br />
-          +1 (305) 555-TRIP<br />
-          Mon–Fri 10AM–6PM EST
-        </p>
+        <div class="footer-heading">Account</div>
+        <ul class="footer-links">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="dashboard.html">My Tickets</a></li>
+          <li><a href="dashboard.html">Cabin Info</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">Terms &amp; Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+        </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">© 2025 Don't Stop Tripping. All rights reserved.</p>
+      <span>&#169; 2025 Don't Stop Tripping Ltd. All rights reserved.</span>
+      <span>Made for the open sea.</span>
     </div>
   </div>
 </footer>
 
-<div class="sticky-cta">
-  <a href="events.html#tickets" class="btn btn-primary btn-sm">⚓ Book Now</a>
-</div>
-
 <script src="assets/js/main.js"></script>
 <script>
-  feather.replace();
-
-  function scrollToFAQ(sectionId, navBtn) {
-    const el = document.getElementById('faq-' + sectionId);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    if (navBtn) {
-      document.querySelectorAll('.faq-cat-btn').forEach(b => b.classList.remove('active'));
-      navBtn.classList.add('active');
-    }
+  // FAQ accordion
+  function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    item.closest('[data-section]')?.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
   }
 
-  function filterFAQ(query) {
-    const q = query.toLowerCase().trim();
-    const items = document.querySelectorAll('.accordion-item');
-
-    items.forEach(item => {
-      const title = item.querySelector('.accordion-title')?.textContent?.toLowerCase() || '';
-      const content = item.querySelector('.accordion-content')?.textContent?.toLowerCase() || '';
-      const match = !q || title.includes(q) || content.includes(q);
-      item.style.display = match ? '' : 'none';
+  // Category tabs
+  const tabs = document.querySelectorAll('.faq-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('faq-search').value = '';
+      filterFaq('', tab.dataset.cat);
     });
+  });
 
-    // Hide empty sections
-    document.querySelectorAll('.faq-section').forEach(section => {
-      const visible = section.querySelectorAll('.accordion-item:not([style*="display: none"])').length;
-      section.style.display = !q || visible > 0 ? '' : 'none';
+  // Search
+  document.getElementById('faq-search').addEventListener('input', function() {
+    const activeCat = document.querySelector('.faq-tab.active')?.dataset.cat || 'all';
+    filterFaq(this.value.toLowerCase().trim(), activeCat);
+  });
+
+  function filterFaq(query, cat) {
+    let visible = 0;
+    document.querySelectorAll('.faq-section').forEach(sec => {
+      const match = cat === 'all' || cat === sec.dataset.section;
+      sec.classList.toggle('active', match);
     });
-  }
-
-  function handleContactSubmit(e) {
-    e.preventDefault();
-    e.target.reset();
-    showToast('✅ Message sent! We\'ll reply within 24 hours.', '📧', 4000);
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const catMatch = cat === 'all' || cat === item.dataset.cat;
+      const text = (item.querySelector('.faq-q')?.textContent || '').toLowerCase()
+                 + (item.querySelector('.faq-a-inner')?.textContent || '').toLowerCase();
+      const queryMatch = !query || text.includes(query);
+      const show = catMatch && queryMatch;
+      item.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
   }
 </script>
 </body>

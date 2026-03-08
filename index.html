@@ -1,226 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Don't Stop Tripping — Luxury Yacht Events</title>
-  <meta name="description" content="Exclusive luxury yacht events combining music, travel, and adventure. Join the ultimate party at sea." />
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Icons (Feather) -->
-  <script src="https://unpkg.com/feather-icons"></script>
-
-  <link rel="stylesheet" href="assets/css/main.css" />
-
+  <meta name="description" content="Exclusive luxury yacht events. Music, travel, and community on the open sea."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/css/main.css"/>
   <style>
-    /* Page-specific styles */
-    .hero-scroll-indicator {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: rgba(255,255,255,0.5);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+    /* ---- Page-specific ---- */
+    .hero-image-right {
+      position:absolute;
+      right:0; top:0; bottom:0;
+      width:48%;
+      overflow:hidden;
+    }
+    .hero-image-right img {
+      width:100%; height:100%;
+      object-fit:cover;
+      opacity:0.35;
+    }
+    .hero-image-right::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg, var(--bg) 0%, transparent 50%);
+      z-index:1;
+    }
+    @media(max-width:768px){
+      .hero-image-right { width:100%; opacity:0.15; }
     }
 
-    .scroll-mouse {
-      width: 24px;
-      height: 38px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      padding-top: 6px;
+    /* Event card */
+    .event-card {
+      border:1px solid var(--border);
+      border-radius:var(--r-lg);
+      overflow:hidden;
+      background:var(--bg-card);
     }
+    .event-card-img { aspect-ratio:16/9; overflow:hidden; }
+    .event-card-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s var(--ease); }
+    .event-card:hover .event-card-img img { transform:scale(1.04); }
+    .event-card-body { padding:1.75rem; }
+    .event-card-date { font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.625rem; }
+    .event-card-title { font-size:1.5rem; margin-bottom:0.5rem; }
+    .event-card-meta { display:flex; gap:1.5rem; flex-wrap:wrap; margin-bottom:1.25rem; }
+    .event-card-meta span { font-size:0.8rem; color:var(--muted); display:flex; align-items:center; gap:0.35rem; }
+    .event-card-spots { margin-bottom:1.5rem; }
+    .event-card-spots-row { display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.78rem; color:var(--muted); }
+    .event-card-spots-row span:last-child { color:var(--gold); font-weight:600; }
 
-    .scroll-wheel {
-      width: 4px;
-      height: 8px;
-      background: var(--sunset-orange);
-      border-radius: 2px;
-      animation: scrollWheel 1.5s ease-in-out infinite;
+    /* DJ strip */
+    .dj-strip { display:flex; gap:1rem; overflow-x:auto; padding-bottom:0.5rem; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .dj-strip::-webkit-scrollbar { display:none; }
+    .dj-chip { flex-shrink:0; display:flex; align-items:center; gap:0.625rem; padding:0.5rem 0.875rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r); }
+    .dj-chip img { width:32px; height:32px; border-radius:50%; object-fit:cover; }
+    .dj-chip-name { font-size:0.8rem; font-weight:600; }
+    .dj-chip-genre { font-size:0.68rem; color:var(--muted); }
+
+    /* Social proof strip */
+    .proof-strip { display:flex; align-items:center; gap:0.5rem; }
+    .proof-avatars { display:flex; }
+    .proof-avatar { width:32px; height:32px; border-radius:50%; border:2px solid var(--bg); object-fit:cover; margin-left:-8px; }
+    .proof-avatar:first-child { margin-left:0; }
+    .proof-text { font-size:0.8rem; color:var(--off-white); }
+    .proof-text strong { color:var(--gold); }
+
+    /* Full-width CTA section */
+    .cta-section {
+      position:relative;
+      overflow:hidden;
+      background:var(--bg-2);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
     }
-
-    @keyframes scrollWheel {
-      0%, 100% { transform: translateY(0); opacity: 1; }
-      50% { transform: translateY(8px); opacity: 0.3; }
+    .cta-section::before {
+      content:'';
+      position:absolute;
+      top:-50%; left:50%;
+      width:600px; height:600px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      transform:translate(-50%,0);
     }
-
-    .event-announce {
-      background: linear-gradient(135deg, rgba(11,60,93,0.6), rgba(123,44,191,0.6));
-      border: 1px solid rgba(123,44,191,0.3);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .event-announce-img {
-      aspect-ratio: 16/9;
-      overflow: hidden;
-    }
-
-    .event-announce-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-
-    .event-announce:hover .event-announce-img img { transform: scale(1.04); }
-
-    .event-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255,122,24,0.15);
-      border: 1px solid rgba(255,122,24,0.4);
-      border-radius: 50px;
-      padding: 0.375rem 1rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--sunset-orange);
-      margin-bottom: 1rem;
-    }
-
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--sunset-orange);
-      animation: livePulse 1.2s ease-in-out infinite;
-    }
-
-    @keyframes livePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    .experience-showcase {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    .exp-highlight {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .exp-highlight img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-
-    .exp-highlight:hover img { transform: scale(1.06); }
-
-    .exp-highlight-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(10,10,10,0.9) 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.5rem;
-    }
-
-    .exp-highlight-title { font-size: 1.5rem; margin-bottom: 0.25rem; }
-    .exp-highlight-sub { font-size: 0.85rem; color: rgba(255,255,255,0.65); }
-
-    .exp-highlight.tall { grid-row: span 2; }
-
-    .dj-lineup {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-    }
-
-    .dj-card {
-      text-align: center;
-    }
-
-    .dj-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin: 0 auto 1rem;
-      border: 3px solid var(--electric-purple);
-      box-shadow: 0 0 20px rgba(123,44,191,0.4);
-      transition: var(--transition);
-    }
-
-    .dj-card:hover .dj-avatar { border-color: var(--sunset-orange); box-shadow: var(--shadow-glow-orange); transform: scale(1.05); }
-    .dj-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .dj-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .dj-genre { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-
-    .partners-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3rem;
-      flex-wrap: wrap;
-      opacity: 0.5;
-      filter: grayscale(1);
-      transition: var(--transition);
-    }
-    .partners-row:hover { opacity: 0.8; filter: grayscale(0.5); }
-    .partner-logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.1em; }
-
-    @media (max-width: 768px) {
-      .dj-lineup { grid-template-columns: repeat(2, 1fr); }
-      .experience-showcase { grid-template-columns: 1fr; }
-      .exp-highlight.tall { grid-row: span 1; }
-    }
+    .cta-content { position:relative; z-index:1; text-align:center; padding:5rem 0; }
   </style>
 </head>
 <body>
 
-<!-- Loading Screen -->
-<div id="loading-screen">
-  <div class="loading-logo">DON'T STOP TRIPPING</div>
-  <div class="loading-bar-container">
-    <div class="loading-bar"></div>
-  </div>
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-logo">DON'T STOP <em>TRIPPING</em></div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
 </div>
 
-<!-- Cursor Glow -->
-<div class="cursor-glow"></div>
-
-<!-- Navigation -->
+<!-- Nav -->
 <nav class="nav">
-  <div class="container">
+  <div class="wrap">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">DON'T STOP TRIPPING</a>
+      <a href="index.html" class="nav-logo">DST<em>.</em></a>
       <ul class="nav-links">
-        <li><a href="index.html" class="nav-link active">Home</a></li>
-        <li><a href="events.html" class="nav-link">Events</a></li>
-        <li><a href="experience.html" class="nav-link">Experience</a></li>
+        <li><a href="index.html"     class="nav-link active">Home</a></li>
+        <li><a href="events.html"    class="nav-link">Events</a></li>
+        <li><a href="experience.html"class="nav-link">Experience</a></li>
         <li><a href="community.html" class="nav-link">Community</a></li>
-        <li><a href="faq.html" class="nav-link">FAQ</a></li>
+        <li><a href="faq.html"       class="nav-link">FAQ</a></li>
       </ul>
-      <div class="nav-actions">
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">My Account</a>
-        <a href="events.html#tickets" class="btn btn-primary btn-sm">Get Tickets</a>
+      <div class="nav-cta">
+        <a href="dashboard.html"      class="btn btn-ghost btn-sm">Account</a>
+        <a href="events.html#tickets" class="btn btn-gold btn-sm">Get Tickets</a>
       </div>
-      <div class="hamburger" role="button" aria-label="Menu">
+      <div class="hamburger" role="button" aria-label="Open menu">
         <span></span><span></span><span></span>
       </div>
     </div>
@@ -229,598 +121,450 @@
 
 <!-- Mobile Nav -->
 <div class="mobile-nav">
-  <button class="mobile-nav-close">✕</button>
-  <a href="index.html" class="nav-link">Home</a>
-  <a href="events.html" class="nav-link">Events</a>
+  <a href="index.html"      class="nav-link">Home</a>
+  <a href="events.html"     class="nav-link">Events</a>
   <a href="experience.html" class="nav-link">Experience</a>
-  <a href="community.html" class="nav-link">Community</a>
-  <a href="faq.html" class="nav-link">FAQ</a>
-  <a href="events.html#tickets" class="btn btn-primary btn-lg">Get Tickets</a>
+  <a href="community.html"  class="nav-link">Community</a>
+  <a href="faq.html"        class="nav-link">FAQ</a>
+  <a href="events.html#tickets" class="btn btn-gold btn-lg" style="margin-top:1rem;">Get Tickets</a>
 </div>
 
 <!-- ===== HERO ===== -->
-<section class="hero" id="home">
-  <div class="hero-video-bg">
-    <img src="https://picsum.photos/seed/yacht-hero/1920/1080" alt="Luxury yacht event" />
-  </div>
-  <div class="hero-overlay"></div>
-
-  <!-- Glow blobs -->
-  <div class="glow-blob glow-purple" style="width:600px;height:600px;top:-100px;right:-100px;"></div>
-  <div class="glow-blob glow-orange" style="width:400px;height:400px;bottom:-100px;left:0;"></div>
-
-  <div class="container hero-content">
-    <div class="hero-badge">
-      <span class="badge badge-orange">
-        <span class="live-dot"></span>
-        Next Event — August 2025
-      </span>
-    </div>
-
-    <h1 class="display-1 hero-title">
-      DON'T<br />
-      <span class="gradient-text">STOP</span><br />
-      TRIPPING
-    </h1>
-
-    <p class="hero-subtitle">
-      The most exclusive luxury yacht festival at sea. Music, adventure, and unforgettable memories await.
-    </p>
-
-    <div class="hero-actions">
-      <a href="events.html#tickets" class="btn btn-primary btn-lg">
-        <i data-feather="anchor" style="width:18px;height:18px;"></i>
-        Book Your Spot
-      </a>
-      <a href="experience.html" class="btn btn-secondary btn-lg">
-        <i data-feather="play-circle" style="width:18px;height:18px;"></i>
-        Explore Experience
-      </a>
-    </div>
-
-    <div class="hero-stats">
-      <div>
-        <div class="hero-stat-number">500+</div>
-        <div class="hero-stat-label">Adventurers</div>
-      </div>
-      <div>
-        <div class="hero-stat-number">7</div>
-        <div class="hero-stat-label">Days at Sea</div>
-      </div>
-      <div>
-        <div class="hero-stat-number">12+</div>
-        <div class="hero-stat-label">Top DJs</div>
-      </div>
-      <div>
-        <div class="hero-stat-number">5★</div>
-        <div class="hero-stat-label">Rated</div>
-      </div>
-    </div>
+<section class="hero">
+  <div class="hero-image-right">
+    <img src="https://picsum.photos/seed/dst-hero-yacht/900/1200" alt="Luxury yacht event"/>
   </div>
 
-  <!-- Scroll Indicator -->
-  <div class="hero-scroll-indicator">
+  <div class="hero-lines"></div>
+
+  <div class="wrap">
+    <div class="hero-content">
+      <div class="hero-kicker">
+        <span class="hero-kicker-line"></span>
+        <span class="eyebrow" style="margin:0;">Caribbean Odyssey 2025</span>
+      </div>
+
+      <h1 class="d1 hero-title">
+        DON'T<br>STOP<br><em>TRIPPING</em>
+      </h1>
+
+      <p class="hero-sub">
+        Seven days. Five private islands. World-class DJs.
+        The most exclusive luxury yacht festival on the sea.
+      </p>
+
+      <div class="hero-actions">
+        <a href="events.html#tickets" class="btn btn-gold btn-lg">Book Your Cabin</a>
+        <a href="experience.html"     class="btn btn-outline btn-lg">What's Included</a>
+      </div>
+
+      <!-- Social proof -->
+      <div class="proof-strip mb-4">
+        <div class="proof-avatars">
+          <img class="proof-avatar" src="https://picsum.photos/seed/av1/80/80" alt=""/>
+          <img class="proof-avatar" src="https://picsum.photos/seed/av2/80/80" alt=""/>
+          <img class="proof-avatar" src="https://picsum.photos/seed/av3/80/80" alt=""/>
+          <img class="proof-avatar" src="https://picsum.photos/seed/av4/80/80" alt=""/>
+        </div>
+        <p class="proof-text"><strong>3,200+</strong> trippers and counting</p>
+      </div>
+
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <div class="hero-meta-label">Departs</div>
+          <div class="hero-meta-value">Aug 15, 2025</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="hero-meta-label">Duration</div>
+          <div class="hero-meta-value">7 Nights</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="hero-meta-label">Route</div>
+          <div class="hero-meta-value">Miami → Bahamas</div>
+        </div>
+        <div class="hero-meta-item">
+          <div class="hero-meta-label">From</div>
+          <div class="hero-meta-value text-gold">$1,299</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
     <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
-    <span>Scroll</span>
+    <span class="scroll-label">Scroll</span>
   </div>
 </section>
 
 <!-- ===== COUNTDOWN ===== -->
-<div class="countdown-section">
-  <div class="container">
+<div class="countdown-bar">
+  <div class="wrap">
     <div class="countdown-inner">
-      <div class="countdown-label">⚓ Next Departure In</div>
-      <div class="countdown-timer">
+      <span class="countdown-label">Departure in</span>
+      <div class="countdown-units">
         <div class="countdown-unit">
-          <span class="countdown-number countdown-days">00</span>
+          <span class="countdown-num cd-days">00</span>
           <span class="countdown-unit-label">Days</span>
         </div>
         <span class="countdown-sep">:</span>
         <div class="countdown-unit">
-          <span class="countdown-number countdown-hours">00</span>
+          <span class="countdown-num cd-hours">00</span>
           <span class="countdown-unit-label">Hours</span>
         </div>
         <span class="countdown-sep">:</span>
         <div class="countdown-unit">
-          <span class="countdown-number countdown-minutes">00</span>
-          <span class="countdown-unit-label">Minutes</span>
+          <span class="countdown-num cd-mins">00</span>
+          <span class="countdown-unit-label">Min</span>
         </div>
         <span class="countdown-sep">:</span>
         <div class="countdown-unit">
-          <span class="countdown-number countdown-seconds">00</span>
-          <span class="countdown-unit-label">Seconds</span>
+          <span class="countdown-num cd-secs">00</span>
+          <span class="countdown-unit-label">Sec</span>
         </div>
       </div>
-      <a href="events.html#tickets" class="btn btn-primary btn-sm">Reserve Now</a>
+      <a href="events.html#tickets" class="btn btn-gold btn-sm">Reserve Now</a>
     </div>
   </div>
 </div>
 
-<!-- ===== MARQUEE ===== -->
-<div class="marquee-section">
+<!-- Marquee -->
+<div class="marquee-wrap">
   <div class="marquee-track">
-    <!-- repeated twice for seamless loop -->
     <span class="marquee-item"><span class="marquee-dot"></span>Luxury Yacht Events</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Ocean Adventures</span>
     <span class="marquee-item"><span class="marquee-dot"></span>World-Class DJs</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Exclusive Cabins</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Sunset Sailing</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Island Parties</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>7 Days at Sea</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Private Islands</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>All-Inclusive</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>7 Nights at Sea</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>500 Guests</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Caribbean 2025</span>
     <span class="marquee-item"><span class="marquee-dot"></span>Luxury Yacht Events</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Ocean Adventures</span>
     <span class="marquee-item"><span class="marquee-dot"></span>World-Class DJs</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Exclusive Cabins</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Sunset Sailing</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>Island Parties</span>
-    <span class="marquee-item"><span class="marquee-dot"></span>7 Days at Sea</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Private Islands</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>All-Inclusive</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>7 Nights at Sea</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>500 Guests</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Caribbean 2025</span>
   </div>
 </div>
 
-<!-- ===== EVENT ANNOUNCEMENT ===== -->
-<section class="section-pad" id="next-event">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="section-eyebrow">Upcoming Event</span>
-      <h2 class="section-title">The Caribbean <span class="gradient-text">Odyssey 2025</span></h2>
-      <div class="divider"></div>
-      <p class="section-subtitle">Our flagship voyage through the most stunning islands of the Caribbean. 7 days, 5 ports, infinite memories.</p>
+<!-- ===== STATS ===== -->
+<section class="sec-sm" style="border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="g4 reveal">
+      <div style="text-align:center; padding:1rem;">
+        <div class="stat-num"><span class="counter-num" data-target="3200">0</span><span style="color:var(--gold);">+</span></div>
+        <div class="stat-label">Happy Trippers</div>
+      </div>
+      <div style="text-align:center; padding:1rem;">
+        <div class="stat-num"><span class="counter-num" data-target="12">0</span></div>
+        <div class="stat-label">Voyages Completed</div>
+      </div>
+      <div style="text-align:center; padding:1rem;">
+        <div class="stat-num"><span class="counter-num" data-target="47">0</span></div>
+        <div class="stat-label">Destinations</div>
+      </div>
+      <div style="text-align:center; padding:1rem;">
+        <div class="stat-num"><span class="counter-num" data-target="98">0</span><span style="color:var(--gold);">%</span></div>
+        <div class="stat-label">Satisfaction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== UPCOMING EVENT ===== -->
+<section class="sec" id="event">
+  <div class="wrap">
+    <div class="sec-hd reveal">
+      <span class="eyebrow">Next Departure</span>
+      <h2 class="d3">Caribbean Odyssey 2025</h2>
+      <div class="rule-gold"></div>
+      <p>Our flagship voyage through the Bahamas. Five exclusive island stops, non-stop music, and 500 hand-picked adventurers.</p>
     </div>
 
-    <div class="grid-2" style="align-items:center;">
-      <div class="event-announce reveal-left">
-        <div class="event-announce-img">
-          <img src="https://picsum.photos/seed/yacht-caribbean/800/500" alt="Caribbean Odyssey Event" />
-        </div>
-        <div style="padding:2rem;">
-          <div class="event-label"><span class="live-dot"></span>Booking Open</div>
-          <h3 style="font-size:2rem;margin-bottom:0.5rem;">Caribbean Odyssey</h3>
-          <p style="color:var(--text-secondary);margin-bottom:1.5rem;">August 15–22, 2025 · Miami to Bahamas</p>
-          <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem;">
-            <div>
-              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.25rem;">Departs</div>
-              <div style="font-weight:600;">Miami, Florida</div>
-            </div>
-            <div>
-              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.25rem;">Duration</div>
-              <div style="font-weight:600;">7 Days / 7 Nights</div>
-            </div>
-            <div>
-              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.25rem;">Capacity</div>
-              <div style="font-weight:600;">500 Guests</div>
-            </div>
+    <div class="g2" style="gap:3rem; align-items:start;">
+      <div class="reveal-l">
+        <div class="event-card">
+          <div class="event-card-img">
+            <img src="https://picsum.photos/seed/caribbean-event/800/450" alt="Caribbean Odyssey"/>
           </div>
-          <div style="margin-bottom:1.5rem;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
-              <span style="font-size:0.85rem;color:var(--text-secondary);">Spots Remaining</span>
-              <span style="font-size:0.85rem;font-weight:600;color:var(--sunset-orange);">142 / 500</span>
+          <div class="event-card-body">
+            <div class="event-card-date">August 15 – 22, 2025</div>
+            <h3 class="event-card-title">Caribbean Odyssey</h3>
+            <div class="event-card-meta">
+              <span>⚓ Miami, Florida</span>
+              <span>🌊 7 Nights</span>
+              <span>👥 500 Max</span>
             </div>
-            <div class="progress-bar-wrap">
-              <div class="progress-bar-fill" data-width="71%"></div>
+            <div class="event-card-spots">
+              <div class="event-card-spots-row">
+                <span>Spots remaining</span>
+                <span>142 / 500</span>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-fill" data-w="71%"></div>
+              </div>
             </div>
+            <a href="events.html" class="btn btn-gold btn-full">View Full Details</a>
           </div>
-          <a href="events.html" class="btn btn-primary">View Full Details</a>
         </div>
       </div>
 
-      <div class="reveal-right" style="display:flex;flex-direction:column;gap:1.25rem;">
-        <h3 style="font-size:1.75rem;margin-bottom:0.5rem;">What's Included</h3>
-        <div class="feature-card">
-          <div style="display:flex;align-items:center;gap:1rem;">
-            <div class="feature-icon icon-purple">🎵</div>
+      <div class="reveal-r">
+        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:1.5rem; color:var(--off-white);">What's included</h3>
+        <div style="display:flex; flex-direction:column; gap:0;">
+          <div style="display:flex; align-items:center; gap:1rem; padding:1.1rem 0; border-bottom:1px solid var(--border);">
+            <span style="font-size:1.25rem; width:32px; text-align:center;">🎵</span>
             <div>
-              <div style="font-weight:700;margin-bottom:0.2rem;">24/7 Music & DJs</div>
-              <div style="font-size:0.875rem;color:var(--text-secondary);">World-class artists performing day and night</div>
+              <div style="font-weight:600; font-size:0.9rem;">Live DJ Sets — 24/7</div>
+              <div style="font-size:0.8rem; color:var(--muted);">12+ world-class artists across 3 stages</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:1rem; padding:1.1rem 0; border-bottom:1px solid var(--border);">
+            <span style="font-size:1.25rem; width:32px; text-align:center;">🏝️</span>
+            <div>
+              <div style="font-weight:600; font-size:0.9rem;">5 Private Island Stops</div>
+              <div style="font-size:0.8rem; color:var(--muted);">Exclusive beach access & island parties</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:1rem; padding:1.1rem 0; border-bottom:1px solid var(--border);">
+            <span style="font-size:1.25rem; width:32px; text-align:center;">🍽️</span>
+            <div>
+              <div style="font-weight:600; font-size:0.9rem;">All-Inclusive Dining</div>
+              <div style="font-size:0.8rem; color:var(--muted);">Fine dining, open bar, and 24/7 room service</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:1rem; padding:1.1rem 0; border-bottom:1px solid var(--border);">
+            <span style="font-size:1.25rem; width:32px; text-align:center;">🏄</span>
+            <div>
+              <div style="font-weight:600; font-size:0.9rem;">Water Adventures</div>
+              <div style="font-size:0.8rem; color:var(--muted);">Jet skiing, snorkeling, paddleboarding</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:1rem; padding:1.1rem 0;">
+            <span style="font-size:1.25rem; width:32px; text-align:center;">🎓</span>
+            <div>
+              <div style="font-weight:600; font-size:0.9rem;">Workshops & Networking</div>
+              <div style="font-size:0.8rem; color:var(--muted);">DJ masterclasses, yoga, creator sessions</div>
             </div>
           </div>
         </div>
-        <div class="feature-card">
-          <div style="display:flex;align-items:center;gap:1rem;">
-            <div class="feature-icon icon-orange">⚓</div>
-            <div>
-              <div style="font-weight:700;margin-bottom:0.2rem;">Private Island Stops</div>
-              <div style="font-size:0.875rem;color:var(--text-secondary);">Exclusive beach parties at 5 destinations</div>
-            </div>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div style="display:flex;align-items:center;gap:1rem;">
-            <div class="feature-icon icon-gold">🥂</div>
-            <div>
-              <div style="font-weight:700;margin-bottom:0.2rem;">All-Inclusive Luxury</div>
-              <div style="font-size:0.875rem;color:var(--text-secondary);">Fine dining, open bar, and premium amenities</div>
-            </div>
-          </div>
-        </div>
-        <div class="feature-card">
-          <div style="display:flex;align-items:center;gap:1rem;">
-            <div class="feature-icon icon-aqua">🏄</div>
-            <div>
-              <div style="font-weight:700;margin-bottom:0.2rem;">Water Adventures</div>
-              <div style="font-size:0.875rem;color:var(--text-secondary);">Snorkeling, jet skiing, and yacht hopping</div>
-            </div>
-          </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
+          <a href="events.html#tickets" class="btn btn-gold">Book Now — from $1,299</a>
+          <a href="experience.html"     class="btn btn-ghost">Full Experience</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== FEATURES ===== -->
-<section class="section-pad parallax-section" style="background:var(--dark-surface);">
-  <div class="parallax-bg">
-    <img src="https://picsum.photos/seed/ocean-bg/1920/1080" alt="" />
-  </div>
-  <div class="container" style="position:relative;z-index:1;">
-    <div class="section-header centered reveal">
-      <span class="section-eyebrow">Why DST?</span>
-      <h2 class="section-title">More Than <span class="gradient-text">Just a Party</span></h2>
-      <div class="divider centered"></div>
-      <p class="section-subtitle">We create experiences that transform strangers into lifelong friends and turn the ocean into your playground.</p>
+<!-- ===== HOW IT WORKS ===== -->
+<section class="sec" style="background:var(--bg-2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="sec-hd center reveal">
+      <span class="eyebrow">How It Works</span>
+      <h2 class="d3">Simple as <em style="font-style:normal; color:var(--gold);">1, 2, 3</em></h2>
+      <div class="rule-gold center"></div>
     </div>
-
-    <div class="grid-3">
-      <div class="feature-card reveal delay-1">
-        <div class="feature-icon icon-purple">🌊</div>
-        <h3 class="feature-title">Ocean-First Design</h3>
-        <p class="feature-text">Every experience is crafted around the sea. From sunrise yoga on the deck to midnight ocean swims, the water is your world.</p>
+    <div class="g3">
+      <div class="reveal d1" style="text-align:center; padding:2rem 1.5rem;">
+        <div style="font-family:var(--font-display); font-size:4rem; color:var(--gold); opacity:.15; line-height:1; margin-bottom:0.5rem;">01</div>
+        <h3 style="font-size:1.25rem; margin-bottom:0.75rem;">Choose Your Cabin</h3>
+        <p style="font-size:0.875rem; color:var(--off-white); line-height:1.7;">Pick from Explorer, Voyager, or Sovereign tiers to match your budget and lifestyle.</p>
       </div>
-      <div class="feature-card reveal delay-2">
-        <div class="feature-icon icon-orange">🎯</div>
-        <h3 class="feature-title">Curated Community</h3>
-        <p class="feature-text">We don't just sell tickets. We build a tribe. Every guest is part of a handpicked community of adventurers, creators, and free spirits.</p>
+      <div class="reveal d2" style="text-align:center; padding:2rem 1.5rem; border-left:1px solid var(--border); border-right:1px solid var(--border);">
+        <div style="font-family:var(--font-display); font-size:4rem; color:var(--gold); opacity:.15; line-height:1; margin-bottom:0.5rem;">02</div>
+        <h3 style="font-size:1.25rem; margin-bottom:0.75rem;">Book Securely</h3>
+        <p style="font-size:0.875rem; color:var(--off-white); line-height:1.7;">Complete your booking online in minutes. Flexible payment plans available. Instant confirmation.</p>
       </div>
-      <div class="feature-card reveal delay-3">
-        <div class="feature-icon icon-gold">👑</div>
-        <h3 class="feature-title">Luxury at Every Touch</h3>
-        <p class="feature-text">From the moment you board to your last sunset at sea, every detail screams luxury. Premium cabins, gourmet dining, and VIP treatment.</p>
+      <div class="reveal d3" style="text-align:center; padding:2rem 1.5rem;">
+        <div style="font-family:var(--font-display); font-size:4rem; color:var(--gold); opacity:.15; line-height:1; margin-bottom:0.5rem;">03</div>
+        <h3 style="font-size:1.25rem; margin-bottom:0.75rem;">Set Sail</h3>
+        <p style="font-size:0.875rem; color:var(--off-white); line-height:1.7;">Board in Miami and let us handle everything. Your only job is to live your best life.</p>
       </div>
-      <div class="feature-card reveal delay-1">
-        <div class="feature-icon icon-aqua">🎵</div>
-        <h3 class="feature-title">World-Class Music</h3>
-        <p class="feature-text">Our lineups feature international DJs, live bands, and intimate acoustic sessions against a backdrop of stars and ocean.</p>
-      </div>
-      <div class="feature-card reveal delay-2">
-        <div class="feature-icon icon-purple">✈️</div>
-        <h3 class="feature-title">Travel Adventure</h3>
-        <p class="feature-text">Multiple island stops, hidden beaches, and secret coves. Each destination is chosen for maximum wow factor.</p>
-      </div>
-      <div class="feature-card reveal delay-3">
-        <div class="feature-icon icon-orange">📸</div>
-        <h3 class="feature-title">Epic Memories</h3>
-        <p class="feature-text">Professional photographers and videographers capture every magical moment. Your story, beautifully told.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== EXPERIENCE SHOWCASE ===== -->
-<section class="section-pad" id="experience">
-  <div class="container">
-    <div class="section-header reveal">
-      <span class="section-eyebrow">The Experience</span>
-      <h2 class="section-title">Life At <span class="gradient-text">Sea Level</span></h2>
-      <div class="divider"></div>
-    </div>
-
-    <div class="experience-showcase">
-      <div class="exp-highlight tall reveal-left" style="min-height:500px;">
-        <img src="https://picsum.photos/seed/yacht-party/600/900" alt="Yacht party" />
-        <div class="exp-highlight-overlay">
-          <span class="badge badge-purple" style="margin-bottom:0.75rem;">🎵 Main Stage</span>
-          <h3 class="exp-highlight-title">Deck Parties</h3>
-          <p class="exp-highlight-sub">Sunset DJ sets with the ocean as your dance floor</p>
-        </div>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:1rem;">
-        <div class="exp-highlight reveal delay-1" style="height:240px;">
-          <img src="https://picsum.photos/seed/island-beach/600/400" alt="Island beach" />
-          <div class="exp-highlight-overlay">
-            <span class="badge badge-orange" style="margin-bottom:0.5rem;">🏖️ Beach Stop</span>
-            <h3 class="exp-highlight-title">Private Islands</h3>
-            <p class="exp-highlight-sub">Exclusive access to hidden paradise</p>
-          </div>
-        </div>
-        <div class="exp-highlight reveal delay-2" style="height:240px;">
-          <img src="https://picsum.photos/seed/yacht-sunset/600/400" alt="Sunset sailing" />
-          <div class="exp-highlight-overlay">
-            <span class="badge badge-gold" style="margin-bottom:0.5rem;">🌅 Sunset</span>
-            <h3 class="exp-highlight-title">Golden Hour</h3>
-            <p class="exp-highlight-sub">Magic moments as the sun meets the sea</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:2.5rem;" class="reveal">
-      <a href="experience.html" class="btn btn-purple btn-lg">
-        <i data-feather="compass" style="width:18px;height:18px;"></i>
-        Explore The Full Experience
-      </a>
     </div>
   </div>
 </section>
 
 <!-- ===== DJ LINEUP ===== -->
-<section class="section-pad" style="background:var(--dark-surface);" id="lineup">
-  <div class="container">
-    <div class="section-header centered reveal">
-      <span class="section-eyebrow">Featured Artists</span>
-      <h2 class="section-title">The <span class="gradient-text">Lineup</span></h2>
-      <div class="divider centered"></div>
-      <p class="section-subtitle">Handpicked artists from around the world to soundtrack your ocean adventure.</p>
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-hd reveal" style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+      <div>
+        <span class="eyebrow">Featured Artists</span>
+        <h2 class="d3">The Lineup</h2>
+        <div class="rule-gold"></div>
+      </div>
+      <a href="events.html#lineup" class="btn btn-ghost btn-sm">Full Lineup →</a>
     </div>
 
-    <div class="dj-lineup">
-      <div class="dj-card reveal delay-1">
-        <div class="dj-avatar">
-          <img src="https://picsum.photos/seed/dj-1/200/200" alt="DJ Nova" />
-        </div>
-        <div class="dj-name">DJ Nova</div>
-        <div class="dj-genre">Tech House</div>
+    <div class="dj-strip reveal">
+      <div class="dj-chip">
+        <img src="https://picsum.photos/seed/dj1/80/80" alt="DJ Nova"/>
+        <div><div class="dj-chip-name">DJ Nova</div><div class="dj-chip-genre">Tech House</div></div>
       </div>
-      <div class="dj-card reveal delay-2">
-        <div class="dj-avatar">
-          <img src="https://picsum.photos/seed/dj-2/200/200" alt="Luna Beats" />
-        </div>
-        <div class="dj-name">Luna Beats</div>
-        <div class="dj-genre">Afro House</div>
+      <div class="dj-chip">
+        <img src="https://picsum.photos/seed/dj2/80/80" alt="Luna Beats"/>
+        <div><div class="dj-chip-name">Luna Beats</div><div class="dj-chip-genre">Afro House</div></div>
       </div>
-      <div class="dj-card reveal delay-3">
-        <div class="dj-avatar">
-          <img src="https://picsum.photos/seed/dj-3/200/200" alt="Marco V" />
-        </div>
-        <div class="dj-name">Marco V</div>
-        <div class="dj-genre">Deep House</div>
+      <div class="dj-chip">
+        <img src="https://picsum.photos/seed/dj3/80/80" alt="Marco V"/>
+        <div><div class="dj-chip-name">Marco V</div><div class="dj-chip-genre">Deep House</div></div>
       </div>
-      <div class="dj-card reveal delay-4">
-        <div class="dj-avatar">
-          <img src="https://picsum.photos/seed/dj-4/200/200" alt="Sasha Storm" />
-        </div>
-        <div class="dj-name">Sasha Storm</div>
-        <div class="dj-genre">Progressive</div>
+      <div class="dj-chip">
+        <img src="https://picsum.photos/seed/dj4/80/80" alt="Sasha Storm"/>
+        <div><div class="dj-chip-name">Sasha Storm</div><div class="dj-chip-genre">Progressive</div></div>
       </div>
-    </div>
-
-    <div style="text-align:center;margin-top:2rem;" class="reveal">
-      <a href="events.html#lineup" class="btn btn-ghost">View Full Lineup →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ===== STATS ===== -->
-<section class="section-pad">
-  <div class="container">
-    <div class="grid-4 reveal">
-      <div style="text-align:center;padding:2rem;">
-        <div class="counter-number" data-target="3200">0</div>
-        <div style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.5rem;">Happy Trippers</div>
+      <div class="dj-chip">
+        <img src="https://picsum.photos/seed/dj5/80/80" alt="El Fuego"/>
+        <div><div class="dj-chip-name">El Fuego</div><div class="dj-chip-genre">Latin House</div></div>
       </div>
-      <div style="text-align:center;padding:2rem;">
-        <div class="counter-number" data-target="12">0</div>
-        <div style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.5rem;">Events Completed</div>
+      <div class="dj-chip">
+        <img src="https://picsum.photos/seed/dj6/80/80" alt="Zara Night"/>
+        <div><div class="dj-chip-name">Zara Night</div><div class="dj-chip-genre">Melodic</div></div>
       </div>
-      <div style="text-align:center;padding:2rem;">
-        <div class="counter-number" data-target="47">0</div>
-        <div style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.5rem;">Destinations Visited</div>
+      <div class="dj-chip">
+        <img src="https://picsum.photos/seed/dj7/80/80" alt="Kosta B"/>
+        <div><div class="dj-chip-name">Kosta B</div><div class="dj-chip-genre">Organic</div></div>
       </div>
-      <div style="text-align:center;padding:2rem;">
-        <div class="counter-number" data-target="98">0</div>
-        <div style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.5rem;">% Satisfaction Rate</div>
+      <div class="dj-chip" style="border-style:dashed; color:var(--muted);">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:0.8rem;">+5</div>
+        <div><div class="dj-chip-name">More TBA</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== GALLERY PREVIEW ===== -->
-<section class="section-pad" style="background:var(--dark-surface);">
-  <div class="container">
-    <div class="section-header centered reveal">
-      <span class="section-eyebrow">Memories</span>
-      <h2 class="section-title">Past <span class="gradient-text">Adventures</span></h2>
-      <div class="divider centered"></div>
+<!-- ===== GALLERY ===== -->
+<section class="sec" style="background:var(--bg-2); border-top:1px solid var(--border);">
+  <div class="wrap">
+    <div class="sec-hd reveal" style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem;">
+      <div>
+        <span class="eyebrow">Past Events</span>
+        <h2 class="d3">Real Moments</h2>
+        <div class="rule-gold"></div>
+      </div>
+      <a href="community.html" class="btn btn-ghost btn-sm">Full Gallery →</a>
     </div>
-
     <div class="gallery-grid reveal">
-      <div class="gallery-item">
-        <img src="https://picsum.photos/seed/trip-gallery1/800/600" alt="Event photo 1" />
-        <div class="gallery-item-overlay">
-          <span class="badge badge-purple">🎉 Ibiza 2024</span>
-        </div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://picsum.photos/seed/trip-gallery2/600/300" alt="Event photo 2" />
-        <div class="gallery-item-overlay">
-          <span class="badge badge-orange">🌊 Open Waters</span>
-        </div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://picsum.photos/seed/trip-gallery3/600/300" alt="Event photo 3" />
-        <div class="gallery-item-overlay">
-          <span class="badge badge-aqua">🏖️ Beach Party</span>
-        </div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://picsum.photos/seed/trip-gallery4/500/400" alt="Event photo 4" />
-        <div class="gallery-item-overlay">
-          <span class="badge badge-gold">🌅 Sunset Session</span>
-        </div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://picsum.photos/seed/trip-gallery5/500/400" alt="Event photo 5" />
-        <div class="gallery-item-overlay">
-          <span class="badge badge-purple">🎵 DJ Set</span>
-        </div>
-      </div>
-      <div class="gallery-item">
-        <img src="https://picsum.photos/seed/trip-gallery6/500/400" alt="Event photo 6" />
-        <div class="gallery-item-overlay">
-          <span class="badge badge-orange">🐠 Snorkeling</span>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:2rem;" class="reveal">
-      <a href="community.html" class="btn btn-ghost">View Full Gallery →</a>
+      <div class="gallery-item"><img src="https://picsum.photos/seed/gal1/800/600" alt="Event"/></div>
+      <div class="gallery-item"><img src="https://picsum.photos/seed/gal2/600/300" alt="Event"/></div>
+      <div class="gallery-item"><img src="https://picsum.photos/seed/gal3/600/300" alt="Event"/></div>
+      <div class="gallery-item"><img src="https://picsum.photos/seed/gal4/500/400" alt="Event"/></div>
+      <div class="gallery-item"><img src="https://picsum.photos/seed/gal5/500/400" alt="Event"/></div>
+      <div class="gallery-item"><img src="https://picsum.photos/seed/gal6/500/400" alt="Event"/></div>
     </div>
   </div>
 </section>
 
 <!-- ===== TESTIMONIALS ===== -->
-<section class="section-pad" id="testimonials">
-  <div class="container">
-    <div class="section-header centered reveal">
-      <span class="section-eyebrow">Real Stories</span>
-      <h2 class="section-title">What Trippers <span class="gradient-text">Say</span></h2>
-      <div class="divider centered"></div>
+<section class="sec" style="border-top:1px solid var(--border);">
+  <div class="wrap">
+    <div class="sec-hd center reveal">
+      <span class="eyebrow">Testimonials</span>
+      <h2 class="d3">What Trippers Say</h2>
+      <div class="rule-gold center"></div>
     </div>
-
-    <div class="grid-3">
-      <div class="testimonial-card reveal delay-1">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"I've been to festivals all over the world, but nothing compares to DST. Waking up to the sound of waves and an open bar — this is living."</p>
-        <div class="testimonial-author">
-          <img class="testimonial-avatar" src="https://picsum.photos/seed/review1/100/100" alt="Sarah M." />
-          <div>
-            <div class="testimonial-name">Sarah M.</div>
-            <div class="testimonial-role">Caribbean Odyssey 2024</div>
-          </div>
+    <div class="g3">
+      <div class="testi-card reveal d1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Nothing compares to DST. Waking up to waves, an open bar, and world-class music — this is what living feels like."</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://picsum.photos/seed/t1/80/80" alt="Sarah M."/>
+          <div><div class="testi-name">Sarah M.</div><div class="testi-info">Caribbean 2024 · New York</div></div>
         </div>
       </div>
-
-      <div class="testimonial-card reveal delay-2">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"The community alone is worth the price. I made friends for life on that boat. Already booked my 3rd trip — I can't stop tripping!"</p>
-        <div class="testimonial-author">
-          <img class="testimonial-avatar" src="https://picsum.photos/seed/review2/100/100" alt="Marcus J." />
-          <div>
-            <div class="testimonial-name">Marcus J.</div>
-            <div class="testimonial-role">Mediterranean Voyage 2024</div>
-          </div>
+      <div class="testi-card reveal d2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"The community alone is worth it. I made friends for life on that boat. Already on my 3rd booking — I literally cannot stop."</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://picsum.photos/seed/t2/80/80" alt="Marcus J."/>
+          <div><div class="testi-name">Marcus J.</div><div class="testi-info">Mediterranean 2024 · London</div></div>
         </div>
       </div>
-
-      <div class="testimonial-card reveal delay-3">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"The attention to detail blew me away. From the welcome party to the farewell dinner, every single moment was magical. Highly recommend!"</p>
-        <div class="testimonial-author">
-          <img class="testimonial-avatar" src="https://picsum.photos/seed/review3/100/100" alt="Priya K." />
-          <div>
-            <div class="testimonial-name">Priya K.</div>
-            <div class="testimonial-role">Ibiza Adventure 2023</div>
-          </div>
+      <div class="testi-card reveal d3">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Every detail was perfect — from the welcome cocktail to the farewell dinner. The private island day changed my life."</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://picsum.photos/seed/t3/80/80" alt="Priya K."/>
+          <div><div class="testi-name">Priya K.</div><div class="testi-info">Ibiza 2023 · Mumbai</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== CTA SECTION ===== -->
-<section class="section-pad" style="background:linear-gradient(135deg, rgba(11,60,93,0.8), rgba(123,44,191,0.8));">
-  <div class="container" style="text-align:center;">
-    <div class="glow-blob glow-orange" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-    <div style="position:relative;z-index:1;">
-      <div class="reveal">
-        <span class="section-eyebrow">Ready to Sail?</span>
-        <h2 class="section-title" style="max-width:700px;margin:0 auto 1rem;">
-          Your Greatest Adventure <span class="gradient-text-sunset">Starts Here</span>
-        </h2>
-        <p style="color:rgba(240,240,240,0.75);max-width:520px;margin:0 auto 2.5rem;font-size:1.1rem;">
-          Don't wait. Spots are limited and sell out fast. Join 3,200+ adventurers who've already set sail.
-        </p>
-        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-          <a href="events.html#tickets" class="btn btn-primary btn-lg">
-            <i data-feather="anchor" style="width:18px;height:18px;"></i>
-            Grab Your Ticket
-          </a>
-          <a href="community.html" class="btn btn-secondary btn-lg">
-            Join the Community
-          </a>
-        </div>
+<!-- ===== CTA ===== -->
+<div class="cta-section">
+  <div class="wrap">
+    <div class="cta-content reveal">
+      <span class="eyebrow">Limited Spots</span>
+      <h2 class="d3" style="margin-bottom:0.5rem;">142 Cabins Remaining</h2>
+      <p style="color:var(--off-white); max-width:480px; margin:0 auto 2.5rem; font-size:1rem; line-height:1.75;">
+        Caribbean Odyssey 2025 is 71% sold out. Every week spots disappear. Don't miss the boat — literally.
+      </p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="events.html#tickets" class="btn btn-gold btn-lg">Book Your Cabin</a>
+        <a href="faq.html"            class="btn btn-ghost btn-lg">Common Questions</a>
       </div>
     </div>
   </div>
-</section>
-
-<!-- ===== PARTNERS ===== -->
-<section class="section-pad-sm" style="background:var(--dark-surface);">
-  <div class="container">
-    <p style="text-align:center;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--text-muted);margin-bottom:2rem;">Trusted Partners & Sponsors</p>
-    <div class="partners-row">
-      <span class="partner-logo">IBIZA VIBES</span>
-      <span class="partner-logo">OCEAN CLUB</span>
-      <span class="partner-logo">SUNSET SPIRITS</span>
-      <span class="partner-logo">NAUTICUS</span>
-      <span class="partner-logo">TIDAL MUSIC</span>
-    </div>
-  </div>
-</section>
+</div>
 
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
-  <div class="container">
+  <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="footer-logo">DON'T STOP TRIPPING</div>
-        <p class="footer-desc">The world's most exclusive luxury yacht festival. Where music, travel, and adventure collide on the open sea.</p>
-        <div class="social-links">
-          <a href="#" class="social-link" aria-label="Instagram">📷</a>
-          <a href="#" class="social-link" aria-label="TikTok">🎵</a>
-          <a href="#" class="social-link" aria-label="Twitter">🐦</a>
-          <a href="#" class="social-link" aria-label="YouTube">▶️</a>
-          <a href="#" class="social-link" aria-label="Facebook">👥</a>
+        <div class="footer-logo">DON'T STOP <em>TRIPPING</em></div>
+        <p class="footer-desc">The world's most exclusive luxury yacht festival. Music, travel, and community on the open sea.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link" aria-label="Instagram">📷</a>
+          <a href="#" class="footer-social-link" aria-label="TikTok">🎵</a>
+          <a href="#" class="footer-social-link" aria-label="Twitter">🐦</a>
+          <a href="#" class="footer-social-link" aria-label="YouTube">▶</a>
         </div>
       </div>
-
       <div>
         <div class="footer-heading">Navigate</div>
         <ul class="footer-links">
-          <li><a href="index.html" class="footer-link">Home</a></li>
-          <li><a href="events.html" class="footer-link">Events</a></li>
+          <li><a href="index.html"      class="footer-link">Home</a></li>
+          <li><a href="events.html"     class="footer-link">Events</a></li>
           <li><a href="experience.html" class="footer-link">Experience</a></li>
-          <li><a href="community.html" class="footer-link">Community</a></li>
-          <li><a href="faq.html" class="footer-link">FAQ</a></li>
+          <li><a href="community.html"  class="footer-link">Community</a></li>
+          <li><a href="faq.html"        class="footer-link">FAQ</a></li>
         </ul>
       </div>
-
       <div>
         <div class="footer-heading">Events</div>
         <ul class="footer-links">
-          <li><a href="events.html" class="footer-link">Caribbean Odyssey 2025</a></li>
+          <li><a href="events.html" class="footer-link">Caribbean 2025</a></li>
           <li><a href="events.html" class="footer-link">Mediterranean 2025</a></li>
-          <li><a href="events.html" class="footer-link">Ibiza Special 2025</a></li>
+          <li><a href="events.html" class="footer-link">Ibiza 2025</a></li>
           <li><a href="events.html" class="footer-link">Asian Seas 2026</a></li>
         </ul>
       </div>
-
       <div>
         <div class="footer-heading">Support</div>
         <ul class="footer-links">
-          <li><a href="faq.html" class="footer-link">FAQ</a></li>
-          <li><a href="#" class="footer-link">Contact Us</a></li>
-          <li><a href="#" class="footer-link">Refund Policy</a></li>
-          <li><a href="#" class="footer-link">Privacy Policy</a></li>
-          <li><a href="dashboard.html" class="footer-link">My Account</a></li>
+          <li><a href="faq.html"        class="footer-link">FAQ</a></li>
+          <li><a href="#"               class="footer-link">Contact Us</a></li>
+          <li><a href="#"               class="footer-link">Refund Policy</a></li>
+          <li><a href="dashboard.html"  class="footer-link">My Account</a></li>
         </ul>
       </div>
     </div>
-
     <div class="footer-bottom">
       <p class="footer-copy">© 2025 Don't Stop Tripping. All rights reserved.</p>
-      <p class="footer-copy">Crafted with ❤️ for adventurers worldwide</p>
+      <p class="footer-copy">Miami, Florida · info@dontStopTripping.com</p>
     </div>
   </div>
 </footer>
 
 <!-- Sticky CTA -->
 <div class="sticky-cta">
-  <a href="events.html#tickets" class="btn btn-primary btn-sm" style="box-shadow:0 4px 20px rgba(255,122,24,0.5);">
-    ⚓ Book Now
-  </a>
+  <a href="events.html#tickets" class="btn btn-gold btn-sm">⚓ Book Now</a>
 </div>
 
 <script src="assets/js/main.js"></script>
-<script>feather.replace();</script>
 </body>
 </html>
