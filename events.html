@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events — Don't Stop Tripping</title>
+  <meta name="description" content="Browse upcoming luxury yacht events. Book your cabin, see the lineup, and plan your adventure." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .event-hero {
+      height: 60vh;
+      min-height: 500px;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .event-hero-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .event-hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.5;
+    }
+
+    .event-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.9) 100%);
+    }
+
+    .event-tabs-sticky {
+      position: sticky;
+      top: 70px;
+      z-index: 100;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 0;
+    }
+
+    .event-nav-tabs {
+      display: flex;
+      gap: 0.25rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .event-nav-tabs::-webkit-scrollbar { display: none; }
+
+    .event-nav-tab {
+      padding: 0.625rem 1.25rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .event-nav-tab.active, .event-nav-tab:hover {
+      background: rgba(123,44,191,0.2);
+      color: var(--text-primary);
+    }
+
+    .event-nav-tab.active { color: var(--electric-purple); }
+
+    .itinerary-day {
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+
+    .itinerary-day:hover { border-color: rgba(123,44,191,0.3); }
+
+    .itinerary-day-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      cursor: pointer;
+    }
+
+    .day-number {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      line-height: 1;
+      color: var(--electric-purple);
+      opacity: 0.4;
+      min-width: 60px;
+    }
+
+    .day-info { flex: 1; }
+    .day-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+    .day-title { font-size: 1.25rem; font-weight: 700; }
+    .day-location { font-size: 0.875rem; color: var(--sunset-orange); display: flex; align-items: center; gap: 0.4rem; margin-top: 0.2rem; }
+
+    .day-img {
+      width: 100px;
+      height: 70px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .day-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .itinerary-day-body {
+      padding: 0 1.5rem 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .day-activities {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .day-activity {
+      background: rgba(255,255,255,0.04);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .activity-icon { font-size: 1.5rem; }
+    .activity-time { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+    .activity-name { font-size: 0.9rem; font-weight: 600; }
+
+    /* Cabin Grid */
+    .cabin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+    /* Lineup Grid */
+    .lineup-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+
+    .artist-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+    }
+
+    .artist-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .artist-card:hover img { transform: scale(1.06); }
+
+    .artist-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(10,10,10,0.95) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+    }
+
+    .artist-name { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .artist-genre { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+    .artist-day { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 50px; background: var(--electric-purple); font-size: 0.75rem; font-weight: 600; }
+
+    /* Ticket Section */
+    .tickets-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+    .ticket-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .ticket-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; }
+
+    @media (max-width: 1024px) {
+      .cabin-grid, .lineup-grid, .tickets-grid { grid-template-columns: repeat(2, 1fr); }
+      .day-activities { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .cabin-grid, .lineup-grid, .tickets-grid { grid-template-columns: 1fr; }
+      .day-activities { grid-template-columns: 1fr; }
+      .day-img { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loading-screen">
+  <div class="loading-logo">DST — EVENTS</div>
+  <div class="loading-bar-container"><div class="loading-bar"></div></div>
+</div>
+
+<div class="cursor-glow"></div>
+
+<!-- Navigation -->
+<nav class="nav scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">DON'T STOP TRIPPING</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="events.html" class="nav-link active">Events</a></li>
+        <li><a href="experience.html" class="nav-link">Experience</a></li>
+        <li><a href="community.html" class="nav-link">Community</a></li>
+        <li><a href="faq.html" class="nav-link">FAQ</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="dashboard.html" class="btn btn-ghost btn-sm">My Account</a>
+        <a href="#tickets" class="btn btn-primary btn-sm">Get Tickets</a>
+      </div>
+      <div class="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <button class="mobile-nav-close">✕</button>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="events.html" class="nav-link">Events</a>
+  <a href="experience.html" class="nav-link">Experience</a>
+  <a href="community.html" class="nav-link">Community</a>
+  <a href="faq.html" class="nav-link">FAQ</a>
+  <a href="#tickets" class="btn btn-primary btn-lg">Get Tickets</a>
+</div>
+
+<!-- Event Hero -->
+<div class="event-hero" style="padding-top:80px;">
+  <div class="event-hero-bg">
+    <img src="https://picsum.photos/seed/event-hero/1920/800" alt="Caribbean Odyssey 2025" />
+  </div>
+  <div class="event-hero-overlay"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <span class="badge badge-orange" style="margin-bottom:1rem;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--sunset-orange);animation:livePulse 1.2s infinite;display:inline-block;"></span>
+      Booking Open
+    </span>
+    <h1 class="display-2">Caribbean Odyssey <span class="gradient-text">2025</span></h1>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-top:1rem;">
+      <span style="color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:0.5rem;">📅 August 15–22, 2025</span>
+      <span style="color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:0.5rem;">📍 Miami → Bahamas</span>
+      <span style="color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:0.5rem;">⚓ 7 Nights at Sea</span>
+      <span style="color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:0.5rem;">👥 500 Guests Max</span>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky Event Navigation -->
+<div class="event-tabs-sticky">
+  <div class="container">
+    <div class="event-nav-tabs">
+      <a href="#overview" class="event-nav-tab active" onclick="setActiveTab(this)">Overview</a>
+      <a href="#itinerary" class="event-nav-tab" onclick="setActiveTab(this)">Itinerary</a>
+      <a href="#cabins" class="event-nav-tab" onclick="setActiveTab(this)">Cabins</a>
+      <a href="#lineup" class="event-nav-tab" onclick="setActiveTab(this)">Lineup</a>
+      <a href="#tickets" class="event-nav-tab" onclick="setActiveTab(this)">Tickets</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OVERVIEW ===== -->
+<section class="section-pad" id="overview">
+  <div class="container">
+    <div class="grid-2" style="align-items:start;gap:4rem;">
+      <div class="reveal-left">
+        <span class="section-eyebrow">The Journey</span>
+        <h2 class="section-title">An Unforgettable <span class="gradient-text">Voyage</span></h2>
+        <div class="divider"></div>
+        <p style="color:var(--text-secondary);line-height:1.8;margin-bottom:1.5rem;">
+          The Caribbean Odyssey 2025 is our most ambitious voyage yet. Departing from the vibrant shores of Miami, we'll sail through the turquoise waters of the Bahamas, stopping at five exclusive destinations where luxury, music, and adventure converge.
+        </p>
+        <p style="color:var(--text-secondary);line-height:1.8;margin-bottom:2rem;">
+          By day, explore pristine beaches and crystal-clear waters. By night, lose yourself in world-class music performances as the stars light up the ocean around you. This is not just a trip — it's a transformation.
+        </p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;">
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;">Departs</div>
+            <div style="font-weight:700;">Miami, FL</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);">August 15, 2025 at 5PM</div>
+          </div>
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;">Returns</div>
+            <div style="font-weight:700;">Miami, FL</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);">August 22, 2025 at 10AM</div>
+          </div>
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;">Vessel</div>
+            <div style="font-weight:700;">MSC Seashore</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);">5-star luxury liner</div>
+          </div>
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius);padding:1.25rem;">
+            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;">Capacity</div>
+            <div style="font-weight:700;">500 Guests</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);">Intimate & exclusive</div>
+          </div>
+        </div>
+
+        <a href="#tickets" class="btn btn-primary btn-lg">Book Your Spot Now</a>
+      </div>
+
+      <div class="reveal-right">
+        <div style="border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1.5rem;">
+          <img src="https://picsum.photos/seed/event-ship/600/400" alt="Luxury Vessel" style="width:100%;height:300px;object-fit:cover;" />
+        </div>
+
+        <!-- Countdown inline -->
+        <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
+          <div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:1rem;">Departure In</div>
+          <div style="display:flex;justify-content:center;gap:1rem;">
+            <div class="countdown-unit"><span class="countdown-number countdown-days">00</span><span class="countdown-unit-label">Days</span></div>
+            <span class="countdown-sep" style="padding-bottom:1.5rem;">:</span>
+            <div class="countdown-unit"><span class="countdown-number countdown-hours">00</span><span class="countdown-unit-label">Hours</span></div>
+            <span class="countdown-sep" style="padding-bottom:1.5rem;">:</span>
+            <div class="countdown-unit"><span class="countdown-number countdown-minutes">00</span><span class="countdown-unit-label">Min</span></div>
+            <span class="countdown-sep" style="padding-bottom:1.5rem;">:</span>
+            <div class="countdown-unit"><span class="countdown-number countdown-seconds">00</span><span class="countdown-unit-label">Sec</span></div>
+          </div>
+          <div style="margin-top:1.25rem;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+              <span style="font-size:0.85rem;color:var(--text-secondary);">142 spots remaining</span>
+              <span style="font-size:0.85rem;font-weight:600;color:var(--sunset-orange);">71% full</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" data-width="71%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ITINERARY ===== -->
+<section class="section-pad" id="itinerary" style="background:var(--dark-surface);">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Day by Day</span>
+      <h2 class="section-title">Your <span class="gradient-text">Adventure Itinerary</span></h2>
+      <div class="divider centered"></div>
+      <p class="section-subtitle">7 days, 5 destinations, infinite experiences. Every moment curated for maximum adventure.</p>
+    </div>
+
+    <div class="reveal">
+      <!-- Day 1 -->
+      <div class="itinerary-day">
+        <div class="itinerary-day-header" onclick="toggleDay(this)">
+          <div class="day-number">01</div>
+          <div class="day-info">
+            <div class="day-date">Thursday, August 15</div>
+            <div class="day-title">Embarkation Day — Let's Set Sail</div>
+            <div class="day-location">📍 Miami, Florida</div>
+          </div>
+          <div class="day-img">
+            <img src="https://picsum.photos/seed/miami-port/200/150" alt="Miami Port" />
+          </div>
+          <span style="color:var(--text-muted);font-size:1.25rem;transition:transform 0.3s ease;" class="day-toggle-icon">▼</span>
+        </div>
+        <div class="itinerary-day-body">
+          <div class="day-activities">
+            <div class="day-activity">
+              <span class="activity-icon">🛳️</span>
+              <div><div class="activity-time">3:00 PM – 5:00 PM</div><div class="activity-name">Boarding & Check-In</div></div>
+            </div>
+            <div class="day-activity">
+              <span class="activity-icon">🥂</span>
+              <div><div class="activity-time">5:30 PM</div><div class="activity-name">Welcome Cocktail Party</div></div>
+            </div>
+            <div class="day-activity">
+              <span class="activity-icon">🎵</span>
+              <div><div class="activity-time">8:00 PM – Late</div><div class="activity-name">Opening Night DJ Set</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day 2 -->
+      <div class="itinerary-day">
+        <div class="itinerary-day-header" onclick="toggleDay(this)">
+          <div class="day-number">02</div>
+          <div class="day-info">
+            <div class="day-date">Friday, August 16</div>
+            <div class="day-title">Ocean Day — Music at Sea</div>
+            <div class="day-location">🌊 Open Ocean</div>
+          </div>
+          <div class="day-img">
+            <img src="https://picsum.photos/seed/ocean-day/200/150" alt="Ocean Day" />
+          </div>
+          <span style="color:var(--text-muted);font-size:1.25rem;" class="day-toggle-icon">▼</span>
+        </div>
+        <div class="itinerary-day-body">
+          <div class="day-activities">
+            <div class="day-activity"><span class="activity-icon">🧘</span><div><div class="activity-time">7:00 AM</div><div class="activity-name">Sunrise Yoga on Deck</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🎉</span><div><div class="activity-time">12:00 PM</div><div class="activity-name">Pool Party</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🌅</span><div><div class="activity-time">6:30 PM</div><div class="activity-name">Sunset DJ Set</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day 3 -->
+      <div class="itinerary-day">
+        <div class="itinerary-day-header" onclick="toggleDay(this)">
+          <div class="day-number">03</div>
+          <div class="day-info">
+            <div class="day-date">Saturday, August 17</div>
+            <div class="day-title">Nassau, Bahamas</div>
+            <div class="day-location">📍 Nassau, Bahamas</div>
+          </div>
+          <div class="day-img">
+            <img src="https://picsum.photos/seed/nassau/200/150" alt="Nassau Bahamas" />
+          </div>
+          <span style="color:var(--text-muted);font-size:1.25rem;" class="day-toggle-icon">▼</span>
+        </div>
+        <div class="itinerary-day-body">
+          <div class="day-activities">
+            <div class="day-activity"><span class="activity-icon">🏖️</span><div><div class="activity-time">9:00 AM</div><div class="activity-name">Private Beach Access</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🤿</span><div><div class="activity-time">11:00 AM</div><div class="activity-name">Snorkeling Tour</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🎊</span><div><div class="activity-time">9:00 PM – Late</div><div class="activity-name">Island Beach Party</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day 4 -->
+      <div class="itinerary-day">
+        <div class="itinerary-day-header" onclick="toggleDay(this)">
+          <div class="day-number">04</div>
+          <div class="day-info">
+            <div class="day-date">Sunday, August 18</div>
+            <div class="day-title">Private Island Takeover</div>
+            <div class="day-location">📍 Blue Lagoon Island</div>
+          </div>
+          <div class="day-img">
+            <img src="https://picsum.photos/seed/private-island/200/150" alt="Private Island" />
+          </div>
+          <span style="color:var(--text-muted);font-size:1.25rem;" class="day-toggle-icon">▼</span>
+        </div>
+        <div class="itinerary-day-body">
+          <div class="day-activities">
+            <div class="day-activity"><span class="activity-icon">🏝️</span><div><div class="activity-time">All Day</div><div class="activity-name">Exclusive Island Takeover</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🎸</span><div><div class="activity-time">2:00 PM</div><div class="activity-name">Live Performance</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🌊</span><div><div class="activity-time">4:00 PM</div><div class="activity-name">Jet Ski & Watersports</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Days 5–7 collapsed -->
+      <div class="itinerary-day">
+        <div class="itinerary-day-header" onclick="toggleDay(this)">
+          <div class="day-number">05</div>
+          <div class="day-info">
+            <div class="day-date">Monday, August 19</div>
+            <div class="day-title">Grand Bahama Island</div>
+            <div class="day-location">📍 Freeport, Bahamas</div>
+          </div>
+          <div class="day-img">
+            <img src="https://picsum.photos/seed/freeport/200/150" alt="Freeport" />
+          </div>
+          <span style="color:var(--text-muted);font-size:1.25rem;" class="day-toggle-icon">▼</span>
+        </div>
+        <div class="itinerary-day-body">
+          <div class="day-activities">
+            <div class="day-activity"><span class="activity-icon">🛍️</span><div><div class="activity-time">9:00 AM</div><div class="activity-name">Local Market Tour</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🎣</span><div><div class="activity-time">1:00 PM</div><div class="activity-name">Deep Sea Fishing</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🎵</span><div><div class="activity-time">8:00 PM</div><div class="activity-name">Outdoor Concert</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="itinerary-day">
+        <div class="itinerary-day-header" onclick="toggleDay(this)">
+          <div class="day-number">06</div>
+          <div class="day-info">
+            <div class="day-date">Tuesday, August 20</div>
+            <div class="day-title">Ocean Day — Workshops & Vibes</div>
+            <div class="day-location">🌊 Open Ocean</div>
+          </div>
+          <div class="day-img">
+            <img src="https://picsum.photos/seed/workshops/200/150" alt="Workshops" />
+          </div>
+          <span style="color:var(--text-muted);font-size:1.25rem;" class="day-toggle-icon">▼</span>
+        </div>
+        <div class="itinerary-day-body">
+          <div class="day-activities">
+            <div class="day-activity"><span class="activity-icon">🎓</span><div><div class="activity-time">10:00 AM</div><div class="activity-name">DJ Workshop</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🧠</span><div><div class="activity-time">2:00 PM</div><div class="activity-name">Networking Mixer</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🔥</span><div><div class="activity-time">10:00 PM</div><div class="activity-name">Grand Gala Night</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="itinerary-day">
+        <div class="itinerary-day-header" onclick="toggleDay(this)">
+          <div class="day-number">07</div>
+          <div class="day-info">
+            <div class="day-date">Wednesday, August 21–22</div>
+            <div class="day-title">Farewell — Back to Miami</div>
+            <div class="day-location">📍 Miami, Florida</div>
+          </div>
+          <div class="day-img">
+            <img src="https://picsum.photos/seed/miami-farewell/200/150" alt="Farewell" />
+          </div>
+          <span style="color:var(--text-muted);font-size:1.25rem;" class="day-toggle-icon">▼</span>
+        </div>
+        <div class="itinerary-day-body">
+          <div class="day-activities">
+            <div class="day-activity"><span class="activity-icon">🥂</span><div><div class="activity-time">7:00 PM</div><div class="activity-name">Farewell Dinner</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🎊</span><div><div class="activity-time">10:00 PM</div><div class="activity-name">Closing Party</div></div></div>
+            <div class="day-activity"><span class="activity-icon">🏠</span><div><div class="activity-time">10:00 AM Aug 22</div><div class="activity-name">Disembarkation</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CABINS ===== -->
+<section class="section-pad" id="cabins">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Accommodations</span>
+      <h2 class="section-title">Choose Your <span class="gradient-text">Cabin</span></h2>
+      <div class="divider centered"></div>
+      <p class="section-subtitle">From cozy shared rooms to lavish private suites, there's a perfect option for every tripper.</p>
+    </div>
+
+    <div class="cabin-grid">
+      <div class="cabin-card reveal delay-1">
+        <div class="cabin-img">
+          <img src="https://picsum.photos/seed/cabin-standard/400/300" alt="Standard Cabin" />
+        </div>
+        <div class="cabin-body">
+          <span class="badge badge-aqua" style="margin-bottom:0.75rem;">Shared</span>
+          <div class="cabin-name">Explorer Bunk</div>
+          <div class="cabin-price"><span>$</span>1,299</div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem;">Per person, shared cabin (4 guests)</div>
+          <div class="cabin-amenity">🛏️ Bunk Bed</div>
+          <div class="cabin-amenity">🚿 Shared Bathroom</div>
+          <div class="cabin-amenity">❄️ Air Conditioning</div>
+          <div class="cabin-amenity">📶 Wi-Fi Included</div>
+          <a href="#tickets" class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:1rem;">Select</a>
+        </div>
+      </div>
+
+      <div class="cabin-card reveal delay-2" style="border-color:var(--gold-accent);box-shadow:0 0 30px rgba(212,175,55,0.2);">
+        <div class="cabin-img">
+          <img src="https://picsum.photos/seed/cabin-deluxe/400/300" alt="Deluxe Cabin" />
+        </div>
+        <div class="cabin-body">
+          <span class="badge badge-gold" style="margin-bottom:0.75rem;">Most Popular</span>
+          <div class="cabin-name">Ocean View Cabin</div>
+          <div class="cabin-price"><span>$</span>2,499</div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem;">Per person, shared with 1 guest</div>
+          <div class="cabin-amenity">🛏️ Queen Bed</div>
+          <div class="cabin-amenity">🚿 Private Bathroom</div>
+          <div class="cabin-amenity">🌊 Ocean View Window</div>
+          <div class="cabin-amenity">❄️ Climate Control</div>
+          <div class="cabin-amenity">📶 Priority Wi-Fi</div>
+          <a href="#tickets" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem;">Select</a>
+        </div>
+      </div>
+
+      <div class="cabin-card reveal delay-3">
+        <div class="cabin-img">
+          <img src="https://picsum.photos/seed/cabin-suite/400/300" alt="Suite" />
+        </div>
+        <div class="cabin-body">
+          <span class="badge badge-purple" style="margin-bottom:0.75rem;">Premium</span>
+          <div class="cabin-name">VIP Suite</div>
+          <div class="cabin-price"><span>$</span>4,999</div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem;">Per person, private suite</div>
+          <div class="cabin-amenity">🛏️ King Bed + Living Area</div>
+          <div class="cabin-amenity">🛁 Luxury Bathroom</div>
+          <div class="cabin-amenity">🌊 Private Balcony</div>
+          <div class="cabin-amenity">🍾 Butler Service</div>
+          <div class="cabin-amenity">🎵 VIP Backstage Access</div>
+          <div class="cabin-amenity">🥂 All-Inclusive Premium Bar</div>
+          <a href="#tickets" class="btn btn-purple" style="width:100%;justify-content:center;margin-top:1rem;">Select</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LINEUP ===== -->
+<section class="section-pad" id="lineup" style="background:var(--dark-surface);">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Artists</span>
+      <h2 class="section-title">The <span class="gradient-text">Lineup</span></h2>
+      <div class="divider centered"></div>
+    </div>
+
+    <div class="lineup-grid">
+      <div class="artist-card reveal delay-1">
+        <img src="https://picsum.photos/seed/artist1/400/550" alt="DJ Nova" />
+        <div class="artist-overlay">
+          <span class="artist-day">Day 1 · Main Stage</span>
+          <div class="artist-name">DJ Nova</div>
+          <div class="artist-genre">Tech House</div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem;">
+            <span class="badge badge-purple" style="font-size:0.7rem;">Ibiza Resident</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="artist-card reveal delay-2">
+        <img src="https://picsum.photos/seed/artist2/400/550" alt="Luna Beats" />
+        <div class="artist-overlay">
+          <span class="artist-day">Day 2 · Sunset Stage</span>
+          <div class="artist-name">Luna Beats</div>
+          <div class="artist-genre">Afro House</div>
+        </div>
+      </div>
+
+      <div class="artist-card reveal delay-3">
+        <img src="https://picsum.photos/seed/artist3/400/550" alt="Marco V" />
+        <div class="artist-overlay">
+          <span class="artist-day">Day 3 · Main Stage</span>
+          <div class="artist-name">Marco V</div>
+          <div class="artist-genre">Deep House</div>
+        </div>
+      </div>
+
+      <div class="artist-card reveal delay-4">
+        <img src="https://picsum.photos/seed/artist4/400/550" alt="Sasha Storm" />
+        <div class="artist-overlay">
+          <span class="artist-day">Day 4 · Island Stage</span>
+          <div class="artist-name">Sasha Storm</div>
+          <div class="artist-genre">Progressive</div>
+        </div>
+      </div>
+
+      <div class="artist-card reveal delay-1">
+        <img src="https://picsum.photos/seed/artist5/400/550" alt="El Fuego" />
+        <div class="artist-overlay">
+          <span class="artist-day">Day 5 · Deck Stage</span>
+          <div class="artist-name">El Fuego</div>
+          <div class="artist-genre">Latin House</div>
+        </div>
+      </div>
+
+      <div class="artist-card reveal delay-2">
+        <img src="https://picsum.photos/seed/artist6/400/550" alt="Zara Night" />
+        <div class="artist-overlay">
+          <span class="artist-day">Day 6 · Gala Night</span>
+          <div class="artist-name">Zara Night</div>
+          <div class="artist-genre">Melodic Techno</div>
+        </div>
+      </div>
+
+      <div class="artist-card reveal delay-3">
+        <img src="https://picsum.photos/seed/artist7/400/550" alt="Kosta" />
+        <div class="artist-overlay">
+          <span class="artist-day">Day 7 · Closing Set</span>
+          <div class="artist-name">Kosta B</div>
+          <div class="artist-genre">Organic House</div>
+        </div>
+      </div>
+
+      <div class="artist-card reveal delay-4" style="background:var(--dark-card);display:flex;align-items:center;justify-content:center;">
+        <div style="text-align:center;padding:2rem;">
+          <div style="font-size:3rem;margin-bottom:1rem;">🎵</div>
+          <div style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:0.5rem;">+5 More</div>
+          <div style="font-size:0.875rem;color:var(--text-muted);">More artists TBA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TICKETS ===== -->
+<section class="section-pad" id="tickets">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Secure Your Spot</span>
+      <h2 class="section-title">Get Your <span class="gradient-text">Tickets</span></h2>
+      <div class="divider centered"></div>
+      <p class="section-subtitle">Choose your cabin type and ticket tier. All prices include accommodation and full event access.</p>
+    </div>
+
+    <div class="tickets-grid">
+      <div class="ticket-card reveal delay-1">
+        <span class="badge badge-aqua" style="margin-bottom:1rem;">Explorer</span>
+        <div class="ticket-name">Explorer Pass</div>
+        <div class="ticket-desc">Perfect for the solo adventurer on a budget</div>
+        <div class="ticket-price"><span>$</span>1,299</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem;">per person</div>
+        <div class="ticket-features">
+          <div class="ticket-feature"><span class="check">✓</span> Shared Bunk Cabin (4 guests)</div>
+          <div class="ticket-feature"><span class="check">✓</span> All Event Access</div>
+          <div class="ticket-feature"><span class="check">✓</span> Meals Included</div>
+          <div class="ticket-feature"><span class="check">✓</span> Welcome Package</div>
+          <div class="ticket-feature"><span class="cross" style="color:var(--text-muted);">✗</span> <span style="color:var(--text-muted);">Priority Boarding</span></div>
+          <div class="ticket-feature"><span class="cross" style="color:var(--text-muted);">✗</span> <span style="color:var(--text-muted);">VIP Areas</span></div>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;justify-content:center;" onclick="selectTicket('Explorer', '$1,299')">Select Explorer</button>
+      </div>
+
+      <div class="ticket-card featured reveal delay-2">
+        <span class="badge badge-gold" style="margin-bottom:1rem;">Voyager</span>
+        <div class="ticket-name">Voyager Pass</div>
+        <div class="ticket-desc">The complete Don't Stop Tripping experience</div>
+        <div class="ticket-price"><span>$</span>2,499</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem;">per person</div>
+        <div class="ticket-features">
+          <div class="ticket-feature"><span class="check">✓</span> Ocean View Cabin (2 guests)</div>
+          <div class="ticket-feature"><span class="check">✓</span> All Event Access</div>
+          <div class="ticket-feature"><span class="check">✓</span> All-Inclusive Meals & Drinks</div>
+          <div class="ticket-feature"><span class="check">✓</span> Priority Boarding</div>
+          <div class="ticket-feature"><span class="check">✓</span> VIP Area Access</div>
+          <div class="ticket-feature"><span class="cross" style="color:var(--text-muted);">✗</span> <span style="color:var(--text-muted);">Backstage Access</span></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="selectTicket('Voyager', '$2,499')">Select Voyager</button>
+      </div>
+
+      <div class="ticket-card reveal delay-3">
+        <span class="badge badge-purple" style="margin-bottom:1rem;">Sovereign</span>
+        <div class="ticket-name">Sovereign Pass</div>
+        <div class="ticket-desc">For those who demand the absolute best</div>
+        <div class="ticket-price"><span>$</span>4,999</div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem;">per person</div>
+        <div class="ticket-features">
+          <div class="ticket-feature"><span class="check">✓</span> Private VIP Suite</div>
+          <div class="ticket-feature"><span class="check">✓</span> All Event Access</div>
+          <div class="ticket-feature"><span class="check">✓</span> All-Inclusive Premium Bar</div>
+          <div class="ticket-feature"><span class="check">✓</span> Butler Service</div>
+          <div class="ticket-feature"><span class="check">✓</span> VIP & Backstage Access</div>
+          <div class="ticket-feature"><span class="check">✓</span> Artist Meet & Greet</div>
+        </div>
+        <button class="btn btn-purple" style="width:100%;justify-content:center;" onclick="selectTicket('Sovereign', '$4,999')">Select Sovereign</button>
+      </div>
+    </div>
+
+    <p style="text-align:center;margin-top:2rem;font-size:0.875rem;color:var(--text-muted);" class="reveal">
+      ✅ Secure payment · 🔄 Flexible cancellation up to 60 days before · 📞 24/7 support
+    </p>
+  </div>
+</section>
+
+<!-- Ticket Modal -->
+<div class="modal-overlay" id="ticket-modal">
+  <div class="modal">
+    <button class="modal-close" data-modal-close>✕</button>
+    <h3 style="font-size:1.75rem;margin-bottom:0.5rem;">Book Your Ticket</h3>
+    <p style="color:var(--text-secondary);margin-bottom:1.5rem;" id="modal-ticket-info">Explorer Pass — $1,299</p>
+
+    <form onsubmit="handleTicketSubmit(event)">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-input" placeholder="Your full name" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="your@email.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" class="form-input" placeholder="+1 (555) 000-0000" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Number of Guests</label>
+        <select class="form-select">
+          <option>1 Guest</option>
+          <option>2 Guests</option>
+          <option>3 Guests</option>
+          <option>4 Guests</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
+        Complete Booking
+      </button>
+    </form>
+    <p style="font-size:0.8rem;color:var(--text-muted);text-align:center;margin-top:1rem;">You'll receive a confirmation email within 24 hours.</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">DON'T STOP TRIPPING</div>
+        <p class="footer-desc">The world's most exclusive luxury yacht festival.</p>
+        <div class="social-links">
+          <a href="#" class="social-link">📷</a>
+          <a href="#" class="social-link">🎵</a>
+          <a href="#" class="social-link">🐦</a>
+          <a href="#" class="social-link">▶️</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="events.html" class="footer-link">Events</a></li>
+          <li><a href="experience.html" class="footer-link">Experience</a></li>
+          <li><a href="community.html" class="footer-link">Community</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Support</div>
+        <ul class="footer-links">
+          <li><a href="faq.html" class="footer-link">FAQ</a></li>
+          <li><a href="#" class="footer-link">Contact</a></li>
+          <li><a href="#" class="footer-link">Refund Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Contact</div>
+        <p style="font-size:0.875rem;color:var(--text-secondary);line-height:1.8;">
+          info@dontStopTripping.com<br />
+          +1 (305) 555-TRIP<br />
+          Miami, FL
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Don't Stop Tripping. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <a href="#tickets" class="btn btn-primary btn-sm">⚓ Book Now</a>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script>
+  feather.replace();
+
+  function setActiveTab(el) {
+    document.querySelectorAll('.event-nav-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function toggleDay(header) {
+    const day = header.closest('.itinerary-day');
+    const icon = header.querySelector('.day-toggle-icon');
+    const body = day.querySelector('.itinerary-day-body');
+    const isOpen = body.style.display === 'block';
+    body.style.display = isOpen ? 'none' : 'block';
+    if (icon) icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  }
+
+  // Initialize all days as closed
+  document.querySelectorAll('.itinerary-day-body').forEach(b => b.style.display = 'none');
+
+  function selectTicket(tier, price) {
+    document.getElementById('modal-ticket-info').textContent = tier + ' Pass — ' + price;
+    document.getElementById('ticket-modal').classList.add('open');
+  }
+
+  function handleTicketSubmit(e) {
+    e.preventDefault();
+    document.getElementById('ticket-modal').classList.remove('open');
+    showToast('🎉 Booking request received! Check your email.', '✅', 4000);
+  }
+</script>
+</body>
+</html>

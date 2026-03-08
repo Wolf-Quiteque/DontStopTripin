@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community — Don't Stop Tripping</title>
+  <meta name="description" content="Join the DST community. See photos, stories, and testimonials from our amazing family of trippers." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .comm-hero {
+      height: 55vh;
+      min-height: 450px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 4rem;
+      overflow: hidden;
+    }
+
+    .comm-hero-bg { position: absolute; inset: 0; }
+    .comm-hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
+    .comm-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.9) 100%);
+    }
+
+    /* Masonry-style photo wall */
+    .photo-wall {
+      columns: 4;
+      column-gap: 1rem;
+    }
+
+    .photo-wall-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .photo-wall-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .photo-wall-item:hover img { transform: scale(1.04); }
+
+    .photo-wall-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 50%, rgba(10,10,10,0.9) 100%);
+      opacity: 0;
+      transition: var(--transition);
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem;
+    }
+
+    .photo-wall-item:hover .photo-wall-item-overlay { opacity: 1; }
+
+    /* Social wall */
+    .social-wall {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .social-post {
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .social-post:hover { border-color: rgba(123,44,191,0.4); transform: translateY(-4px); }
+
+    .social-post-img { aspect-ratio: 1; overflow: hidden; }
+    .social-post-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .social-post:hover .social-post-img img { transform: scale(1.06); }
+
+    .social-post-body { padding: 1rem; }
+    .social-post-author { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem; }
+    .social-post-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--electric-purple); }
+    .social-post-name { font-size: 0.875rem; font-weight: 600; }
+    .social-post-handle { font-size: 0.75rem; color: var(--text-muted); }
+    .social-post-caption { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+    .social-post-likes { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem; display: flex; align-items: center; gap: 0.4rem; }
+
+    /* Testimonials carousel */
+    .testimonial-carousel { position: relative; overflow: hidden; }
+    .testimonial-track { display: flex; gap: 1.5rem; transition: transform 0.5s ease; }
+    .testimonial-track .testimonial-card { flex: 0 0 calc(33.333% - 1rem); min-width: 300px; }
+    .carousel-controls { display: flex; gap: 0.75rem; justify-content: center; margin-top: 2rem; }
+    .carousel-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--dark-card); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); }
+    .carousel-btn:hover { background: var(--electric-purple); border-color: var(--electric-purple); }
+
+    /* Trip highlights video */
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .highlight-video {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      cursor: pointer;
+    }
+
+    .highlight-video img { width: 100%; height: 100%; object-fit: cover; }
+    .highlight-video-play {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.3);
+      transition: var(--transition);
+    }
+    .highlight-video-play:hover { background: rgba(0,0,0,0.5); }
+    .play-btn-lg { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 2rem; transition: var(--transition); }
+    .highlight-video:hover .play-btn-lg { background: var(--electric-purple); transform: scale(1.1); }
+
+    .highlight-thumbnails { display: flex; flex-direction: column; gap: 1rem; }
+    .highlight-thumb {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      cursor: pointer;
+    }
+    .highlight-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .highlight-thumb:hover img { transform: scale(1.06); }
+    .highlight-thumb-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+    /* Newsletter */
+    .newsletter-section {
+      background: linear-gradient(135deg, rgba(11,60,93,0.8), rgba(123,44,191,0.8));
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .newsletter-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('https://picsum.photos/seed/newsletter/1200/600') center/cover;
+      opacity: 0.08;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 480px;
+      margin: 1.5rem auto 0;
+    }
+
+    .newsletter-form input { flex: 1; }
+
+    @media (max-width: 1024px) {
+      .photo-wall { columns: 3; }
+      .social-wall { grid-template-columns: repeat(2, 1fr); }
+      .testimonial-track .testimonial-card { flex: 0 0 calc(50% - 0.75rem); }
+    }
+
+    @media (max-width: 768px) {
+      .photo-wall { columns: 2; }
+      .social-wall { grid-template-columns: repeat(2, 1fr); }
+      .highlights-grid { grid-template-columns: 1fr; }
+      .highlight-thumbnails { flex-direction: row; }
+      .newsletter-form { flex-direction: column; }
+      .testimonial-track .testimonial-card { flex: 0 0 85vw; }
+    }
+
+    @media (max-width: 480px) {
+      .photo-wall { columns: 2; }
+      .social-wall { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading-screen">
+  <div class="loading-logo">DST — COMMUNITY</div>
+  <div class="loading-bar-container"><div class="loading-bar"></div></div>
+</div>
+
+<div class="cursor-glow"></div>
+
+<nav class="nav scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">DON'T STOP TRIPPING</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="events.html" class="nav-link">Events</a></li>
+        <li><a href="experience.html" class="nav-link">Experience</a></li>
+        <li><a href="community.html" class="nav-link active">Community</a></li>
+        <li><a href="faq.html" class="nav-link">FAQ</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="dashboard.html" class="btn btn-ghost btn-sm">My Account</a>
+        <a href="events.html#tickets" class="btn btn-primary btn-sm">Get Tickets</a>
+      </div>
+      <div class="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <button class="mobile-nav-close">✕</button>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="events.html" class="nav-link">Events</a>
+  <a href="experience.html" class="nav-link">Experience</a>
+  <a href="community.html" class="nav-link">Community</a>
+  <a href="faq.html" class="nav-link">FAQ</a>
+  <a href="events.html#tickets" class="btn btn-primary btn-lg">Get Tickets</a>
+</div>
+
+<!-- Community Hero -->
+<div class="comm-hero" style="padding-top:80px;">
+  <div class="comm-hero-bg">
+    <img src="https://picsum.photos/seed/community-hero/1920/900" alt="DST Community" />
+  </div>
+  <div class="comm-hero-overlay"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <span class="section-eyebrow">Our Tribe</span>
+    <h1 class="display-2">The DST <span class="gradient-text">Family</span></h1>
+    <p style="color:rgba(255,255,255,0.75);font-size:1.1rem;max-width:500px;margin-top:0.75rem;">
+      3,200+ adventurers. One community. Bound by the sea and a love for unforgettable experiences.
+    </p>
+  </div>
+</div>
+
+<!-- ===== STATS BAR ===== -->
+<div style="background:var(--dark-surface);border-bottom:1px solid var(--border-color);padding:2rem 0;">
+  <div class="container">
+    <div class="grid-4">
+      <div style="text-align:center;padding:1rem;">
+        <div class="counter-number" data-target="3200">0</div>
+        <div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.4rem;">Community Members</div>
+      </div>
+      <div style="text-align:center;padding:1rem;">
+        <div class="counter-number" data-target="12">0</div>
+        <div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.4rem;">Voyages Completed</div>
+      </div>
+      <div style="text-align:center;padding:1rem;">
+        <div class="counter-number" data-target="47">0</div>
+        <div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.4rem;">Destinations Explored</div>
+      </div>
+      <div style="text-align:center;padding:1rem;">
+        <div class="counter-number" data-target="18500">0</div>
+        <div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.4rem;">Memories Made</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PHOTO WALL ===== -->
+<section class="section-pad" id="gallery">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Captured Moments</span>
+      <h2 class="section-title">Photo <span class="gradient-text">Gallery</span></h2>
+      <div class="divider centered"></div>
+      <p class="section-subtitle">Real photos from real trips. This is what DST looks and feels like.</p>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="tabs" style="justify-content:center;margin-bottom:2rem;" data-tab-group="gallery">
+      <button class="tab-btn active" data-tab="all">All Photos</button>
+      <button class="tab-btn" data-tab="parties">Parties</button>
+      <button class="tab-btn" data-tab="destinations">Destinations</button>
+      <button class="tab-btn" data-tab="vibes">Vibes</button>
+    </div>
+
+    <div class="photo-wall reveal">
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo1/400/600" alt="Party on deck" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-purple">Ibiza 2024</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo2/400/300" alt="Island beach" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-orange">Caribbean 2024</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo3/400/500" alt="DJ set" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-aqua">Med 2023</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo4/400/400" alt="Sunset" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-gold">Sunset Session</span></div>
+      </div>
+
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo5/400/500" alt="Crowd" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-purple">Main Stage</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo6/400/300" alt="Ocean view" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-aqua">Open Ocean</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo7/400/600" alt="Friends on yacht" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-orange">Friendships</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo8/400/350" alt="Night party" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-purple">Night Life</span></div>
+      </div>
+
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo9/400/450" alt="Snorkeling" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-aqua">Adventure</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo10/400/600" alt="Gourmet dining" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-gold">Dining</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo11/400/300" alt="Beach party" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-orange">Beach Party</span></div>
+      </div>
+      <div class="photo-wall-item">
+        <img src="https://picsum.photos/seed/photo12/400/500" alt="Yoga" />
+        <div class="photo-wall-item-overlay"><span class="badge badge-aqua">Wellness</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRIP HIGHLIGHTS VIDEO ===== -->
+<section class="section-pad" style="background:var(--dark-surface);" id="highlights">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Relive The Magic</span>
+      <h2 class="section-title">Trip <span class="gradient-text">Highlights</span></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="highlights-grid reveal">
+      <div class="highlight-video">
+        <img src="https://picsum.photos/seed/highlight-main/800/500" alt="Caribbean Odyssey Highlights" />
+        <div class="highlight-video-play">
+          <div class="play-btn-lg">▶</div>
+        </div>
+        <div style="position:absolute;bottom:1.5rem;left:1.5rem;z-index:2;">
+          <div style="font-family:var(--font-display);font-size:1.5rem;margin-bottom:0.25rem;">Caribbean Odyssey 2024</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.65);">Official Aftermovie · 8:32</div>
+        </div>
+      </div>
+
+      <div class="highlight-thumbnails">
+        <div class="highlight-thumb">
+          <img src="https://picsum.photos/seed/highlight2/400/250" alt="Ibiza 2024" />
+          <div class="highlight-thumb-overlay">▶</div>
+          <div style="position:absolute;bottom:0.75rem;left:0.75rem;">
+            <div style="font-family:var(--font-display);font-size:1rem;">Ibiza Adventure 2024</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);">4:15</div>
+          </div>
+        </div>
+        <div class="highlight-thumb">
+          <img src="https://picsum.photos/seed/highlight3/400/250" alt="Med 2023" />
+          <div class="highlight-thumb-overlay">▶</div>
+          <div style="position:absolute;bottom:0.75rem;left:0.75rem;">
+            <div style="font-family:var(--font-display);font-size:1rem;">Mediterranean 2023</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);">6:48</div>
+          </div>
+        </div>
+        <div class="highlight-thumb">
+          <img src="https://picsum.photos/seed/highlight4/400/250" alt="Best Moments" />
+          <div class="highlight-thumb-overlay">▶</div>
+          <div style="position:absolute;bottom:0.75rem;left:0.75rem;">
+            <div style="font-family:var(--font-display);font-size:1rem;">Best Moments 2022–24</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);">12:03</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS CAROUSEL ===== -->
+<section class="section-pad" id="testimonials">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Real Stories</span>
+      <h2 class="section-title">Tripper <span class="gradient-text">Testimonials</span></h2>
+      <div class="divider centered"></div>
+    </div>
+
+    <div class="testimonial-carousel reveal">
+      <div class="testimonial-track" id="testimonial-track">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"I've been to festivals all over the world, but nothing compares to DST. Waking up to the sound of waves and an open bar — this is what living feels like."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://picsum.photos/seed/t1/100/100" alt="Sarah M." />
+            <div>
+              <div class="testimonial-name">Sarah M.</div>
+              <div class="testimonial-role">Caribbean Odyssey 2024 · 🇺🇸 New York</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"The community alone is worth the price of admission. I made friends for life on that boat. Already booked my 3rd trip — I literally cannot stop tripping!"</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://picsum.photos/seed/t2/100/100" alt="Marcus J." />
+            <div>
+              <div class="testimonial-name">Marcus J.</div>
+              <div class="testimonial-role">Mediterranean 2024 · 🇬🇧 London</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"The attention to detail blew me away. From the welcome party to the farewell dinner, every single moment was magical. My highest recommendation!"</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://picsum.photos/seed/t3/100/100" alt="Priya K." />
+            <div>
+              <div class="testimonial-name">Priya K.</div>
+              <div class="testimonial-role">Ibiza Adventure 2023 · 🇮🇳 Mumbai</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"This isn't just a party on a boat — it's a life-changing experience. The lineup was incredible, the food was insane, and the people... I found my tribe."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://picsum.photos/seed/t4/100/100" alt="Jake R." />
+            <div>
+              <div class="testimonial-name">Jake R.</div>
+              <div class="testimonial-role">Caribbean Odyssey 2023 · 🇨🇦 Toronto</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"As a solo traveler, I was nervous. But DST's community is the most welcoming thing I've ever experienced. I never felt alone for a single second."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://picsum.photos/seed/t5/100/100" alt="Amara T." />
+            <div>
+              <div class="testimonial-name">Amara T.</div>
+              <div class="testimonial-role">Ibiza 2024 · 🇳🇬 Lagos</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p class="testimonial-text">"The private island day was worth the entire trip price alone. I've never seen anything so beautiful in my life. DST just does things differently."</p>
+          <div class="testimonial-author">
+            <img class="testimonial-avatar" src="https://picsum.photos/seed/t6/100/100" alt="Diego M." />
+            <div>
+              <div class="testimonial-name">Diego M.</div>
+              <div class="testimonial-role">Caribbean 2024 · 🇧🇷 São Paulo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-btn" onclick="scrollCarousel(-1)">←</button>
+        <button class="carousel-btn" onclick="scrollCarousel(1)">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOCIAL WALL ===== -->
+<section class="section-pad" style="background:var(--dark-surface);" id="social">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">@DontStopTripping</span>
+      <h2 class="section-title">Follow the <span class="gradient-text">Journey</span></h2>
+      <div class="divider centered"></div>
+      <p class="section-subtitle">Join 85,000+ followers sharing their DST adventures. Tag us with #DontStopTripping.</p>
+    </div>
+
+    <div class="social-wall reveal">
+      <div class="social-post">
+        <div class="social-post-img"><img src="https://picsum.photos/seed/social1/400/400" alt="Instagram post" /></div>
+        <div class="social-post-body">
+          <div class="social-post-author">
+            <img class="social-post-avatar" src="https://picsum.photos/seed/ua1/80/80" alt="User" />
+            <div><div class="social-post-name">@sarahadventures</div><div class="social-post-handle">Instagram</div></div>
+          </div>
+          <div class="social-post-caption">Day 3 on the DST yacht and I don't want to go home 🌊🎵 #DontStopTripping #YachtLife</div>
+          <div class="social-post-likes">❤️ 2,847 likes</div>
+        </div>
+      </div>
+
+      <div class="social-post">
+        <div class="social-post-img"><img src="https://picsum.photos/seed/social2/400/400" alt="Instagram post" /></div>
+        <div class="social-post-body">
+          <div class="social-post-author">
+            <img class="social-post-avatar" src="https://picsum.photos/seed/ua2/80/80" alt="User" />
+            <div><div class="social-post-name">@markusvibes</div><div class="social-post-handle">Instagram</div></div>
+          </div>
+          <div class="social-post-caption">This view from the main stage at sunset 😍 DST you've done it again! #OceanParty</div>
+          <div class="social-post-likes">❤️ 4,219 likes</div>
+        </div>
+      </div>
+
+      <div class="social-post">
+        <div class="social-post-img"><img src="https://picsum.photos/seed/social3/400/400" alt="TikTok post" /></div>
+        <div class="social-post-body">
+          <div class="social-post-author">
+            <img class="social-post-avatar" src="https://picsum.photos/seed/ua3/80/80" alt="User" />
+            <div><div class="social-post-name">@wanderlust.priya</div><div class="social-post-handle">TikTok</div></div>
+          </div>
+          <div class="social-post-caption">POV: you went to DST as a solo traveler and found your people 🥹❤️ #DontStopTripping</div>
+          <div class="social-post-likes">▶️ 1.2M views</div>
+        </div>
+      </div>
+
+      <div class="social-post">
+        <div class="social-post-img"><img src="https://picsum.photos/seed/social4/400/400" alt="Instagram post" /></div>
+        <div class="social-post-body">
+          <div class="social-post-author">
+            <img class="social-post-avatar" src="https://picsum.photos/seed/ua4/80/80" alt="User" />
+            <div><div class="social-post-name">@djnova_official</div><div class="social-post-handle">Instagram</div></div>
+          </div>
+          <div class="social-post-caption">Playing to 500 legends tonight on the DST Caribbean voyage 🎛️🌊 This is what I live for!</div>
+          <div class="social-post-likes">❤️ 18,440 likes</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:2rem;" class="reveal">
+      <a href="#" class="btn btn-ghost">Follow @DontStopTripping →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== JOIN COMMUNITY ===== -->
+<section class="section-pad">
+  <div class="container">
+    <div class="newsletter-section reveal">
+      <div style="position:relative;z-index:1;">
+        <span class="section-eyebrow" style="color:var(--gold-accent);">Stay Connected</span>
+        <h2 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;">Join the DST <span class="gradient-text">Inner Circle</span></h2>
+        <p style="color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto;line-height:1.7;">
+          Be the first to know about new events, lineup announcements, early-bird tickets, and exclusive community updates.
+        </p>
+        <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+          <input type="email" class="form-input" placeholder="your@email.com" required />
+          <button type="submit" class="btn btn-primary">Join Now</button>
+        </form>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-top:0.75rem;">No spam. Unsubscribe anytime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">DON'T STOP TRIPPING</div>
+        <p class="footer-desc">Luxury yacht events for adventurers worldwide.</p>
+        <div class="social-links">
+          <a href="#" class="social-link">📷</a>
+          <a href="#" class="social-link">🎵</a>
+          <a href="#" class="social-link">🐦</a>
+          <a href="#" class="social-link">▶️</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Community</div>
+        <ul class="footer-links">
+          <li><a href="#gallery" class="footer-link">Photo Gallery</a></li>
+          <li><a href="#highlights" class="footer-link">Trip Highlights</a></li>
+          <li><a href="#testimonials" class="footer-link">Testimonials</a></li>
+          <li><a href="#social" class="footer-link">Social Wall</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="events.html" class="footer-link">Events</a></li>
+          <li><a href="experience.html" class="footer-link">Experience</a></li>
+          <li><a href="faq.html" class="footer-link">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Get Involved</div>
+        <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1rem;line-height:1.6;">Have photos to share? Stories to tell? Join the community.</p>
+        <a href="events.html#tickets" class="btn btn-primary btn-sm">Join DST</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Don't Stop Tripping. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <a href="events.html#tickets" class="btn btn-primary btn-sm">⚓ Book Now</a>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script>
+  feather.replace();
+
+  // Carousel
+  let carouselOffset = 0;
+  const track = document.getElementById('testimonial-track');
+
+  function scrollCarousel(dir) {
+    if (!track) return;
+    const cardW = track.querySelector('.testimonial-card')?.offsetWidth + 24 || 350;
+    const maxOffset = track.scrollWidth - track.parentElement.offsetWidth;
+    carouselOffset = Math.max(0, Math.min(maxOffset, carouselOffset + dir * cardW));
+    track.style.transform = `translateX(-${carouselOffset}px)`;
+  }
+
+  // Auto-scroll carousel
+  setInterval(() => scrollCarousel(1), 4000);
+
+  function handleNewsletterSubmit(e) {
+    e.preventDefault();
+    e.target.querySelector('input').value = '';
+    showToast('🎉 Welcome to the DST Inner Circle!', '✅', 4000);
+  }
+
+  // Highlight videos play simulation
+  document.querySelectorAll('.highlight-video, .highlight-thumb').forEach(el => {
+    el.addEventListener('click', () => {
+      showToast('🎬 Video player coming soon!', '🎵', 3000);
+    });
+  });
+</script>
+</body>
+</html>

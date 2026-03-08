@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experience — Don't Stop Tripping</title>
+  <meta name="description" content="Discover everything included in your DST journey — music, adventures, workshops, dining, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .exp-hero {
+      height: 65vh;
+      min-height: 500px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 5rem;
+      overflow: hidden;
+    }
+
+    .exp-hero-bg { position: absolute; inset: 0; }
+    .exp-hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+    .exp-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.9) 100%);
+    }
+
+    /* Experience category cards */
+    .exp-cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .exp-cat-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .exp-cat-card:first-child { aspect-ratio: unset; grid-row: span 2; }
+
+    .exp-cat-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .exp-cat-card:hover img { transform: scale(1.06); }
+
+    .exp-cat-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.1) 30%, rgba(10,10,10,0.92) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem;
+      transition: var(--transition);
+    }
+
+    .exp-cat-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .exp-cat-title { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.4rem; }
+    .exp-cat-desc { font-size: 0.875rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+    .exp-cat-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--sunset-orange); font-size: 0.85rem; font-weight: 600; margin-top: 0.75rem; opacity: 0; transform: translateY(8px); transition: var(--transition); }
+    .exp-cat-card:hover .exp-cat-link { opacity: 1; transform: translateY(0); }
+
+    /* Music section */
+    .music-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .music-row {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem 1.5rem;
+      background: var(--dark-card);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .music-row:hover { background: rgba(123,44,191,0.1); }
+
+    .music-time { font-family: var(--font-display); font-size: 1.1rem; color: var(--electric-purple); }
+    .music-artist { font-weight: 600; }
+    .music-genre { font-size: 0.8rem; color: var(--text-muted); }
+    .music-stage { font-size: 0.75rem; padding: 0.3rem 0.75rem; border-radius: 50px; background: rgba(255,255,255,0.08); color: var(--text-secondary); white-space: nowrap; }
+
+    /* Activities */
+    .activities-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .activity-full-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .activity-full-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .activity-full-card:hover img { transform: scale(1.04); }
+
+    .activity-full-overlay {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+      background: linear-gradient(transparent, rgba(10,10,10,0.95));
+    }
+
+    .activity-full-title { font-size: 1.5rem; font-family: var(--font-display); margin-bottom: 0.5rem; }
+    .activity-full-desc { font-size: 0.875rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+
+    /* Dining */
+    .dining-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    .dining-card {
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .dining-card:hover { border-color: rgba(212,175,55,0.4); transform: translateY(-4px); }
+    .dining-card-img { aspect-ratio: 1; overflow: hidden; }
+    .dining-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .dining-card:hover .dining-card-img img { transform: scale(1.05); }
+    .dining-card-body { padding: 1.25rem; }
+    .dining-card-title { font-weight: 700; margin-bottom: 0.25rem; }
+    .dining-card-desc { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* Workshop cards */
+    .workshop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+    .workshop-card {
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: var(--transition);
+    }
+
+    .workshop-card:hover { border-color: rgba(0,194,209,0.4); transform: translateY(-4px); }
+    .workshop-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .workshop-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .workshop-desc { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+    .workshop-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .workshop-meta span { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem; }
+
+    /* Included list */
+    .included-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+
+    .included-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      background: rgba(0,194,209,0.06);
+      border: 1px solid rgba(0,194,209,0.15);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+    }
+
+    .included-check { color: var(--light-aqua); font-size: 1.1rem; }
+
+    @media (max-width: 1024px) {
+      .exp-cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .exp-cat-card:first-child { grid-row: span 1; }
+      .dining-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .exp-cat-grid, .activities-grid, .workshop-grid { grid-template-columns: 1fr; }
+      .dining-grid { grid-template-columns: repeat(2, 1fr); }
+      .included-grid { grid-template-columns: 1fr; }
+      .music-row { grid-template-columns: 80px 1fr; }
+      .music-stage { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading-screen">
+  <div class="loading-logo">DST — EXPERIENCE</div>
+  <div class="loading-bar-container"><div class="loading-bar"></div></div>
+</div>
+
+<div class="cursor-glow"></div>
+
+<nav class="nav scrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">DON'T STOP TRIPPING</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="events.html" class="nav-link">Events</a></li>
+        <li><a href="experience.html" class="nav-link active">Experience</a></li>
+        <li><a href="community.html" class="nav-link">Community</a></li>
+        <li><a href="faq.html" class="nav-link">FAQ</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="dashboard.html" class="btn btn-ghost btn-sm">My Account</a>
+        <a href="events.html#tickets" class="btn btn-primary btn-sm">Get Tickets</a>
+      </div>
+      <div class="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-nav">
+  <button class="mobile-nav-close">✕</button>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="events.html" class="nav-link">Events</a>
+  <a href="experience.html" class="nav-link">Experience</a>
+  <a href="community.html" class="nav-link">Community</a>
+  <a href="faq.html" class="nav-link">FAQ</a>
+  <a href="events.html#tickets" class="btn btn-primary btn-lg">Get Tickets</a>
+</div>
+
+<!-- Experience Hero -->
+<div class="exp-hero" style="padding-top:80px;">
+  <div class="exp-hero-bg">
+    <img src="https://picsum.photos/seed/experience-hero/1920/900" alt="The DST Experience" />
+  </div>
+  <div class="exp-hero-overlay"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <span class="section-eyebrow">The DST Experience</span>
+    <h1 class="display-2">Life at <span class="gradient-text">Sea Level</span></h1>
+    <p style="color:rgba(255,255,255,0.75);font-size:1.2rem;max-width:500px;margin-top:1rem;">
+      Every moment designed to elevate your senses. Music, adventure, connection, and luxury — all at once.
+    </p>
+  </div>
+</div>
+
+<!-- ===== CATEGORIES SHOWCASE ===== -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">What Awaits You</span>
+      <h2 class="section-title">The Complete <span class="gradient-text">Experience</span></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="exp-cat-grid">
+      <div class="exp-cat-card reveal-left">
+        <img src="https://picsum.photos/seed/music-exp/600/900" alt="Music" />
+        <div class="exp-cat-overlay">
+          <span class="exp-cat-icon">🎵</span>
+          <div class="exp-cat-title">Music & DJs</div>
+          <div class="exp-cat-desc">World-class artists performing across multiple stages — day and night, on deck and on islands.</div>
+          <span class="exp-cat-link">Explore → </span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-rows:1fr 1fr;gap:1.5rem;">
+        <div class="exp-cat-card reveal delay-1">
+          <img src="https://picsum.photos/seed/watersports/600/300" alt="Water Sports" />
+          <div class="exp-cat-overlay">
+            <span class="exp-cat-icon">🏄</span>
+            <div class="exp-cat-title">Water Adventures</div>
+            <div class="exp-cat-desc">Jet skis, snorkeling, paddleboarding, and more.</div>
+            <span class="exp-cat-link">Explore → </span>
+          </div>
+        </div>
+        <div class="exp-cat-card reveal delay-2">
+          <img src="https://picsum.photos/seed/dining-yacht/600/300" alt="Fine Dining" />
+          <div class="exp-cat-overlay">
+            <span class="exp-cat-icon">🍽️</span>
+            <div class="exp-cat-title">Gourmet Dining</div>
+            <div class="exp-cat-desc">Curated menus from world-class chefs with ocean views.</div>
+            <span class="exp-cat-link">Explore → </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1.5rem;">
+      <div class="exp-cat-card reveal delay-1" style="aspect-ratio:4/3;">
+        <img src="https://picsum.photos/seed/workshops-exp/400/300" alt="Workshops" />
+        <div class="exp-cat-overlay">
+          <span class="exp-cat-icon">🎓</span>
+          <div class="exp-cat-title">Workshops</div>
+          <div class="exp-cat-desc">DJ classes, wellness sessions, and creative labs.</div>
+          <span class="exp-cat-link">Explore → </span>
+        </div>
+      </div>
+      <div class="exp-cat-card reveal delay-2" style="aspect-ratio:4/3;">
+        <img src="https://picsum.photos/seed/beach-party/400/300" alt="Beach Parties" />
+        <div class="exp-cat-overlay">
+          <span class="exp-cat-icon">🏖️</span>
+          <div class="exp-cat-title">Beach Parties</div>
+          <div class="exp-cat-desc">Exclusive island takeovers with private beach access.</div>
+          <span class="exp-cat-link">Explore → </span>
+        </div>
+      </div>
+      <div class="exp-cat-card reveal delay-3" style="aspect-ratio:4/3;">
+        <img src="https://picsum.photos/seed/networking/400/300" alt="Networking" />
+        <div class="exp-cat-overlay">
+          <span class="exp-cat-icon">🤝</span>
+          <div class="exp-cat-title">Networking</div>
+          <div class="exp-cat-desc">Connect with creatives, entrepreneurs, and free spirits.</div>
+          <span class="exp-cat-link">Explore → </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MUSIC ===== -->
+<section class="section-pad" id="music" style="background:var(--dark-surface);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">Music & Entertainment</span>
+      <h2 class="section-title">The <span class="gradient-text">Soundtrack</span></h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">7 days, 3 stages, 12+ artists. Your ocean adventure has never sounded this good.</p>
+    </div>
+
+    <div class="grid-2" style="gap:4rem;align-items:start;">
+      <div class="reveal-left">
+        <h3 style="font-size:1.5rem;margin-bottom:1.5rem;">Sample Schedule</h3>
+        <div class="music-timeline">
+          <div class="music-row">
+            <div class="music-time">7:00 AM</div>
+            <div><div class="music-artist">Ambient Morning Mix</div><div class="music-genre">Chill / Ambient</div></div>
+            <div class="music-stage">Pool Deck</div>
+          </div>
+          <div class="music-row">
+            <div class="music-time">12:00 PM</div>
+            <div><div class="music-artist">DJ Nova</div><div class="music-genre">Tech House</div></div>
+            <div class="music-stage">Main Stage</div>
+          </div>
+          <div class="music-row">
+            <div class="music-time">3:00 PM</div>
+            <div><div class="music-artist">Luna Beats</div><div class="music-genre">Afro House</div></div>
+            <div class="music-stage">Sunset Stage</div>
+          </div>
+          <div class="music-row">
+            <div class="music-time">6:30 PM</div>
+            <div><div class="music-artist">Sunset Session</div><div class="music-genre">Deep House</div></div>
+            <div class="music-stage">Ocean Deck</div>
+          </div>
+          <div class="music-row">
+            <div class="music-time">10:00 PM</div>
+            <div><div class="music-artist">Marco V B2B Sasha Storm</div><div class="music-genre">Progressive</div></div>
+            <div class="music-stage">Main Stage</div>
+          </div>
+          <div class="music-row">
+            <div class="music-time">2:00 AM</div>
+            <div><div class="music-artist">After Dark</div><div class="music-genre">Melodic Techno</div></div>
+            <div class="music-stage">Sky Lounge</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-right">
+        <div style="border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1.5rem;">
+          <img src="https://picsum.photos/seed/dj-performance/600/400" alt="DJ Performance" style="width:100%;height:280px;object-fit:cover;" />
+        </div>
+        <h3 style="font-size:1.5rem;margin-bottom:1rem;">3 Unique Stages</h3>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <div class="feature-card" style="padding:1.25rem;">
+            <div style="display:flex;align-items:center;gap:1rem;">
+              <div class="feature-icon icon-purple">🎤</div>
+              <div><div style="font-weight:700;">Main Stage</div><div style="font-size:0.85rem;color:var(--text-secondary);">Headline acts & world premieres</div></div>
+            </div>
+          </div>
+          <div class="feature-card" style="padding:1.25rem;">
+            <div style="display:flex;align-items:center;gap:1rem;">
+              <div class="feature-icon icon-orange">🌅</div>
+              <div><div style="font-weight:700;">Sunset Stage</div><div style="font-size:0.85rem;color:var(--text-secondary);">Intimate sets as the sun dips below the horizon</div></div>
+            </div>
+          </div>
+          <div class="feature-card" style="padding:1.25rem;">
+            <div style="display:flex;align-items:center;gap:1rem;">
+              <div class="feature-icon icon-aqua">🌙</div>
+              <div><div style="font-weight:700;">Sky Lounge</div><div style="font-size:0.85rem;color:var(--text-secondary);">Underground vibes under the stars</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WATER ACTIVITIES ===== -->
+<section class="section-pad" id="activities">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Get in the Water</span>
+      <h2 class="section-title">Ocean <span class="gradient-text">Adventures</span></h2>
+      <div class="divider centered"></div>
+    </div>
+
+    <div class="activities-grid">
+      <div class="activity-full-card reveal-left">
+        <img src="https://picsum.photos/seed/snorkeling/600/400" alt="Snorkeling" />
+        <div class="activity-full-overlay">
+          <span class="badge badge-aqua" style="margin-bottom:0.75rem;">🤿 Guided</span>
+          <div class="activity-full-title">Reef Snorkeling</div>
+          <div class="activity-full-desc">Explore vibrant coral reefs at our private island stops with expert guides.</div>
+        </div>
+      </div>
+
+      <div class="activity-full-card reveal-right">
+        <img src="https://picsum.photos/seed/jetski/600/400" alt="Jet Skiing" />
+        <div class="activity-full-overlay">
+          <span class="badge badge-orange" style="margin-bottom:0.75rem;">🚤 Thrilling</span>
+          <div class="activity-full-title">Jet Ski Racing</div>
+          <div class="activity-full-desc">Feel the rush with high-speed jet ski sessions around the yacht.</div>
+        </div>
+      </div>
+
+      <div class="activity-full-card reveal-left">
+        <img src="https://picsum.photos/seed/paddleboard/600/400" alt="Paddleboarding" />
+        <div class="activity-full-overlay">
+          <span class="badge badge-purple" style="margin-bottom:0.75rem;">🏄 Zen</span>
+          <div class="activity-full-title">Sunrise Paddleboard</div>
+          <div class="activity-full-desc">Start each morning with a peaceful paddleboard session as the sun rises.</div>
+        </div>
+      </div>
+
+      <div class="activity-full-card reveal-right">
+        <img src="https://picsum.photos/seed/diving/600/400" alt="Diving" />
+        <div class="activity-full-overlay">
+          <span class="badge badge-gold" style="margin-bottom:0.75rem;">🐠 Exclusive</span>
+          <div class="activity-full-title">Deep Water Diving</div>
+          <div class="activity-full-desc">Certified dives into the Caribbean's most pristine underwater worlds.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DINING ===== -->
+<section class="section-pad" id="dining" style="background:var(--dark-surface);">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Culinary Journey</span>
+      <h2 class="section-title">Gourmet <span class="gradient-text">Dining</span></h2>
+      <div class="divider centered"></div>
+      <p class="section-subtitle">Three world-class restaurants, four bars, and 24/7 room service. We don't do basic.</p>
+    </div>
+
+    <div class="dining-grid">
+      <div class="dining-card reveal delay-1">
+        <div class="dining-card-img">
+          <img src="https://picsum.photos/seed/seafood/300/300" alt="Seafood Restaurant" />
+        </div>
+        <div class="dining-card-body">
+          <span class="badge badge-gold" style="margin-bottom:0.5rem;">🍽️ Fine Dining</span>
+          <div class="dining-card-title">Ocean's Table</div>
+          <div class="dining-card-desc">Fresh-caught seafood prepared by award-winning chefs with ocean views.</div>
+        </div>
+      </div>
+
+      <div class="dining-card reveal delay-2">
+        <div class="dining-card-img">
+          <img src="https://picsum.photos/seed/fusion/300/300" alt="Fusion Restaurant" />
+        </div>
+        <div class="dining-card-body">
+          <span class="badge badge-purple" style="margin-bottom:0.5rem;">🌮 Fusion</span>
+          <div class="dining-card-title">Coastal Fusion</div>
+          <div class="dining-card-desc">Pan-Caribbean flavors blended with international techniques.</div>
+        </div>
+      </div>
+
+      <div class="dining-card reveal delay-3">
+        <div class="dining-card-img">
+          <img src="https://picsum.photos/seed/rooftop-bar/300/300" alt="Sky Bar" />
+        </div>
+        <div class="dining-card-body">
+          <span class="badge badge-orange" style="margin-bottom:0.5rem;">🍸 Bar</span>
+          <div class="dining-card-title">Sky Bar</div>
+          <div class="dining-card-desc">Craft cocktails, premium spirits, and spectacular sunset views.</div>
+        </div>
+      </div>
+
+      <div class="dining-card reveal delay-4">
+        <div class="dining-card-img">
+          <img src="https://picsum.photos/seed/breakfast/300/300" alt="Brunch" />
+        </div>
+        <div class="dining-card-body">
+          <span class="badge badge-aqua" style="margin-bottom:0.5rem;">☀️ Brunch</span>
+          <div class="dining-card-title">Morning Deck Brunch</div>
+          <div class="dining-card-desc">Daily buffet brunch with live music and fresh tropical fruits.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORKSHOPS ===== -->
+<section class="section-pad" id="workshops">
+  <div class="container">
+    <div class="section-header centered reveal">
+      <span class="section-eyebrow">Learn & Grow</span>
+      <h2 class="section-title">On-Board <span class="gradient-text">Workshops</span></h2>
+      <div class="divider centered"></div>
+    </div>
+
+    <div class="workshop-grid">
+      <div class="workshop-card reveal delay-1">
+        <div class="workshop-icon">🎛️</div>
+        <div class="workshop-name">DJ Masterclass</div>
+        <div class="workshop-desc">Learn the art of DJing from resident artists. Covers mixing, beatmatching, and reading the crowd.</div>
+        <div class="workshop-meta">
+          <span>📅 Days 2, 4, 6</span>
+          <span>⏱️ 2 Hours</span>
+          <span>👥 Max 20</span>
+        </div>
+      </div>
+
+      <div class="workshop-card reveal delay-2">
+        <div class="workshop-icon">🧘</div>
+        <div class="workshop-name">Ocean Wellness</div>
+        <div class="workshop-desc">Morning yoga, breathwork, and meditation sessions with the sea as your backdrop.</div>
+        <div class="workshop-meta">
+          <span>📅 Daily</span>
+          <span>⏱️ 1 Hour</span>
+          <span>👥 Open</span>
+        </div>
+      </div>
+
+      <div class="workshop-card reveal delay-3">
+        <div class="workshop-icon">📸</div>
+        <div class="workshop-name">Ocean Photography</div>
+        <div class="workshop-desc">Capture stunning shots of the sea, sunsets, and events with our pro photographer guides.</div>
+        <div class="workshop-meta">
+          <span>📅 Days 1, 3, 5</span>
+          <span>⏱️ 3 Hours</span>
+          <span>👥 Max 15</span>
+        </div>
+      </div>
+
+      <div class="workshop-card reveal delay-1">
+        <div class="workshop-icon">🍹</div>
+        <div class="workshop-name">Cocktail Crafting</div>
+        <div class="workshop-desc">Mix tropical cocktails with our expert bartenders using local Caribbean ingredients.</div>
+        <div class="workshop-meta">
+          <span>📅 Days 3, 5</span>
+          <span>⏱️ 1.5 Hours</span>
+          <span>👥 Max 30</span>
+        </div>
+      </div>
+
+      <div class="workshop-card reveal delay-2">
+        <div class="workshop-icon">💼</div>
+        <div class="workshop-name">Creator Networking</div>
+        <div class="workshop-desc">Structured sessions to connect with artists, entrepreneurs, and influencers on board.</div>
+        <div class="workshop-meta">
+          <span>📅 Day 6</span>
+          <span>⏱️ 2 Hours</span>
+          <span>👥 Open</span>
+        </div>
+      </div>
+
+      <div class="workshop-card reveal delay-3">
+        <div class="workshop-icon">🎨</div>
+        <div class="workshop-name">Live Art Session</div>
+        <div class="workshop-desc">Paint, draw, or create while live music plays. Collaborative art installations displayed on ship.</div>
+        <div class="workshop-meta">
+          <span>📅 Days 2, 4</span>
+          <span>⏱️ 2 Hours</span>
+          <span>👥 Max 25</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHAT'S INCLUDED ===== -->
+<section class="section-pad" style="background:var(--dark-surface);" id="included">
+  <div class="container">
+    <div class="grid-2" style="gap:4rem;align-items:center;">
+      <div class="reveal-left">
+        <span class="section-eyebrow">Everything Covered</span>
+        <h2 class="section-title">What's <span class="gradient-text">Included</span></h2>
+        <div class="divider"></div>
+        <p style="color:var(--text-secondary);line-height:1.8;margin-bottom:2rem;">
+          We believe in transparency. Your ticket price includes everything you need for an unforgettable journey. No hidden fees, no surprise costs. Just pure adventure.
+        </p>
+
+        <div class="included-grid">
+          <div class="included-item"><span class="included-check">✓</span> All event access (7 days)</div>
+          <div class="included-item"><span class="included-check">✓</span> Accommodation in cabin</div>
+          <div class="included-item"><span class="included-check">✓</span> All meals (breakfast, lunch, dinner)</div>
+          <div class="included-item"><span class="included-check">✓</span> Non-alcoholic beverages</div>
+          <div class="included-item"><span class="included-check">✓</span> Port entry fees</div>
+          <div class="included-item"><span class="included-check">✓</span> All workshops & activities</div>
+          <div class="included-item"><span class="included-check">✓</span> Welcome & farewell events</div>
+          <div class="included-item"><span class="included-check">✓</span> 24/7 onboard security</div>
+          <div class="included-item"><span class="included-check">✓</span> Event photography access</div>
+          <div class="included-item"><span class="included-check">✓</span> DST welcome package</div>
+        </div>
+      </div>
+
+      <div class="reveal-right">
+        <div style="border-radius:var(--radius-lg);overflow:hidden;">
+          <img src="https://picsum.photos/seed/included-yacht/600/500" alt="What's included" style="width:100%;height:400px;object-fit:cover;" />
+        </div>
+        <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin-top:1.25rem;">
+          <div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.75rem;">Starting From</div>
+          <div style="font-family:var(--font-display);font-size:3rem;color:var(--gold-accent);">$1,299</div>
+          <div style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1.25rem;">per person — all-inclusive</div>
+          <a href="events.html#tickets" class="btn btn-primary" style="width:100%;justify-content:center;">Book Your Spot</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-pad" style="background:linear-gradient(135deg,rgba(123,44,191,0.3),rgba(255,122,24,0.2));">
+  <div class="container" style="text-align:center;">
+    <div class="reveal">
+      <h2 class="section-title">Ready to Live <span class="gradient-text">This?</span></h2>
+      <p style="color:var(--text-secondary);max-width:500px;margin:1rem auto 2rem;font-size:1.05rem;">
+        Don't just dream about it. Every moment you wait is a moment you could be on the water.
+      </p>
+      <a href="events.html#tickets" class="btn btn-primary btn-lg">
+        <i data-feather="anchor" style="width:18px;height:18px;"></i>
+        Secure Your Spot Today
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">DON'T STOP TRIPPING</div>
+        <p class="footer-desc">Luxury yacht events for adventurers worldwide.</p>
+        <div class="social-links">
+          <a href="#" class="social-link">📷</a>
+          <a href="#" class="social-link">🎵</a>
+          <a href="#" class="social-link">🐦</a>
+          <a href="#" class="social-link">▶️</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Experience</div>
+        <ul class="footer-links">
+          <li><a href="#music" class="footer-link">Music & DJs</a></li>
+          <li><a href="#activities" class="footer-link">Water Activities</a></li>
+          <li><a href="#dining" class="footer-link">Dining</a></li>
+          <li><a href="#workshops" class="footer-link">Workshops</a></li>
+          <li><a href="#included" class="footer-link">What's Included</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="events.html" class="footer-link">Events</a></li>
+          <li><a href="community.html" class="footer-link">Community</a></li>
+          <li><a href="faq.html" class="footer-link">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Book Now</div>
+        <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;">Limited spots available. Don't miss out.</p>
+        <a href="events.html#tickets" class="btn btn-primary">Get Tickets</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Don't Stop Tripping. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <a href="events.html#tickets" class="btn btn-primary btn-sm">⚓ Book Now</a>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script>feather.replace();</script>
+</body>
+</html>

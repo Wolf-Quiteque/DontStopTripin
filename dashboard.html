@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account — Don't Stop Tripping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    body { background: var(--dark-bg); }
+
+    /* Auth Gate */
+    .auth-gate {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-gate-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .auth-gate-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.2;
+    }
+
+    .auth-gate-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--dark-bg);
+      opacity: 0.85;
+    }
+
+    .auth-card {
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 440px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      background: var(--gradient-hero);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.25rem;
+    }
+
+    .auth-tabs { display: flex; background: rgba(255,255,255,0.04); border-radius: 50px; padding: 3px; margin-bottom: 2rem; }
+    .auth-tab { flex: 1; padding: 0.625rem; text-align: center; border-radius: 50px; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+    .auth-tab.active { background: var(--electric-purple); color: #fff; }
+
+    .divider-or { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; }
+    .divider-or::before, .divider-or::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
+    .divider-or span { font-size: 0.8rem; color: var(--text-muted); }
+
+    .social-login { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .social-login-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .social-login-btn:hover { background: rgba(255,255,255,0.1); }
+
+    /* Dashboard */
+    .dashboard-layout {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .dashboard-layout.visible { display: flex; }
+
+    .dashboard-sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: var(--dark-surface);
+      border-right: 1px solid var(--border-color);
+      padding: 1.5rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .dashboard-sidebar-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      background: var(--gradient-hero);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 2rem;
+      display: block;
+      padding-top: 0.5rem;
+    }
+
+    .sidebar-user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.04);
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+    }
+
+    .sidebar-user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--electric-purple);
+    }
+
+    .sidebar-user-name { font-weight: 700; font-size: 0.9rem; }
+    .sidebar-user-tier { font-size: 0.75rem; color: var(--gold-accent); }
+
+    .sidebar-nav { display: flex; flex-direction: column; gap: 0.25rem; }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .sidebar-nav-item:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+    .sidebar-nav-item.active { background: rgba(123,44,191,0.2); color: var(--electric-purple); }
+    .sidebar-nav-item i { width: 18px; height: 18px; }
+
+    .sidebar-section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      padding: 1rem 1rem 0.5rem;
+    }
+
+    .dashboard-main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 2rem;
+      max-width: calc(100% - 260px);
+    }
+
+    .dashboard-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    /* Dashboard Panels */
+    .dash-panel { display: none; }
+    .dash-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+    /* Ticket Display */
+    .ticket-display {
+      background: linear-gradient(135deg, var(--primary-blue), var(--electric-purple));
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .ticket-display::before {
+      content: '';
+      position: absolute;
+      right: -50px;
+      top: -50px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .ticket-display::after {
+      content: '';
+      position: absolute;
+      right: -20px;
+      bottom: -80px;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .ticket-event-name { font-family: var(--font-display); font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .ticket-details { display: flex; gap: 2rem; flex-wrap: wrap; margin: 1rem 0; }
+    .ticket-detail { }
+    .ticket-detail-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-bottom: 0.2rem; }
+    .ticket-detail-value { font-weight: 700; }
+    .ticket-qr { width: 80px; height: 80px; background: rgba(255,255,255,0.15); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+
+    .ticket-barcode {
+      background: rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Schedule items */
+    .schedule-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+      transition: var(--transition);
+    }
+
+    .schedule-item:hover { border-color: rgba(123,44,191,0.3); }
+    .schedule-time { font-family: var(--font-display); font-size: 1.1rem; color: var(--electric-purple); min-width: 80px; }
+    .schedule-content { flex: 1; }
+    .schedule-name { font-weight: 600; margin-bottom: 0.2rem; }
+    .schedule-location { font-size: 0.8rem; color: var(--text-muted); }
+    .schedule-tag { font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 50px; }
+
+    /* Document upload */
+    .upload-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .upload-zone:hover { border-color: var(--electric-purple); background: rgba(123,44,191,0.05); }
+    .upload-zone-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+    .uploaded-doc {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-icon { font-size: 1.5rem; }
+    .doc-name { font-weight: 600; font-size: 0.9rem; flex: 1; }
+    .doc-status { font-size: 0.8rem; }
+    .doc-status.verified { color: #4ade80; }
+    .doc-status.pending { color: var(--gold-accent); }
+
+    /* Roommate section */
+    .roommate-card {
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: var(--transition);
+    }
+
+    .roommate-card:hover { border-color: rgba(123,44,191,0.3); }
+    .roommate-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--electric-purple); }
+    .roommate-name { font-weight: 700; margin-bottom: 0.2rem; }
+    .roommate-info { font-size: 0.85rem; color: var(--text-secondary); }
+    .roommate-actions { margin-left: auto; display: flex; gap: 0.5rem; }
+
+    /* Stat cards */
+    .stat-card {
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+
+    .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .stat-value { font-family: var(--font-display); font-size: 2rem; line-height: 1; }
+
+    /* Notification */
+    .notification-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--dark-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .notification-item.unread { border-left: 3px solid var(--electric-purple); }
+    .notification-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--electric-purple); flex-shrink: 0; margin-top: 0.4rem; }
+    .notification-text { font-size: 0.9rem; line-height: 1.5; }
+    .notification-time { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+    @media (max-width: 768px) {
+      .dashboard-sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+      .dashboard-sidebar.open { transform: translateX(0); }
+      .dashboard-main { margin-left: 0; max-width: 100%; padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading-screen">
+  <div class="loading-logo">DST — ACCOUNT</div>
+  <div class="loading-bar-container"><div class="loading-bar"></div></div>
+</div>
+
+<div class="cursor-glow"></div>
+
+<!-- ===== AUTH GATE ===== -->
+<div class="auth-gate" id="auth-gate">
+  <div class="auth-gate-bg">
+    <img src="https://picsum.photos/seed/auth-bg/1920/1080" alt="" />
+  </div>
+  <div class="auth-gate-overlay"></div>
+
+  <div class="auth-card">
+    <div class="auth-logo">DON'T STOP TRIPPING</div>
+    <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:1.5rem;">Access your account, tickets & more.</p>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login', this)">Sign In</div>
+      <div class="auth-tab" onclick="switchAuthTab('signup', this)">Create Account</div>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="your@email.com" value="tripper@example.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="••••••••" value="password" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:1rem;">
+        Sign In to My Account
+      </button>
+      <a href="#" style="display:block;text-align:center;font-size:0.85rem;color:var(--text-muted);">Forgot password?</a>
+    </form>
+
+    <!-- Signup Form -->
+    <form id="signup-form" style="display:none;" onsubmit="handleLogin(event)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-input" placeholder="Alex" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-input" placeholder="Rivera" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" placeholder="your@email.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="Create a strong password" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone (for event updates)</label>
+        <input type="tel" class="form-input" placeholder="+1 (555) 000-0000" />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+        Create Account
+      </button>
+    </form>
+
+    <div class="divider-or"><span>or</span></div>
+
+    <div class="social-login">
+      <button class="social-login-btn" onclick="handleLogin()">🔵 Google</button>
+      <button class="social-login-btn" onclick="handleLogin()">🍎 Apple</button>
+    </div>
+
+    <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-top:1.5rem;">
+      Demo: Click "Sign In" to see the dashboard →
+    </p>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="dashboard-layout" id="dashboard">
+
+  <!-- Sidebar -->
+  <aside class="dashboard-sidebar">
+    <a href="index.html" class="dashboard-sidebar-logo">DON'T STOP TRIPPING</a>
+
+    <div class="sidebar-user">
+      <img class="sidebar-user-avatar" src="https://picsum.photos/seed/dashboard-user/100/100" alt="Alex Rivera" />
+      <div>
+        <div class="sidebar-user-name">Alex Rivera</div>
+        <div class="sidebar-user-tier">⭐ Voyager Member</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section-label">My Account</div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-item active" onclick="switchPanel('overview', this)">
+        <i data-feather="home"></i> Overview
+      </div>
+      <div class="sidebar-nav-item" onclick="switchPanel('tickets', this)">
+        <i data-feather="tag"></i> My Tickets
+      </div>
+      <div class="sidebar-nav-item" onclick="switchPanel('schedule', this)">
+        <i data-feather="calendar"></i> Event Schedule
+      </div>
+      <div class="sidebar-nav-item" onclick="switchPanel('cabin', this)">
+        <i data-feather="anchor"></i> Cabin Details
+      </div>
+      <div class="sidebar-nav-item" onclick="switchPanel('documents', this)">
+        <i data-feather="file-text"></i> Documents
+      </div>
+      <div class="sidebar-nav-item" onclick="switchPanel('roommates', this)">
+        <i data-feather="users"></i> Roommates
+      </div>
+    </nav>
+
+    <div class="sidebar-section-label">Settings</div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-item" onclick="switchPanel('profile', this)">
+        <i data-feather="user"></i> Profile
+      </div>
+      <div class="sidebar-nav-item" onclick="switchPanel('notifications', this)">
+        <i data-feather="bell"></i> Notifications
+        <span class="badge badge-purple" style="margin-left:auto;font-size:0.7rem;padding:0.2rem 0.5rem;">3</span>
+      </div>
+      <div class="sidebar-nav-item" onclick="handleLogout()">
+        <i data-feather="log-out"></i> Log Out
+      </div>
+    </nav>
+
+    <div style="margin-top:auto;padding-top:2rem;">
+      <a href="events.html#tickets" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">
+        + Add Event
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="dashboard-main">
+
+    <!-- Topbar -->
+    <div class="dashboard-topbar">
+      <div>
+        <h1 style="font-family:var(--font-display);font-size:2rem;line-height:1;">Good evening, Alex 👋</h1>
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin-top:0.25rem;">Caribbean Odyssey 2025 is in 160 days. Stay hyped!</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <button class="btn btn-ghost btn-sm" onclick="switchPanel('notifications', document.querySelector('[onclick*=\"notifications\"]'))">
+          🔔 3 new
+        </button>
+        <img src="https://picsum.photos/seed/dashboard-user/80/80" alt="User" style="width:40px;height:40px;border-radius:50%;border:2px solid var(--electric-purple);cursor:pointer;" />
+      </div>
+    </div>
+
+    <!-- ===== OVERVIEW PANEL ===== -->
+    <div class="dash-panel active" id="panel-overview">
+      <div class="grid-4" style="margin-bottom:2rem;">
+        <div class="stat-card">
+          <div class="stat-label">Upcoming Trips</div>
+          <div class="stat-value" style="color:var(--electric-purple);">1</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">Caribbean 2025</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Trips Completed</div>
+          <div class="stat-value" style="color:var(--sunset-orange);">2</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">Ibiza + Med</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">DST Points</div>
+          <div class="stat-value" style="color:var(--gold-accent);">2,450</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">Voyager Tier</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Days to Departure</div>
+          <div class="stat-value" style="color:var(--light-aqua);">160</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;">Aug 15, 2025</div>
+        </div>
+      </div>
+
+      <!-- Upcoming Trip Card -->
+      <div style="background:linear-gradient(135deg,var(--primary-blue),var(--electric-purple));border-radius:var(--radius-lg);padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden;">
+        <img src="https://picsum.photos/seed/upcoming/800/300" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.15;" />
+        <div style="position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+          <div>
+            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.6);margin-bottom:0.5rem;">Upcoming Event</div>
+            <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:0.5rem;">Caribbean Odyssey 2025</h2>
+            <div style="display:flex;gap:1.5rem;flex-wrap:wrap;color:rgba(255,255,255,0.75);font-size:0.875rem;">
+              <span>📅 August 15–22, 2025</span>
+              <span>📍 Miami → Bahamas</span>
+              <span>🛏️ Ocean View Cabin</span>
+              <span>🎟️ Voyager Pass</span>
+            </div>
+          </div>
+          <button class="btn btn-ghost" onclick="switchPanel('tickets', document.querySelector('[onclick*=\"tickets\"]'))">View Ticket</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Recent Notifications -->
+        <div>
+          <h3 style="font-size:1.25rem;margin-bottom:1rem;">Recent Updates</h3>
+          <div class="notification-item unread">
+            <div class="notification-dot"></div>
+            <div>
+              <div class="notification-text">🎵 <strong>Lineup Update:</strong> Two new artists added to the Caribbean Odyssey 2025 lineup!</div>
+              <div class="notification-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="notification-item unread">
+            <div class="notification-dot"></div>
+            <div>
+              <div class="notification-text">📋 <strong>Action Required:</strong> Please upload your passport scan before July 1, 2025.</div>
+              <div class="notification-time">1 day ago</div>
+            </div>
+          </div>
+          <div class="notification-item unread">
+            <div class="notification-dot"></div>
+            <div>
+              <div class="notification-text">🤝 <strong>Roommate Match:</strong> Jordan K. wants to room with you!</div>
+              <div class="notification-time">3 days ago</div>
+            </div>
+          </div>
+          <div class="notification-item">
+            <div class="notification-dot" style="background:var(--text-muted);"></div>
+            <div>
+              <div class="notification-text">✅ Your booking for Caribbean Odyssey 2025 has been confirmed.</div>
+              <div class="notification-time">2 weeks ago</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checklist -->
+        <div>
+          <h3 style="font-size:1.25rem;margin-bottom:1rem;">Pre-Trip Checklist</h3>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1rem;background:var(--dark-card);border:1px solid rgba(74,222,128,0.3);border-radius:var(--radius);">
+              <span style="color:#4ade80;font-size:1.1rem;">✓</span>
+              <span>Booking confirmed & payment complete</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1rem;background:var(--dark-card);border:1px solid rgba(74,222,128,0.3);border-radius:var(--radius);">
+              <span style="color:#4ade80;font-size:1.1rem;">✓</span>
+              <span>Profile completed</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1rem;background:var(--dark-card);border:1px solid rgba(212,175,55,0.3);border-radius:var(--radius);">
+              <span style="color:var(--gold-accent);font-size:1.1rem;">!</span>
+              <span style="color:var(--text-secondary);">Upload passport scan</span>
+              <span style="margin-left:auto;font-size:0.8rem;color:var(--gold-accent);">Required</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1rem;background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius);">
+              <span style="color:var(--text-muted);font-size:1.1rem;">○</span>
+              <span style="color:var(--text-secondary);">Select roommate preference</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1rem;background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius);">
+              <span style="color:var(--text-muted);font-size:1.1rem;">○</span>
+              <span style="color:var(--text-secondary);">Fill in emergency contact</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TICKETS PANEL ===== -->
+    <div class="dash-panel" id="panel-tickets">
+      <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:1.5rem;">My Tickets</h2>
+
+      <div class="ticket-display">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
+          <div style="flex:1;">
+            <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;opacity:0.6;margin-bottom:0.5rem;">Don't Stop Tripping</div>
+            <div class="ticket-event-name">Caribbean Odyssey 2025</div>
+            <div class="ticket-details">
+              <div class="ticket-detail"><div class="ticket-detail-label">Date</div><div class="ticket-detail-value">Aug 15–22, 2025</div></div>
+              <div class="ticket-detail"><div class="ticket-detail-label">Ticket Type</div><div class="ticket-detail-value">Voyager Pass</div></div>
+              <div class="ticket-detail"><div class="ticket-detail-label">Cabin</div><div class="ticket-detail-value">Ocean View #214</div></div>
+              <div class="ticket-detail"><div class="ticket-detail-label">Guest Name</div><div class="ticket-detail-value">Alex Rivera</div></div>
+            </div>
+          </div>
+          <div class="ticket-qr">🎫</div>
+        </div>
+        <div class="ticket-barcode">
+          <span>DST-2025-CARIB-087423-VYG</span>
+          <span style="font-size:1.25rem;cursor:pointer;" onclick="showToast('Ticket copied to clipboard!', '📋', 2500)">📋</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('📥 Downloading ticket PDF...', '⬇️', 3000)">
+          ⬇️ Download PDF
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('📧 Ticket sent to your email!', '✅', 3000)">
+          📧 Email Ticket
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('📱 Added to Apple Wallet', '✅', 3000)">
+          📱 Add to Wallet
+        </button>
+      </div>
+
+      <h3 style="font-size:1.25rem;margin-bottom:1rem;">Past Tickets</h3>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+        <div style="display:flex;align-items:center;gap:1rem;padding:1.25rem;background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);">
+          <div style="flex:1;">
+            <div style="font-weight:700;margin-bottom:0.25rem;">Ibiza Adventure 2023</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);">June 10–17, 2023 · Explorer Pass</div>
+          </div>
+          <span class="badge badge-aqua">Completed ✓</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem;padding:1.25rem;background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);">
+          <div style="flex:1;">
+            <div style="font-weight:700;margin-bottom:0.25rem;">Mediterranean Voyage 2024</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);">July 20–27, 2024 · Voyager Pass</div>
+          </div>
+          <span class="badge badge-aqua">Completed ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SCHEDULE PANEL ===== -->
+    <div class="dash-panel" id="panel-schedule">
+      <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:1.5rem;">Event Schedule</h2>
+
+      <div class="tabs" data-tab-group="schedule">
+        <button class="tab-btn active" data-tab="day1" onclick="switchScheduleDay(this, 'schedule-day1')">Day 1</button>
+        <button class="tab-btn" data-tab="day2" onclick="switchScheduleDay(this, 'schedule-day2')">Day 2</button>
+        <button class="tab-btn" data-tab="day3" onclick="switchScheduleDay(this, 'schedule-day3')">Day 3</button>
+        <button class="tab-btn" data-tab="day4" onclick="switchScheduleDay(this, 'schedule-day4')">Day 4+</button>
+      </div>
+
+      <div id="schedule-day1">
+        <div class="schedule-item">
+          <div class="schedule-time">3 PM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Boarding & Cabin Check-In</div>
+            <div class="schedule-location">📍 Miami Port Terminal C</div>
+          </div>
+          <span class="badge badge-orange">Required</span>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">5 PM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Welcome Cocktail Party</div>
+            <div class="schedule-location">📍 Main Deck</div>
+          </div>
+          <span class="badge badge-aqua">Included</span>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">8 PM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Opening Night: DJ Nova b2b Luna Beats</div>
+            <div class="schedule-location">📍 Main Stage</div>
+          </div>
+          <span class="badge badge-purple">Headliner</span>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">2 AM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">After Party: Sky Lounge</div>
+            <div class="schedule-location">📍 Deck 14</div>
+          </div>
+          <span class="badge badge-aqua">After Hours</span>
+        </div>
+      </div>
+
+      <div id="schedule-day2" style="display:none;">
+        <div class="schedule-item">
+          <div class="schedule-time">7 AM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Sunrise Yoga</div>
+            <div class="schedule-location">📍 Pool Deck</div>
+          </div>
+          <span class="badge badge-aqua">Wellness</span>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">12 PM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Pool Party: Marco V</div>
+            <div class="schedule-location">📍 Pool Deck</div>
+          </div>
+          <span class="badge badge-purple">Music</span>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">6:30 PM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Sunset Session: Sasha Storm</div>
+            <div class="schedule-location">📍 Sunset Stage (Bow)</div>
+          </div>
+          <span class="badge badge-orange">Sunset</span>
+        </div>
+      </div>
+
+      <div id="schedule-day3" style="display:none;">
+        <div class="schedule-item">
+          <div class="schedule-time">9 AM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Nassau Island Arrival</div>
+            <div class="schedule-location">📍 Nassau Port, Bahamas</div>
+          </div>
+          <span class="badge badge-orange">Port Day</span>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">10 AM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Snorkeling Excursion</div>
+            <div class="schedule-location">📍 Nassau Reef Tour</div>
+          </div>
+          <span class="badge badge-aqua">Adventure</span>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">9 PM</div>
+          <div class="schedule-content">
+            <div class="schedule-name">Nassau Beach Party</div>
+            <div class="schedule-location">📍 Cable Beach</div>
+          </div>
+          <span class="badge badge-purple">Party</span>
+        </div>
+      </div>
+
+      <div id="schedule-day4" style="display:none;">
+        <p style="color:var(--text-secondary);padding:1rem 0;">Days 4–7 schedule will be released 30 days before departure. Stay tuned!</p>
+        <div class="schedule-item" style="opacity:0.5;">
+          <div class="schedule-time">TBA</div>
+          <div class="schedule-content"><div class="schedule-name">Private Island Day</div><div class="schedule-location">Blue Lagoon Island</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CABIN PANEL ===== -->
+    <div class="dash-panel" id="panel-cabin">
+      <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:1.5rem;">Cabin Details</h2>
+      <div class="grid-2" style="gap:2rem;">
+        <div>
+          <div style="border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1.5rem;">
+            <img src="https://picsum.photos/seed/cabin-detail/600/400" alt="Cabin" style="width:100%;height:250px;object-fit:cover;" />
+          </div>
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;">
+            <h3 style="font-size:1.5rem;margin-bottom:1rem;">Ocean View Cabin #214</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;">
+              <div><div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.2rem;">Deck</div><div style="font-weight:600;">Deck 8 — Starboard</div></div>
+              <div><div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.2rem;">Size</div><div style="font-weight:600;">185 sq ft</div></div>
+              <div><div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.2rem;">Bed Type</div><div style="font-weight:600;">Queen Bed</div></div>
+              <div><div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.2rem;">Bathroom</div><div style="font-weight:600;">Private En-Suite</div></div>
+            </div>
+            <h4 style="margin-bottom:0.75rem;">Amenities</h4>
+            <div class="included-grid" style="grid-template-columns:1fr 1fr;">
+              <div class="included-item">✓ Ocean View Window</div>
+              <div class="included-item">✓ Climate Control</div>
+              <div class="included-item">✓ Mini Bar</div>
+              <div class="included-item">✓ In-Room Safe</div>
+              <div class="included-item">✓ Priority Wi-Fi</div>
+              <div class="included-item">✓ Room Service</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem;">
+            <h3 style="font-size:1.25rem;margin-bottom:1rem;">Cabin Location</h3>
+            <div style="background:rgba(255,255,255,0.04);border-radius:var(--radius);padding:1.5rem;text-align:center;font-size:3rem;">🚢</div>
+            <p style="font-size:0.875rem;color:var(--text-secondary);margin-top:1rem;line-height:1.6;">Cabin 214 is located on Deck 8, starboard (right) side. Easy access to Main Deck (Deck 9) and Pool Deck (Deck 11). Elevator access on both port and starboard corridors.</p>
+          </div>
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;">
+            <h3 style="font-size:1.25rem;margin-bottom:1rem;">Special Requests</h3>
+            <form onsubmit="handleSpecialRequest(event)">
+              <div class="form-group">
+                <label class="form-label">Dietary Requirements</label>
+                <select class="form-select">
+                  <option>No restrictions</option>
+                  <option>Vegetarian</option>
+                  <option>Vegan</option>
+                  <option>Gluten-free</option>
+                  <option>Halal</option>
+                  <option>Kosher</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Special Requests</label>
+                <textarea class="form-textarea" placeholder="Any accessibility needs, allergies, or preferences..." style="min-height:80px;"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm">Save Requests</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DOCUMENTS PANEL ===== -->
+    <div class="dash-panel" id="panel-documents">
+      <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:1.5rem;">Documents</h2>
+
+      <div style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);border-radius:var(--radius);padding:1rem;margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem;">
+        <span style="font-size:1.25rem;">⚠️</span>
+        <div>
+          <div style="font-weight:600;color:var(--gold-accent);">Action Required</div>
+          <div style="font-size:0.875rem;color:var(--text-secondary);">Please upload your passport scan before <strong>July 1, 2025</strong> to complete your booking.</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1.25rem;margin-bottom:1rem;">Uploaded Documents</h3>
+
+      <div class="uploaded-doc">
+        <span class="doc-icon">🪪</span>
+        <div style="flex:1;">
+          <div class="doc-name">Government ID</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">Uploaded Jan 15, 2025</div>
+        </div>
+        <span class="doc-status verified">✓ Verified</span>
+      </div>
+
+      <div class="uploaded-doc">
+        <span class="doc-icon">📋</span>
+        <div style="flex:1;">
+          <div class="doc-name">Travel Insurance</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">Uploaded Feb 2, 2025</div>
+        </div>
+        <span class="doc-status verified">✓ Verified</span>
+      </div>
+
+      <div class="uploaded-doc" style="border-color:rgba(212,175,55,0.4);">
+        <span class="doc-icon">🛂</span>
+        <div style="flex:1;">
+          <div class="doc-name">Passport Scan</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">Not uploaded yet</div>
+        </div>
+        <span class="doc-status pending">⏳ Required</span>
+      </div>
+
+      <div class="upload-zone" style="margin-top:1.5rem;" onclick="simulateUpload()">
+        <div class="upload-zone-icon">📤</div>
+        <div style="font-weight:700;margin-bottom:0.5rem;">Upload Passport Scan</div>
+        <div style="font-size:0.875rem;color:var(--text-secondary);">Click or drag & drop · PDF, JPG, PNG up to 10MB</div>
+      </div>
+    </div>
+
+    <!-- ===== ROOMMATES PANEL ===== -->
+    <div class="dash-panel" id="panel-roommates">
+      <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:1.5rem;">Roommates</h2>
+
+      <div style="background:rgba(0,194,209,0.08);border:1px solid rgba(0,194,209,0.2);border-radius:var(--radius);padding:1rem;margin-bottom:2rem;">
+        <div style="font-size:0.875rem;color:var(--text-secondary);">💡 You have 1 pending roommate request. Your cabin fits 2 guests.</div>
+      </div>
+
+      <h3 style="font-size:1.25rem;margin-bottom:1rem;">Pending Requests (1)</h3>
+      <div class="roommate-card" style="margin-bottom:1.5rem;border-color:rgba(123,44,191,0.3);">
+        <img class="roommate-avatar" src="https://picsum.photos/seed/roommate1/100/100" alt="Jordan K." />
+        <div>
+          <div class="roommate-name">Jordan K.</div>
+          <div class="roommate-info">🇺🇸 Los Angeles · Voyager Pass · Loves house music</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.2rem;">3 previous DST trips</div>
+        </div>
+        <div class="roommate-actions">
+          <button class="btn btn-primary btn-sm" onclick="acceptRoommate()">Accept</button>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Request declined.', '❌', 2000)">Decline</button>
+        </div>
+      </div>
+
+      <h3 style="font-size:1.25rem;margin-bottom:1rem;">Find a Roommate</h3>
+      <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem;">
+        <div style="display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+          <input type="text" class="form-input" placeholder="Search by name or interests..." style="flex:1;" />
+          <select class="form-select" style="width:auto;">
+            <option>All Ticket Types</option>
+            <option>Explorer</option>
+            <option>Voyager</option>
+            <option>Sovereign</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+        <div class="roommate-card">
+          <img class="roommate-avatar" src="https://picsum.photos/seed/rm2/100/100" alt="Sam T." />
+          <div>
+            <div class="roommate-name">Sam T.</div>
+            <div class="roommate-info">🇬🇧 London · Voyager Pass · Afro house enthusiast</div>
+          </div>
+          <div class="roommate-actions">
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Request sent to Sam T.!', '📩', 2500)">Request</button>
+          </div>
+        </div>
+
+        <div class="roommate-card">
+          <img class="roommate-avatar" src="https://picsum.photos/seed/rm3/100/100" alt="Maya P." />
+          <div>
+            <div class="roommate-name">Maya P.</div>
+            <div class="roommate-info">🇧🇷 São Paulo · Voyager Pass · Yoga & music lover</div>
+          </div>
+          <div class="roommate-actions">
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Request sent to Maya P.!', '📩', 2500)">Request</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROFILE PANEL ===== -->
+    <div class="dash-panel" id="panel-profile">
+      <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:1.5rem;">My Profile</h2>
+      <div class="grid-2" style="gap:2rem;align-items:start;">
+        <div>
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:2rem;text-align:center;margin-bottom:1.5rem;">
+            <img src="https://picsum.photos/seed/dashboard-user/200/200" alt="Profile" style="width:100px;height:100px;border-radius:50%;margin:0 auto 1rem;border:3px solid var(--electric-purple);" />
+            <div style="font-family:var(--font-display);font-size:1.5rem;">Alex Rivera</div>
+            <div style="color:var(--gold-accent);font-size:0.875rem;margin-bottom:1rem;">⭐ Voyager Member · 2 Trips</div>
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Photo upload coming soon!', '📸', 2500)">Change Photo</button>
+          </div>
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;">
+            <h4 style="margin-bottom:1rem;">DST Loyalty Points</h4>
+            <div style="font-family:var(--font-display);font-size:2.5rem;color:var(--gold-accent);margin-bottom:0.5rem;">2,450</div>
+            <div style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1rem;">550 points until Elite Tier</div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" data-width="82%"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:0.5rem;font-size:0.75rem;color:var(--text-muted);">
+              <span>Voyager (0)</span><span>Elite (3,000)</span>
+            </div>
+          </div>
+        </div>
+
+        <form onsubmit="handleProfileSave(event)">
+          <div style="background:var(--dark-card);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1.5rem;">
+            <h3 style="font-size:1.25rem;margin-bottom:1.25rem;">Personal Information</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-input" value="Alex" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-input" value="Rivera" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" value="alex.rivera@example.com" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input type="tel" class="form-input" value="+1 (305) 555-0198" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nationality</label>
+              <input type="text" class="form-input" value="American" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Emergency Contact</label>
+              <input type="text" class="form-input" placeholder="Name & phone number" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Bio / About You</label>
+              <textarea class="form-textarea" style="min-height:80px;" placeholder="Tell the community a bit about yourself...">Love music, travel, and meeting new people. Been to 3 DST events and counting!</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== NOTIFICATIONS PANEL ===== -->
+    <div class="dash-panel" id="panel-notifications">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+        <h2 style="font-family:var(--font-display);font-size:2rem;">Notifications</h2>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('All notifications marked as read', '✓', 2000)">Mark all as read</button>
+      </div>
+
+      <div class="notification-item unread">
+        <div class="notification-dot"></div>
+        <div>
+          <div class="notification-text">🎵 <strong>Lineup Update:</strong> Two new artists added to Caribbean Odyssey 2025! El Fuego and Zara Night join the roster.</div>
+          <div class="notification-time">2 hours ago</div>
+        </div>
+      </div>
+
+      <div class="notification-item unread">
+        <div class="notification-dot"></div>
+        <div>
+          <div class="notification-text">📋 <strong>Document Reminder:</strong> Please upload your passport scan before July 1, 2025. This is required for all international voyages.</div>
+          <div class="notification-time">1 day ago</div>
+        </div>
+      </div>
+
+      <div class="notification-item unread">
+        <div class="notification-dot"></div>
+        <div>
+          <div class="notification-text">🤝 <strong>Roommate Request:</strong> Jordan K. (Los Angeles) wants to share your cabin! They have 3 previous DST trips.</div>
+          <div class="notification-time">3 days ago</div>
+        </div>
+      </div>
+
+      <div class="notification-item">
+        <div class="notification-dot" style="background:var(--text-muted);"></div>
+        <div>
+          <div class="notification-text">✅ Your booking for <strong>Caribbean Odyssey 2025</strong> (Voyager Pass, Cabin 214) is confirmed!</div>
+          <div class="notification-time">2 weeks ago</div>
+        </div>
+      </div>
+
+      <div class="notification-item">
+        <div class="notification-dot" style="background:var(--text-muted);"></div>
+        <div>
+          <div class="notification-text">🌊 Early bird pricing has ended. Standard pricing is now in effect for Caribbean Odyssey 2025.</div>
+          <div class="notification-time">1 month ago</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script>
+  feather.replace();
+
+  function switchAuthTab(tab, el) {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('signup-form').style.display = tab === 'signup' ? 'block' : 'none';
+  }
+
+  function handleLogin(e) {
+    if (e) e.preventDefault();
+    document.getElementById('auth-gate').style.display = 'none';
+    document.getElementById('dashboard').classList.add('visible');
+    feather.replace(); // re-apply icons
+  }
+
+  function handleLogout() {
+    document.getElementById('dashboard').classList.remove('visible');
+    document.getElementById('auth-gate').style.display = 'flex';
+  }
+
+  function switchPanel(panelId, navItem) {
+    document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-nav-item').forEach(n => n.classList.remove('active'));
+    const panel = document.getElementById('panel-' + panelId);
+    if (panel) panel.classList.add('active');
+    if (navItem) navItem.classList.add('active');
+  }
+
+  function switchScheduleDay(btn, targetId) {
+    document.querySelectorAll('#panel-schedule .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    ['schedule-day1','schedule-day2','schedule-day3','schedule-day4'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = id === targetId ? 'block' : 'none';
+    });
+  }
+
+  function simulateUpload() {
+    showToast('📤 Uploading passport scan...', '🛂', 2000);
+    setTimeout(() => showToast('✅ Passport scan uploaded! Under review.', '✓', 3000), 2500);
+  }
+
+  function acceptRoommate() {
+    showToast('🤝 You and Jordan K. are now roommates!', '✅', 3000);
+    document.querySelector('.roommate-card[style*="border-color"]').style.borderColor = 'rgba(74,222,128,0.4)';
+  }
+
+  function handleSpecialRequest(e) {
+    e.preventDefault();
+    showToast('✅ Special requests saved!', '✓', 2500);
+  }
+
+  function handleProfileSave(e) {
+    e.preventDefault();
+    showToast('✅ Profile updated successfully!', '✓', 2500);
+  }
+</script>
+</body>
+</html>
