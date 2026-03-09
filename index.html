@@ -9,6 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/main.css"/>
+  <script>
+    /* Prevent FOUC: apply saved theme before paint */
+    (function(){var t=localStorage.getItem('dst-theme');if(!t){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)})();
+  </script>
   <style>
     /* ---- Page-specific ---- */
     .hero-image-right {
@@ -44,13 +48,13 @@
     .event-card-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s var(--ease); }
     .event-card:hover .event-card-img img { transform:scale(1.04); }
     .event-card-body { padding:1.75rem; }
-    .event-card-date { font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.625rem; }
+    .event-card-date { font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:0.625rem; }
     .event-card-title { font-size:1.5rem; margin-bottom:0.5rem; }
     .event-card-meta { display:flex; gap:1.5rem; flex-wrap:wrap; margin-bottom:1.25rem; }
     .event-card-meta span { font-size:0.8rem; color:var(--muted); display:flex; align-items:center; gap:0.35rem; }
     .event-card-spots { margin-bottom:1.5rem; }
     .event-card-spots-row { display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.78rem; color:var(--muted); }
-    .event-card-spots-row span:last-child { color:var(--gold); font-weight:600; }
+    .event-card-spots-row span:last-child { color:var(--accent); font-weight:600; }
 
     /* DJ strip */
     .dj-strip { display:flex; gap:1rem; overflow-x:auto; padding-bottom:0.5rem; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
@@ -66,7 +70,7 @@
     .proof-avatar { width:32px; height:32px; border-radius:50%; border:2px solid var(--bg); object-fit:cover; margin-left:-8px; }
     .proof-avatar:first-child { margin-left:0; }
     .proof-text { font-size:0.8rem; color:var(--off-white); }
-    .proof-text strong { color:var(--gold); }
+    .proof-text strong { color:var(--accent); }
 
     /* Full-width CTA section */
     .cta-section {
@@ -82,7 +86,7 @@
       top:-50%; left:50%;
       width:600px; height:600px;
       border-radius:50%;
-      background:radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
+      background:radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
       transform:translate(-50%,0);
     }
     .cta-content { position:relative; z-index:1; text-align:center; padding:5rem 0; }
@@ -109,6 +113,7 @@
         <li><a href="faq.html"       class="nav-link">FAQ</a></li>
       </ul>
       <div class="nav-cta">
+        <button class="theme-toggle" aria-label="Toggle theme"><span class="icon-moon">&#9790;</span><span class="icon-sun">&#9728;</span></button>
         <a href="dashboard.html"      class="btn btn-ghost btn-sm">Account</a>
         <a href="events.html#tickets" class="btn btn-gold btn-sm">Get Tickets</a>
       </div>
@@ -252,7 +257,7 @@
   <div class="wrap">
     <div class="g4 reveal">
       <div style="text-align:center; padding:1rem;">
-        <div class="stat-num"><span class="counter-num" data-target="3200">0</span><span style="color:var(--gold);">+</span></div>
+        <div class="stat-num"><span class="counter-num" data-target="3200">0</span><span style="color:var(--accent);">+</span></div>
         <div class="stat-label">Happy Trippers</div>
       </div>
       <div style="text-align:center; padding:1rem;">
@@ -264,7 +269,7 @@
         <div class="stat-label">Destinations</div>
       </div>
       <div style="text-align:center; padding:1rem;">
-        <div class="stat-num"><span class="counter-num" data-target="98">0</span><span style="color:var(--gold);">%</span></div>
+        <div class="stat-num"><span class="counter-num" data-target="98">0</span><span style="color:var(--accent);">%</span></div>
         <div class="stat-label">Satisfaction</div>
       </div>
     </div>
@@ -362,22 +367,22 @@
   <div class="wrap">
     <div class="sec-hd center reveal">
       <span class="eyebrow">How It Works</span>
-      <h2 class="d3">Simple as <em style="font-style:normal; color:var(--gold);">1, 2, 3</em></h2>
+      <h2 class="d3">Simple as <em style="font-style:normal; color:var(--accent);">1, 2, 3</em></h2>
       <div class="rule-gold center"></div>
     </div>
     <div class="g3">
       <div class="reveal d1" style="text-align:center; padding:2rem 1.5rem;">
-        <div style="font-family:var(--font-display); font-size:4rem; color:var(--gold); opacity:.15; line-height:1; margin-bottom:0.5rem;">01</div>
+        <div style="font-family:var(--font-display); font-size:4rem; color:var(--accent); opacity:.15; line-height:1; margin-bottom:0.5rem;">01</div>
         <h3 style="font-size:1.25rem; margin-bottom:0.75rem;">Choose Your Cabin</h3>
         <p style="font-size:0.875rem; color:var(--off-white); line-height:1.7;">Pick from Explorer, Voyager, or Sovereign tiers to match your budget and lifestyle.</p>
       </div>
       <div class="reveal d2" style="text-align:center; padding:2rem 1.5rem; border-left:1px solid var(--border); border-right:1px solid var(--border);">
-        <div style="font-family:var(--font-display); font-size:4rem; color:var(--gold); opacity:.15; line-height:1; margin-bottom:0.5rem;">02</div>
+        <div style="font-family:var(--font-display); font-size:4rem; color:var(--accent); opacity:.15; line-height:1; margin-bottom:0.5rem;">02</div>
         <h3 style="font-size:1.25rem; margin-bottom:0.75rem;">Book Securely</h3>
         <p style="font-size:0.875rem; color:var(--off-white); line-height:1.7;">Complete your booking online in minutes. Flexible payment plans available. Instant confirmation.</p>
       </div>
       <div class="reveal d3" style="text-align:center; padding:2rem 1.5rem;">
-        <div style="font-family:var(--font-display); font-size:4rem; color:var(--gold); opacity:.15; line-height:1; margin-bottom:0.5rem;">03</div>
+        <div style="font-family:var(--font-display); font-size:4rem; color:var(--accent); opacity:.15; line-height:1; margin-bottom:0.5rem;">03</div>
         <h3 style="font-size:1.25rem; margin-bottom:0.75rem;">Set Sail</h3>
         <p style="font-size:0.875rem; color:var(--off-white); line-height:1.7;">Board in Miami and let us handle everything. Your only job is to live your best life.</p>
       </div>

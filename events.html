@@ -9,18 +9,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/main.css"/>
+  <script>(function(){var t=localStorage.getItem('dst-theme');if(!t){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)})()</script>
   <style>
     /* Page Hero */
     .page-hero { padding:8rem 0 4rem; border-bottom:1px solid var(--border); position:relative; overflow:hidden; }
     .page-hero-bg { position:absolute; inset:0; }
     .page-hero-bg img { width:100%; height:100%; object-fit:cover; opacity:0.18; }
-    .page-hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, var(--bg) 0%, rgba(5,12,24,0.5) 50%, var(--bg) 100%); }
+    .page-hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, var(--bg) 0%, rgba(9,9,15,0.5) 50%, var(--bg) 100%); }
     .page-hero-content { position:relative; z-index:1; }
 
     /* Sticky tab bar */
     .event-tabs {
       position:sticky; top:62px; z-index:100;
-      background:rgba(5,12,24,0.97); backdrop-filter:blur(16px);
+      background:var(--bg-glass); backdrop-filter:blur(16px);
       border-bottom:1px solid var(--border);
       padding:0;
     }
@@ -35,7 +36,7 @@
       cursor:pointer; white-space:nowrap;
     }
     .event-tab:hover { color:var(--white); }
-    .event-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+    .event-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
 
     /* Itinerary */
     .itin-row {
@@ -46,14 +47,14 @@
       cursor:pointer;
       transition:color var(--t);
     }
-    .itin-row:hover { color:var(--gold); }
+    .itin-row:hover { color:var(--accent); }
     .itin-day { font-family:var(--font-display); font-size:2.5rem; color:var(--border); line-height:1; }
-    .itin-loc { font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:0.2rem; }
+    .itin-loc { font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:0.2rem; }
     .itin-title { font-size:1rem; font-weight:700; }
     .itin-desc { font-size:0.8rem; color:var(--muted); margin-top:0.25rem; }
     .itin-chevron { color:var(--muted); font-size:0.75rem; transition:transform var(--t); }
-    .itin-row.open .itin-chevron { transform:rotate(180deg); color:var(--gold); }
-    .itin-row.open .itin-day { color:var(--gold); }
+    .itin-row.open .itin-chevron { transform:rotate(180deg); color:var(--accent); }
+    .itin-row.open .itin-day { color:var(--accent); }
     .itin-detail { display:none; padding:1rem 0 1.5rem 80px; }
     .itin-row.open + .itin-detail { display:block; }
     .itin-pills { display:flex; gap:0.625rem; flex-wrap:wrap; }
@@ -64,9 +65,9 @@
     .artist-card { position:relative; aspect-ratio:3/4; overflow:hidden; cursor:pointer; background:var(--bg-card); }
     .artist-card img { width:100%; height:100%; object-fit:cover; opacity:0.7; transition:opacity 0.4s var(--ease), transform 0.5s var(--ease); }
     .artist-card:hover img { opacity:0.9; transform:scale(1.04); }
-    .artist-info { position:absolute; bottom:0; left:0; right:0; padding:1.25rem 1rem; background:linear-gradient(transparent, rgba(5,12,24,0.95)); }
+    .artist-info { position:absolute; bottom:0; left:0; right:0; padding:1.25rem 1rem; background:linear-gradient(transparent, rgba(9,9,15,0.95)); }
     .artist-name { font-family:var(--font-display); font-size:1.25rem; line-height:1; margin-bottom:0.2rem; }
-    .artist-genre { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); }
+    .artist-genre { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); }
     .artist-day { display:inline-block; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-top:0.4rem; }
 
     /* Ticket section */
@@ -82,7 +83,7 @@
       padding:1rem 1.25rem;
       background:var(--bg-2); border:1px solid var(--border); border-radius:var(--r);
     }
-    .ticket-note-icon { color:var(--gold); }
+    .ticket-note-icon { color:var(--accent); }
 
     @media(max-width:768px) {
       .artist-grid { grid-template-columns:repeat(2,1fr); }
@@ -110,6 +111,7 @@
         <li><a href="faq.html"        class="nav-link">FAQ</a></li>
       </ul>
       <div class="nav-cta">
+        <button class="theme-toggle" aria-label="Toggle theme"><span class="icon-moon">&#9790;</span><span class="icon-sun">&#9728;</span></button>
         <a href="dashboard.html"      class="btn btn-ghost btn-sm">Account</a>
         <a href="#tickets"            class="btn btn-gold btn-sm">Get Tickets</a>
       </div>
@@ -134,7 +136,7 @@
   </div>
   <div class="wrap page-hero-content">
     <span class="eyebrow">Upcoming Voyage</span>
-    <h1 class="d2" style="margin-bottom:1rem;">Caribbean Odyssey <span style="color:var(--gold);">2025</span></h1>
+    <h1 class="d2" style="margin-bottom:1rem;">Caribbean Odyssey <span style="color:var(--accent);">2025</span></h1>
     <div style="display:flex; gap:2rem; flex-wrap:wrap; align-items:center;">
       <span style="font-size:0.85rem; color:var(--off-white);">📅 Aug 15–22, 2025</span>
       <span style="font-size:0.85rem; color:var(--off-white);">📍 Miami → Bahamas</span>
@@ -212,7 +214,7 @@
           </div>
           <div style="margin-bottom:0.5rem; display:flex; justify-content:space-between; font-size:0.78rem; color:var(--muted);">
             <span>142 spots remaining</span>
-            <span style="color:var(--gold); font-weight:600;">71% sold</span>
+            <span style="color:var(--accent); font-weight:600;">71% sold</span>
           </div>
           <div class="progress-wrap"><div class="progress-fill" data-w="71%"></div></div>
         </div>
@@ -449,7 +451,7 @@
       </div>
       <div style="text-align:right;">
         <div style="font-size:0.78rem; color:var(--muted);">142 spots remaining</div>
-        <div style="font-family:var(--font-display); font-size:1.5rem; color:var(--gold);">Selling Fast</div>
+        <div style="font-family:var(--font-display); font-size:1.5rem; color:var(--accent);">Selling Fast</div>
       </div>
     </div>
 
@@ -520,7 +522,7 @@
     <button class="modal-close" data-close>✕</button>
     <span class="eyebrow">Complete Booking</span>
     <h3 class="h4" style="margin-bottom:0.25rem;" id="modal-tier">Voyager Pass</h3>
-    <p id="modal-price" style="font-family:var(--font-display); font-size:2rem; color:var(--gold); margin-bottom:1.5rem;">$2,499</p>
+    <p id="modal-price" style="font-family:var(--font-display); font-size:2rem; color:var(--accent); margin-bottom:1.5rem;">$2,499</p>
     <form onsubmit="submitTicket(event)">
       <div class="form-group">
         <label class="form-label">Full Name</label>

@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="assets/css/main.css"/>
+  <script>(function(){var t=localStorage.getItem('dst-theme');if(!t){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)})()</script>
   <style>
     /* Auth */
     .auth-wrap { min-height:100svh; display:flex; align-items:center; justify-content:center; padding:2rem; background:var(--bg); position:relative; overflow:hidden; }
@@ -15,26 +16,26 @@
     .auth-bg img { width:100%; height:100%; object-fit:cover; opacity:0.1; }
     .auth-card { background:var(--bg-2); border:1px solid var(--border); border-radius:var(--r-lg); padding:2.5rem; width:100%; max-width:420px; position:relative; z-index:1; }
     .auth-logo { font-family:var(--font-display); font-size:1.25rem; color:var(--white); margin-bottom:1.5rem; }
-    .auth-logo em { font-style:normal; color:var(--gold); }
-    .auth-tabs { display:flex; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:var(--r); padding:3px; margin-bottom:2rem; }
+    .auth-logo em { font-style:normal; color:var(--accent); }
+    .auth-tabs { display:flex; background:var(--bg-glass); border:1px solid var(--border); border-radius:var(--r); padding:3px; margin-bottom:2rem; }
     .auth-tab { flex:1; padding:0.625rem; text-align:center; border-radius:calc(var(--r) - 2px); font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:var(--t); color:var(--muted); }
-    .auth-tab.active { background:var(--gold); color:var(--bg); }
+    .auth-tab.active { background:var(--accent); color:var(--bg); }
 
     /* Dashboard layout */
     .dash { display:none; min-height:100svh; }
     .dash.on { display:flex; }
     .sidebar { width:240px; flex-shrink:0; background:var(--bg-2); border-right:1px solid var(--border); position:fixed; top:0; left:0; bottom:0; overflow-y:auto; padding:1.5rem; z-index:200; }
     .sidebar-logo { font-family:var(--font-display); font-size:1.1rem; color:var(--white); display:block; margin-bottom:2rem; }
-    .sidebar-logo em { font-style:normal; color:var(--gold); }
-    .sidebar-user { display:flex; align-items:center; gap:0.75rem; padding:1rem; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--r); margin-bottom:2rem; }
-    .sidebar-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border-gold); }
+    .sidebar-logo em { font-style:normal; color:var(--accent); }
+    .sidebar-user { display:flex; align-items:center; gap:0.75rem; padding:1rem; background:var(--bg-glass); border:1px solid var(--border); border-radius:var(--r); margin-bottom:2rem; }
+    .sidebar-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border-accent); }
     .sidebar-name { font-size:0.875rem; font-weight:700; }
-    .sidebar-tier { font-size:0.68rem; color:var(--gold); }
+    .sidebar-tier { font-size:0.68rem; color:var(--accent); }
     .sidebar-section { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); padding:1rem 0.5rem 0.5rem; }
     .sidebar-nav { display:flex; flex-direction:column; gap:1px; }
     .sidebar-item { display:flex; align-items:center; gap:0.75rem; padding:0.75rem 0.875rem; border-radius:var(--r); font-size:0.82rem; font-weight:500; color:var(--muted); cursor:pointer; transition:var(--t); border:1px solid transparent; }
-    .sidebar-item:hover { color:var(--white); background:rgba(255,255,255,0.04); }
-    .sidebar-item.active { color:var(--gold); border-color:var(--border-gold); background:var(--gold-dim); }
+    .sidebar-item:hover { color:var(--white); background:var(--bg-glass); }
+    .sidebar-item.active { color:var(--accent); border-color:var(--border-accent); background:var(--accent-dim); }
 
     /* Main content */
     .dash-main { margin-left:240px; flex:1; padding:2rem; max-width:calc(100% - 240px); }
@@ -54,18 +55,18 @@
     .kpi-sub { font-size:0.75rem; color:var(--muted); margin-top:0.4rem; }
 
     /* Ticket card */
-    .ticket-card-dash { background:linear-gradient(135deg, #0D1F3C, #1A3356); border:1px solid rgba(201,168,76,0.3); border-radius:var(--r-lg); padding:2rem; margin-bottom:1.5rem; }
+    .ticket-card-dash { background:linear-gradient(135deg, var(--bg-2), var(--bg-card)); border:1px solid var(--border-accent); border-radius:var(--r-lg); padding:2rem; margin-bottom:1.5rem; }
     .tc-event { font-family:var(--font-display); font-size:1.75rem; margin-bottom:0.75rem; }
     .tc-meta { display:flex; gap:2rem; flex-wrap:wrap; margin-bottom:1.25rem; }
     .tc-detail { }
     .tc-detail-lbl { font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.45); margin-bottom:0.15rem; }
     .tc-detail-val { font-size:0.875rem; font-weight:700; }
-    .tc-code { font-family:monospace; font-size:0.8rem; background:rgba(255,255,255,0.07); border-radius:var(--r); padding:0.75rem 1rem; display:flex; align-items:center; justify-content:space-between; margin-top:1rem; letter-spacing:0.08em; }
+    .tc-code { font-family:monospace; font-size:0.8rem; background:var(--bg-glass); border-radius:var(--r); padding:0.75rem 1rem; display:flex; align-items:center; justify-content:space-between; margin-top:1rem; letter-spacing:0.08em; }
 
     /* Notification */
     .notif { display:flex; gap:0.875rem; padding:1rem 0; border-bottom:1px solid var(--border); }
     .notif:first-child { border-top:1px solid var(--border); }
-    .notif-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; margin-top:0.35rem; }
+    .notif-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; margin-top:0.35rem; }
     .notif-dot.read { background:var(--muted); }
     .notif-text { font-size:0.875rem; line-height:1.6; color:var(--off-white); }
     .notif-time { font-size:0.72rem; color:var(--muted); margin-top:0.25rem; }
@@ -73,26 +74,26 @@
     /* Checklist */
     .check-row { display:flex; align-items:center; gap:0.75rem; padding:0.875rem 1rem; border-radius:var(--r); font-size:0.875rem; margin-bottom:0.5rem; }
     .check-done { background:rgba(74,222,128,0.06); border:1px solid rgba(74,222,128,0.2); color:var(--off-white); }
-    .check-warn { background:rgba(201,168,76,0.06); border:1px solid var(--border-gold); color:var(--off-white); }
-    .check-todo { background:rgba(255,255,255,0.02); border:1px solid var(--border); color:var(--muted); }
+    .check-warn { background:var(--accent-dim); border:1px solid var(--border-accent); color:var(--off-white); }
+    .check-todo { background:var(--bg-glass); border:1px solid var(--border); color:var(--muted); }
 
     /* Roommate */
     .roommate-card { display:flex; align-items:center; gap:1rem; padding:1.25rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-lg); margin-bottom:0.75rem; }
-    .rm-avatar { width:48px; height:48px; border-radius:50%; object-fit:cover; border:1px solid var(--border-gold); flex-shrink:0; }
+    .rm-avatar { width:48px; height:48px; border-radius:50%; object-fit:cover; border:1px solid var(--border-accent); flex-shrink:0; }
     .rm-name { font-weight:700; font-size:0.9rem; }
     .rm-info { font-size:0.78rem; color:var(--muted); }
     .rm-actions { margin-left:auto; display:flex; gap:0.5rem; }
 
     /* Upload */
-    .upload-zone { border:1px dashed rgba(201,168,76,0.3); border-radius:var(--r-lg); padding:2rem; text-align:center; cursor:pointer; transition:var(--t); }
-    .upload-zone:hover { background:var(--gold-dim); border-color:var(--gold); }
+    .upload-zone { border:1px dashed var(--border-accent); border-radius:var(--r-lg); padding:2rem; text-align:center; cursor:pointer; transition:var(--t); }
+    .upload-zone:hover { background:var(--accent-dim); border-color:var(--accent); }
 
     /* Doc row */
     .doc-row { display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r); margin-bottom:0.625rem; font-size:0.875rem; }
     .doc-icon { font-size:1.25rem; }
     .doc-name { flex:1; font-weight:600; }
     .doc-ok { color:#4ade80; font-size:0.75rem; }
-    .doc-req { color:var(--gold); font-size:0.75rem; }
+    .doc-req { color:var(--accent); font-size:0.75rem; }
 
     @media(max-width:768px) {
       .sidebar { transform:translateX(-100%); transition:transform 0.3s var(--ease); }
@@ -157,10 +158,13 @@
     <div class="sidebar-section">Settings</div>
     <div class="sidebar-nav">
       <div class="sidebar-item" onclick="showPanel('profile',this)">👤 Profile</div>
-      <div class="sidebar-item" onclick="showPanel('notifs',this)">🔔 Notifications <span style="background:var(--gold);color:var(--bg);font-size:0.65rem;padding:1px 6px;border-radius:8px;margin-left:auto;">3</span></div>
+      <div class="sidebar-item" onclick="showPanel('notifs',this)">🔔 Notifications <span style="background:var(--accent);color:var(--bg);font-size:0.65rem;padding:1px 6px;border-radius:8px;margin-left:auto;">3</span></div>
       <div class="sidebar-item" onclick="doLogout()">← Log Out</div>
     </div>
-    <div style="margin-top:2rem;">
+    <div style="margin-top:1rem;">
+      <button class="theme-toggle" aria-label="Toggle theme" style="width:100%;border-radius:var(--r);"><span class="icon-moon">&#9790; Dark</span><span class="icon-sun">&#9728; Light</span></button>
+    </div>
+    <div style="margin-top:1rem;">
       <a href="events.html#tickets" class="btn btn-gold btn-sm btn-full">+ Add Event</a>
     </div>
   </aside>
@@ -174,26 +178,26 @@
       </div>
       <div style="display:flex; gap:0.75rem; align-items:center;">
         <button class="btn btn-ghost btn-sm" onclick="showPanel('notifs',document.querySelector('[onclick*=notifs]'))">🔔 3 new</button>
-        <img src="https://picsum.photos/seed/dash-user/80/80" alt="" style="width:38px;height:38px;border-radius:50%;border:1px solid var(--border-gold);cursor:pointer;"/>
+        <img src="https://picsum.photos/seed/dash-user/80/80" alt="" style="width:38px;height:38px;border-radius:50%;border:1px solid var(--border-accent);cursor:pointer;"/>
       </div>
     </div>
 
     <!-- OVERVIEW -->
     <div class="panel active" id="panel-overview">
       <div class="g4" style="margin-bottom:2rem;">
-        <div class="kpi"><div class="kpi-label">Upcoming Trips</div><div class="kpi-val" style="color:var(--gold);">1</div><div class="kpi-sub">Caribbean 2025</div></div>
+        <div class="kpi"><div class="kpi-label">Upcoming Trips</div><div class="kpi-val" style="color:var(--accent);">1</div><div class="kpi-sub">Caribbean 2025</div></div>
         <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-val">2</div><div class="kpi-sub">Ibiza + Med</div></div>
         <div class="kpi"><div class="kpi-label">DST Points</div><div class="kpi-val">2,450</div><div class="kpi-sub">Voyager Tier</div></div>
-        <div class="kpi"><div class="kpi-label">Days to Depart</div><div class="kpi-val" style="color:var(--gold);">160</div><div class="kpi-sub">Aug 15, 2025</div></div>
+        <div class="kpi"><div class="kpi-label">Days to Depart</div><div class="kpi-val" style="color:var(--accent);">160</div><div class="kpi-sub">Aug 15, 2025</div></div>
       </div>
       <!-- Trip banner -->
-      <div style="background:linear-gradient(135deg,#0D1F3C,#1A3356);border:1px solid rgba(201,168,76,0.25);border-radius:var(--r-lg);padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,#0D1F3C,#1A3356);border:1px solid var(--border-accent);border-radius:var(--r-lg);padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden;">
         <img src="https://picsum.photos/seed/trip-banner/800/200" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.12;"/>
         <div style="position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
           <div>
-            <div style="font-size:0.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:.5rem;">Upcoming Event</div>
+            <div style="font-size:0.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;">Upcoming Event</div>
             <div style="font-family:var(--font-display);font-size:1.75rem;margin-bottom:.5rem;">Caribbean Odyssey 2025</div>
-            <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.8rem;color:rgba(255,255,255,.65);">
+            <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.8rem;color:var(--off-white);">
               <span>📅 Aug 15–22, 2025</span>
               <span>📍 Miami → Bahamas</span>
               <span>🛏️ Ocean View Cabin</span>
@@ -216,7 +220,7 @@
           <div style="font-weight:700;font-size:1rem;margin-bottom:1.25rem;">Pre-Trip Checklist</div>
           <div class="check-row check-done"><span style="color:#4ade80;">✓</span> Booking confirmed & payment complete</div>
           <div class="check-row check-done"><span style="color:#4ade80;">✓</span> Profile completed</div>
-          <div class="check-row check-warn"><span style="color:var(--gold);">!</span> Upload passport scan <span style="margin-left:auto;font-size:.72rem;color:var(--gold);">Required</span></div>
+          <div class="check-row check-warn"><span style="color:var(--accent);">!</span> Upload passport scan <span style="margin-left:auto;font-size:.72rem;color:var(--accent);">Required</span></div>
           <div class="check-row check-todo"><span style="color:var(--muted);">○</span> Choose roommate preference</div>
           <div class="check-row check-todo"><span style="color:var(--muted);">○</span> Add emergency contact</div>
         </div>
@@ -270,17 +274,17 @@
       <div id="sched-1">
         <div style="display:flex;flex-direction:column;gap:.625rem;">
           <div style="display:flex;gap:1rem;align-items:center;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);">
-            <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--gold);min-width:70px;">3 PM</span>
+            <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--accent);min-width:70px;">3 PM</span>
             <div style="flex:1;"><div style="font-weight:600;font-size:.875rem;">Boarding & Check-In</div><div style="font-size:.75rem;color:var(--muted);">Miami Port Terminal C</div></div>
             <span class="badge badge-gold">Required</span>
           </div>
           <div style="display:flex;gap:1rem;align-items:center;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);">
-            <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--gold);min-width:70px;">5:30 PM</span>
+            <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--accent);min-width:70px;">5:30 PM</span>
             <div style="flex:1;"><div style="font-weight:600;font-size:.875rem;">Welcome Cocktail Party</div><div style="font-size:.75rem;color:var(--muted);">Main Deck</div></div>
             <span class="badge badge-white">Included</span>
           </div>
           <div style="display:flex;gap:1rem;align-items:center;padding:1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);">
-            <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--gold);min-width:70px;">8 PM</span>
+            <span style="font-family:var(--font-display);font-size:1.1rem;color:var(--accent);min-width:70px;">8 PM</span>
             <div style="flex:1;"><div style="font-weight:600;font-size:.875rem;">Opening Night: DJ Nova b2b Luna</div><div style="font-size:.75rem;color:var(--muted);">Main Stage</div></div>
             <span class="badge badge-blue">Headliner</span>
           </div>
@@ -337,12 +341,12 @@
     <!-- DOCUMENTS -->
     <div class="panel" id="panel-documents">
       <div style="font-weight:700;font-size:1.25rem;margin-bottom:1.5rem;">Documents</div>
-      <div style="background:rgba(201,168,76,0.08);border:1px solid var(--border-gold);border-radius:var(--r);padding:1rem;margin-bottom:1.5rem;display:flex;gap:.75rem;font-size:.875rem;">
-        <span style="color:var(--gold);">⚠️</span><span>Upload your passport scan before <strong>July 1, 2025</strong> to complete your booking.</span>
+      <div style="background:var(--accent-dim);border:1px solid var(--border-accent);border-radius:var(--r);padding:1rem;margin-bottom:1.5rem;display:flex;gap:.75rem;font-size:.875rem;">
+        <span style="color:var(--accent);">⚠️</span><span>Upload your passport scan before <strong>July 1, 2025</strong> to complete your booking.</span>
       </div>
       <div class="doc-row"><span class="doc-icon">🪪</span><div style="flex:1;"><div class="doc-name">Government ID</div><div style="font-size:.72rem;color:var(--muted);">Uploaded Jan 15, 2025</div></div><span class="doc-ok">✓ Verified</span></div>
       <div class="doc-row"><span class="doc-icon">📋</span><div style="flex:1;"><div class="doc-name">Travel Insurance</div><div style="font-size:.72rem;color:var(--muted);">Uploaded Feb 2, 2025</div></div><span class="doc-ok">✓ Verified</span></div>
-      <div class="doc-row" style="border-color:var(--border-gold);"><span class="doc-icon">🛂</span><div style="flex:1;"><div class="doc-name">Passport Scan</div><div style="font-size:.72rem;color:var(--muted);">Not uploaded yet</div></div><span class="doc-req">⏳ Required</span></div>
+      <div class="doc-row" style="border-color:var(--border-accent);"><span class="doc-icon">🛂</span><div style="flex:1;"><div class="doc-name">Passport Scan</div><div style="font-size:.72rem;color:var(--muted);">Not uploaded yet</div></div><span class="doc-req">⏳ Required</span></div>
       <div class="upload-zone mt-3" onclick="uploadDoc()">
         <div style="font-size:1.5rem;margin-bottom:.75rem;">📤</div>
         <div style="font-weight:700;font-size:.9rem;margin-bottom:.25rem;">Upload Passport Scan</div>
@@ -357,7 +361,7 @@
         💡 1 pending request · Your cabin fits 2 guests
       </div>
       <div style="font-weight:700;font-size:.875rem;margin-bottom:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-size:.65rem;">Pending (1)</div>
-      <div class="roommate-card" style="border-color:var(--border-gold);margin-bottom:1.5rem;">
+      <div class="roommate-card" style="border-color:var(--border-accent);margin-bottom:1.5rem;">
         <img class="rm-avatar" src="https://picsum.photos/seed/rm1/100/100" alt="Jordan"/>
         <div><div class="rm-name">Jordan K.</div><div class="rm-info">🇺🇸 Los Angeles · Voyager · 3 trips</div></div>
         <div class="rm-actions">
@@ -379,14 +383,14 @@
       <div class="g2" style="align-items:start;">
         <div>
           <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:2rem;text-align:center;margin-bottom:1.25rem;">
-            <img src="https://picsum.photos/seed/dash-user/200/200" alt="" style="width:90px;height:90px;border-radius:50%;margin:0 auto 1rem;border:1px solid var(--border-gold);"/>
+            <img src="https://picsum.photos/seed/dash-user/200/200" alt="" style="width:90px;height:90px;border-radius:50%;margin:0 auto 1rem;border:1px solid var(--border-accent);"/>
             <div style="font-family:var(--font-display);font-size:1.5rem;">Alex Rivera</div>
-            <div style="color:var(--gold);font-size:.75rem;margin-bottom:1rem;">⭐ Voyager · 2 Trips Completed</div>
+            <div style="color:var(--accent);font-size:.75rem;margin-bottom:1rem;">⭐ Voyager · 2 Trips Completed</div>
             <button class="btn btn-ghost btn-sm btn-full" onclick="toast('Photo upload coming soon','📸',2000)">Change Photo</button>
           </div>
           <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;">
             <div style="font-weight:700;font-size:.875rem;margin-bottom:.75rem;">DST Loyalty Points</div>
-            <div style="font-family:var(--font-display);font-size:2.5rem;color:var(--gold);">2,450</div>
+            <div style="font-family:var(--font-display);font-size:2.5rem;color:var(--accent);">2,450</div>
             <div style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem;">550 to Elite Tier</div>
             <div class="progress-wrap"><div class="progress-fill" data-w="82%"></div></div>
           </div>
