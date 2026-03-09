@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don't Stop Tripping — Premium Cruise & Travel Experiences</title>
+    <meta name="description" content="Don't Stop Tripping is a premium cruise and travel experience platform. Discover events, match with travel companions, and embark on unforgettable adventures at sea.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-icon">⚓</span>
+                <span class="logo-text">Don't Stop Tripping</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#cta" class="nav-btn">Book Now</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <img src="https://picsum.photos/id/1036/1920/1080" alt="" class="hero-bg-img" loading="eager">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-particles" id="heroParticles"></div>
+        <div class="hero-content">
+            <div class="hero-badge" data-animate="fade-up">
+                <span class="badge-dot"></span>
+                Upcoming Voyages — 2026 Season
+            </div>
+            <h1 class="hero-title" data-animate="fade-up" data-delay="100">
+                Your Next Adventure<br>
+                <span class="text-gradient">Starts at Sea</span>
+            </h1>
+            <p class="hero-subtitle" data-animate="fade-up" data-delay="200">
+                Premium cruise experiences where travel meets community. Match with like-minded explorers,
+                curate your perfect cabin, and set sail on unforgettable adventures.
+            </p>
+            <div class="hero-actions" data-animate="fade-up" data-delay="300">
+                <a href="#cta" class="btn btn-primary btn-lg">
+                    <span>Explore Voyages</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#how-it-works" class="btn btn-outline btn-lg">
+                    <span>How It Works</span>
+                </a>
+            </div>
+            <div class="hero-stats" data-animate="fade-up" data-delay="400">
+                <div class="stat">
+                    <span class="stat-number" data-count="12">0</span><span class="stat-suffix">+</span>
+                    <span class="stat-label">Destinations</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="5000">0</span><span class="stat-suffix">+</span>
+                    <span class="stat-label">Travelers</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-count="98">0</span><span class="stat-suffix">%</span>
+                    <span class="stat-label">Satisfaction</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,80 1440,60 L1440,120 L0,120 Z" fill="#ffffff"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- About / Intro Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content" data-animate="fade-right">
+                    <span class="section-tag">Welcome Aboard</span>
+                    <h2 class="section-title">More Than a Trip.<br><span class="text-accent">It's a Movement.</span></h2>
+                    <p class="about-text">
+                        Don't Stop Tripping is a premium travel platform that redefines the cruise experience.
+                        We bring together adventurous travelers, curated entertainment, and luxury voyages
+                        into one seamless community-driven journey.
+                    </p>
+                    <p class="about-text">
+                        From interactive guest matching to personalized cabin pairings, every detail is designed
+                        to connect you with the right people and the perfect adventure. Whether you're a solo
+                        explorer or traveling with friends, we make every voyage feel personal.
+                    </p>
+                    <div class="about-highlights">
+                        <div class="highlight">
+                            <div class="highlight-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div>
+                                <strong>Curated Destinations</strong>
+                                <p>Handpicked routes through the world's most stunning coastlines</p>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <div class="highlight-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <div>
+                                <strong>Community First</strong>
+                                <p>Meet like-minded travelers and build lifelong connections</p>
+                            </div>
+                        </div>
+                        <div class="highlight">
+                            <div class="highlight-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <div>
+                                <strong>Premium Experiences</strong>
+                                <p>Exclusive events, entertainment, and luxury amenities onboard</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual" data-animate="fade-left">
+                    <div class="about-image-stack">
+                        <div class="about-img about-img-1">
+                            <img src="https://picsum.photos/id/1058/600/800" alt="Ocean view luxury cruise experience" loading="lazy">
+                        </div>
+                        <div class="about-img about-img-2">
+                            <img src="https://picsum.photos/id/1050/400/500" alt="Travelers enjoying the sunset" loading="lazy">
+                        </div>
+                        <div class="about-floating-card">
+                            <div class="floating-card-icon">⭐</div>
+                            <div>
+                                <strong>4.9 Rating</strong>
+                                <p>From 2,000+ travelers</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Goals / Objectives Section -->
+    <section class="goals" id="goals">
+        <div class="goals-bg">
+            <div class="goals-wave-top">
+                <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                    <path d="M0,60 C360,0 720,120 1080,60 C1260,30 1380,40 1440,60 L1440,0 L0,0 Z" fill="#ffffff"/>
+                </svg>
+            </div>
+        </div>
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag section-tag-light">Our Mission</span>
+                <h2 class="section-title section-title-light">Redefining How You<br><span class="text-gold">Experience the Sea</span></h2>
+                <p class="section-desc section-desc-light">
+                    Every feature is designed to make your voyage seamless, social, and unforgettable.
+                </p>
+            </div>
+            <div class="goals-grid">
+                <div class="goal-card" data-animate="fade-up" data-delay="0">
+                    <div class="goal-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                    </div>
+                    <h3>Interactive Guest Matching</h3>
+                    <p>Our smart matching system pairs you with compatible cabin partners based on interests, travel style, and personality. No more random roommate surprises.</p>
+                </div>
+                <div class="goal-card" data-animate="fade-up" data-delay="100">
+                    <div class="goal-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M2 17l3 3 3-3"/><path d="M19 7l3-3-3-3"/></svg>
+                    </div>
+                    <h3>Personalized Profiles & Reviews</h3>
+                    <p>Build your traveler profile, share your experiences, and read honest reviews from your future travel companions. Real people, real connections.</p>
+                </div>
+                <div class="goal-card" data-animate="fade-up" data-delay="200">
+                    <div class="goal-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    </div>
+                    <h3>Seamless Booking & Onboarding</h3>
+                    <p>From selecting your cruise package to choosing your cabin and confirming payment — every step is smooth, intuitive, and stress-free.</p>
+                </div>
+                <div class="goal-card" data-animate="fade-up" data-delay="300">
+                    <div class="goal-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    </div>
+                    <h3>Community-Driven Travel</h3>
+                    <p>Join a vibrant community of explorers. Connect before, during, and after the cruise. Share experiences and plan future adventures together.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Your Journey</span>
+                <h2 class="section-title">Set Sail in<br><span class="text-accent">5 Simple Steps</span></h2>
+                <p class="section-desc">
+                    From sign-up to boarding, we've made the entire process effortless and exciting.
+                </p>
+            </div>
+            <div class="steps-container">
+                <div class="steps-line"></div>
+                <div class="step" data-animate="fade-up" data-delay="0">
+                    <div class="step-number"><span>01</span></div>
+                    <div class="step-content">
+                        <div class="step-img">
+                            <img src="https://picsum.photos/id/1/400/300" alt="Sign up for Don't Stop Tripping" loading="lazy">
+                        </div>
+                        <h3>Sign Up</h3>
+                        <p>Create your free account in seconds. Join thousands of adventurous travelers ready for their next voyage.</p>
+                    </div>
+                </div>
+                <div class="step" data-animate="fade-up" data-delay="100">
+                    <div class="step-number"><span>02</span></div>
+                    <div class="step-content">
+                        <div class="step-img">
+                            <img src="https://picsum.photos/id/64/400/300" alt="Create your traveler profile" loading="lazy">
+                        </div>
+                        <h3>Create Your Profile</h3>
+                        <p>Tell us about your travel style, interests, and preferences. The more we know, the better we match.</p>
+                    </div>
+                </div>
+                <div class="step" data-animate="fade-up" data-delay="200">
+                    <div class="step-number"><span>03</span></div>
+                    <div class="step-content">
+                        <div class="step-img">
+                            <img src="https://picsum.photos/id/177/400/300" alt="Match with travelers" loading="lazy">
+                        </div>
+                        <h3>Match With Travelers</h3>
+                        <p>Browse compatible cabin partners, swipe through profiles, and connect with travelers who share your vibe.</p>
+                    </div>
+                </div>
+                <div class="step" data-animate="fade-up" data-delay="300">
+                    <div class="step-number"><span>04</span></div>
+                    <div class="step-content">
+                        <div class="step-img">
+                            <img src="https://picsum.photos/id/325/400/300" alt="Confirm your booking" loading="lazy">
+                        </div>
+                        <h3>Confirm Booking</h3>
+                        <p>Select your cruise package, confirm your cabin pairing, and complete your booking with secure payment.</p>
+                    </div>
+                </div>
+                <div class="step" data-animate="fade-up" data-delay="400">
+                    <div class="step-number"><span>05</span></div>
+                    <div class="step-content">
+                        <div class="step-img">
+                            <img src="https://picsum.photos/id/416/400/300" alt="Join the cruise event" loading="lazy">
+                        </div>
+                        <h3>Set Sail</h3>
+                        <p>Board the ship, meet your travel community, and experience the voyage of a lifetime. Adventure awaits!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section class="features" id="features">
+        <div class="features-bg-shape"></div>
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">Platform Features</span>
+                <h2 class="section-title">Everything You Need<br><span class="text-accent">For the Perfect Voyage</span></h2>
+                <p class="section-desc">
+                    Our platform is packed with features designed to enhance every aspect of your travel experience.
+                </p>
+            </div>
+            <div class="features-tabs" data-animate="fade-up">
+                <button class="tab-btn active" data-tab="guest">Guest Features</button>
+                <button class="tab-btn" data-tab="booking">Booking</button>
+                <button class="tab-btn" data-tab="cruise">Cruise Experience</button>
+                <button class="tab-btn" data-tab="community">Community</button>
+            </div>
+            <div class="features-panels">
+                <div class="features-panel active" id="panel-guest">
+                    <div class="feature-list" data-animate="fade-up">
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <div>
+                                <h4>Traveler Profiles</h4>
+                                <p>Create a rich profile showcasing your travel style, interests, and personality.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            </div>
+                            <div>
+                                <h4>Cabin Buddy Matching</h4>
+                                <p>Our AI-powered matching finds you the ideal cabin companion based on compatibility.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            </div>
+                            <div>
+                                <h4>Profile Verification</h4>
+                                <p>Verified profiles build trust and ensure a safe, authentic community for everyone.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            </div>
+                            <div>
+                                <h4>Reviews & Ratings</h4>
+                                <p>Read and leave reviews for fellow travelers to help the community grow stronger.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            </div>
+                            <div>
+                                <h4>In-App Messaging</h4>
+                                <p>Chat with matched travelers before the cruise and coordinate your adventure together.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-visual">
+                        <img src="https://picsum.photos/id/225/600/700" alt="Guest features preview" loading="lazy">
+                    </div>
+                </div>
+                <div class="features-panel" id="panel-booking">
+                    <div class="feature-list" data-animate="fade-up">
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                            </div>
+                            <div>
+                                <h4>Cruise Packages</h4>
+                                <p>Browse and compare curated cruise packages with transparent pricing.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                            </div>
+                            <div>
+                                <h4>Cabin Selection</h4>
+                                <p>Pick your perfect cabin with interactive deck maps and real-time availability.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            </div>
+                            <div>
+                                <h4>Secure Payment</h4>
+                                <p>Complete your booking with encrypted, hassle-free payment processing.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-visual">
+                        <img src="https://picsum.photos/id/368/600/700" alt="Booking features preview" loading="lazy">
+                    </div>
+                </div>
+                <div class="features-panel" id="panel-cruise">
+                    <div class="feature-list" data-animate="fade-up">
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </div>
+                            <div>
+                                <h4>Event Schedules</h4>
+                                <p>View the full lineup of onboard events, shows, and activities at a glance.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                            </div>
+                            <div>
+                                <h4>Activity Booking</h4>
+                                <p>Reserve excursions, spa sessions, and dining from your phone.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                            </div>
+                            <div>
+                                <h4>Cruise Itinerary</h4>
+                                <p>Interactive maps showing your route, ports, and destination highlights.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                            </div>
+                            <div>
+                                <h4>Smart Notifications</h4>
+                                <p>Stay updated with real-time alerts for events, activities, and your matches.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-visual">
+                        <img src="https://picsum.photos/id/452/600/700" alt="Cruise experience preview" loading="lazy">
+                    </div>
+                </div>
+                <div class="features-panel" id="panel-community">
+                    <div class="feature-list" data-animate="fade-up">
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                            </div>
+                            <div>
+                                <h4>Compatibility Scores</h4>
+                                <p>See how well you match with other travelers before connecting or pairing cabins.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            </div>
+                            <div>
+                                <h4>Shared Interests</h4>
+                                <p>Discover travelers who love the same things you do — from music to cuisine to adventure sports.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <div>
+                                <h4>Community Hub</h4>
+                                <p>Join group discussions, share travel tips, and build friendships that last beyond the cruise.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            </div>
+                            <div>
+                                <h4>Affiliate Portal</h4>
+                                <p>Refer friends, earn rewards, and grow the travel community while earning perks.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feature-visual">
+                        <img src="https://picsum.photos/id/883/600/700" alt="Community features preview" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience / Lifestyle Section -->
+    <section class="experience" id="experience">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag">The Lifestyle</span>
+                <h2 class="section-title">Feel the Energy.<br><span class="text-accent">Live the Adventure.</span></h2>
+                <p class="section-desc">
+                    Luxury cabins, ocean sunsets, world-class entertainment, and a community that knows how to travel right.
+                </p>
+            </div>
+            <div class="experience-gallery" data-animate="fade-up">
+                <div class="gallery-item gallery-item-lg">
+                    <img src="https://picsum.photos/id/1015/800/600" alt="Sunset ocean view" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Ocean Views</span>
+                        <h4>Breathtaking Horizons</h4>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/id/1029/400/500" alt="Social gathering" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Social</span>
+                        <h4>Connect & Celebrate</h4>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/id/307/400/500" alt="Luxury experience" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Luxury</span>
+                        <h4>Premium Comfort</h4>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://picsum.photos/id/536/400/500" alt="Adventure activities" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Adventure</span>
+                        <h4>Thrilling Excursions</h4>
+                    </div>
+                </div>
+                <div class="gallery-item gallery-item-wide">
+                    <img src="https://picsum.photos/id/514/800/400" alt="Entertainment on deck" loading="lazy">
+                    <div class="gallery-overlay">
+                        <span class="gallery-tag">Entertainment</span>
+                        <h4>World-Class Performances</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="testimonials-wave-top">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path d="M0,60 C360,0 720,120 1080,60 C1260,30 1380,40 1440,60 L1440,0 L0,0 Z" fill="#ffffff"/>
+            </svg>
+        </div>
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag section-tag-light">Testimonials</span>
+                <h2 class="section-title section-title-light">What Our Travelers<br><span class="text-gold">Are Saying</span></h2>
+            </div>
+            <div class="testimonial-grid" data-animate="fade-up">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                    <p>"The cabin matching was a game-changer. I traveled solo but never felt alone. Met my now best friend on the DST voyage!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/id/64/80/80" alt="Traveler" loading="lazy">
+                        <div>
+                            <strong>Jasmine T.</strong>
+                            <span>Caribbean Cruise 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card testimonial-featured">
+                    <div class="testimonial-stars">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                    <p>"Don't Stop Tripping is unlike anything else. The energy, the people, the events — it's a premium experience from start to finish. Already booked my next one."</p>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/id/91/80/80" alt="Traveler" loading="lazy">
+                        <div>
+                            <strong>Marcus D.</strong>
+                            <span>Mediterranean Cruise 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                    <p>"Booking was so easy and the community aspect makes it special. The compatibility matching actually works — my cabin mate was perfect!"</p>
+                    <div class="testimonial-author">
+                        <img src="https://picsum.photos/id/177/80/80" alt="Traveler" loading="lazy">
+                        <div>
+                            <strong>Aisha K.</strong>
+                            <span>Atlantic Cruise 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="cta" id="cta">
+        <div class="cta-bg">
+            <img src="https://picsum.photos/id/1044/1920/1080" alt="" class="cta-bg-img" loading="lazy">
+            <div class="cta-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="cta-content" data-animate="fade-up">
+                <span class="section-tag section-tag-gold">Ready to Set Sail?</span>
+                <h2 class="cta-title">Your Next Unforgettable<br>Adventure Awaits</h2>
+                <p class="cta-desc">
+                    Join thousands of travelers who have discovered a new way to experience the sea.
+                    Premium cruises, incredible connections, and memories that last a lifetime.
+                </p>
+                <div class="cta-actions">
+                    <a href="#" class="btn btn-gold btn-lg">
+                        <span>Start Your Journey</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-lg">
+                        <span>View Upcoming Cruises</span>
+                    </a>
+                </div>
+                <div class="cta-trust">
+                    <div class="trust-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <span>Free to join</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <span>Verified community</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <span>Secure booking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">
+                        <span class="logo-icon">⚓</span>
+                        <span>Don't Stop Tripping</span>
+                    </a>
+                    <p>Premium cruise experiences where travel meets community. Your next adventure starts here.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Facebook">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="#">Upcoming Cruises</a></li>
+                        <li><a href="#">Destinations</a></li>
+                        <li><a href="#">Packages</a></li>
+                        <li><a href="#">Events</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Don't Stop Tripping. All rights reserved.</p>
+                <p>Made with ❤ for adventurous souls.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
